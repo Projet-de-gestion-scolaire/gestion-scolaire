@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des Professeurs</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Gestion des Professeurs</h1>
+    <nav>
+        <a href="index.html">Accueil</a>
+      <a href="eleve.html">Élèves</a>
+      <a href="emploi.html">Emploi du temps</a>
+      <a href="professeur.html">Professeurs</a>
+      <a href="notification.html">notifications</a>
+      <a href="parent.html">Portail parents</a>
+      <a href="parametres.html">Paramètres</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Ajouter un professeur</h2>
+      <form id="form-prof">
+        <input type="text" id="nom-prof" placeholder="Nom" required>
+        <input type="text" id="matiere-prof" placeholder="Matière" required>
+        <button type="submit">Ajouter</button>
+      </form>
+    </section>
+    <section>
+      <h2>Liste des professeurs</h2>
+      <table id="table-prof">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Matière</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Professeurs ajoutés dynamiquement -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

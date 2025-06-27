@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Paramètres de l'établissement</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Paramètres</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="eleves.html">Élèves</a>
+      <a href="emploi-du-temps.html">Emploi du temps</a>
+      <a href="portail-parents.html">Portail parents</a>
+      <a href="professeur.html">Professeurs</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="parametres.html">Paramètres</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Informations de l'établissement</h2>
+      <form id="form-param">
+        <input type="text" id="nom-etab" placeholder="Nom de l'établissement" required>
+        <input type="text" id="adresse-etab" placeholder="Adresse" required>
+        <input type="tel" id="tel-etab" placeholder="Téléphone" required>
+        <button type="submit">Enregistrer</button>
+      </form>
+    </section>
+    <section>
+      <h2>Résumé</h2>
+      <div id="resume-param">
+        <!-- Résumé affiché dynamiquement -->
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

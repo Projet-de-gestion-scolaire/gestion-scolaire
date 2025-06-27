@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Notifications</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="eleves.html">Élèves</a>
+      <a href="emploi-du-temps.html">Emploi du temps</a>
+      <a href="portail-parents.html">Portail parents</a>
+      <a href="professeur.html">Professeurs</a>
+      <a href="notifications.html">Notifications</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Ajouter une notification</h2>
+      <form id="form-notif">
+        <input type="text" id="titre-notif" placeholder="Titre" required>
+        <input type="text" id="contenu-notif" placeholder="Contenu" required>
+        <button type="submit">Ajouter</button>
+      </form>
+    </section>
+    <section>
+      <h2>Liste des notifications</h2>
+      <table id="table-notif">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Contenu</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Notifications ajoutées dynamiquement -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
