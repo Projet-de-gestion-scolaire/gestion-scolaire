@@ -236,3 +236,29 @@ document.getElementById('form-param').addEventListener('submit', function(e) {
   renderResume();
 });
 document.addEventListener('DOMContentLoaded', renderParametres);
+
+// Gestion du menu utilisateur déroulant
+document.addEventListener('DOMContentLoaded', () => {
+  const userToggle = document.getElementById('user-toggle');
+  const userDropdown = document.getElementById('user-dropdown');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  userToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    userDropdown.classList.toggle('hidden');
+  });
+
+  // Clic en dehors pour fermer
+  document.addEventListener('click', (e) => {
+    if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+      userDropdown.classList.add('hidden');
+    }
+  });
+
+  // Exemple : logout (juste une alerte pour démo)
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Déconnexion en cours...');
+    // Ici tu peux ajouter ta logique de logout (ex: clear session, rediriger, etc.)
+  });
+});

@@ -2,31 +2,84 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Tableau de bord - Gestion Scolaire</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion Administrative</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
-  <header>
-    <h1>Tableau de bord</h1>
-    <nav>
-      <!-- <a href="index.html">Accueil</a> -->
-      <a href="eleve.html">Élèves</a>
-      <a href="emploi.html">Emploi du temps</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notification.html">notifications</a>
-      <a href="parent.html">Portail parents</a>
-      <a href="parametres.html">Paramètres</a>
+  <!-- HEADER -->
+  <header class="dashboard-header">
+  <div class="logo-placeholder">
+    <img src="logo.png" alt="Logo de l'école" />
+  </div>
 
-    </nav>
-  </header>
-  <main>
-    <section id="stats">
-      <h2>Statistiques</h2>
-      <div id="stat-eleves"></div>
-      <div id="stat-absents"></div>
-      <div id="stat-messages"></div>
-    </section>
-  </main>
+  <h1>Gestion administrative</h1>
+
+ <div class="header-icons">
+  <a href="notification.html" title="Notifications" class="notif-icon">
+    <i class="fas fa-bell"></i>
+    <span class="notif-count" id="notif-count">3</span> <!-- nombre dynamique -->
+  </a>
+
+  <div class="user-menu-wrapper">
+    <a href="#" id="user-toggle" title="Utilisateur" class="user-icon">
+      <i class="fas fa-user-circle"></i>
+      <span id="user-name">Nenette</span>
+      <i class="fas fa-caret-down"></i>
+    </a>
+    <div id="user-dropdown" class="user-dropdown hidden">
+      <a href="profil.html">Profil</a>
+      <a href="#" id="logout-btn">Déconnexion</a>
+    </div>
+  </div>
+
+  <a href="parametres.html" title="Paramètres" class="settings-icon">
+    <i class="fas fa-cog"></i>
+  </a>
+</div>
+
+</header>
+
+
+  <!-- CONTENU PRINCIPAL AVEC MENU À GAUCHE -->
+  <div class="main-layout">
+    <!-- BOX MENU LATÉRAL -->
+    <aside class="menu-box">
+      <nav>
+        <a href="eleve.html">Élèves</a>
+        <a href="emploi.html">Emploi du temps</a>
+        <a href="professeur.html">Professeurs</a>
+        <a href="notification.html">Notifications</a>
+        <a href="parent.html">Portail parents</a>
+        <a href="parametres.html">Paramètres</a>
+      </nav>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="content-area">
+      <section id="stats">
+        <h2>Statistiques</h2>
+        <div id="stat-eleves"></div>
+        <div id="stat-absents"></div>
+        <div id="stat-messages"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dashboard-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 École X - Tous droits réservés</p>
+      <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+      <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
+    </div>
+  </footer>
+
+  <!-- BOUTON REMONTER -->
+  <button id="btn-top" title="Remonter en haut">&#8679;</button>
+
   <script src="script.js"></script>
 </body>
 </html>

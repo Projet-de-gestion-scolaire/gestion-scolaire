@@ -1,213 +1,280 @@
+/* --- Palette personnalisée --- */
+:root {
+  --orange: #f39c12;
+  --vert: #27ae60;
+  --blanc: #ffffff;
+  --gris-fond: #f4f8fb;
+  --gris-texte: #2c3e50;
+}
+
 /* --- Général --- */
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background: #f4f8fb;
-  color: #222;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--gris-fond);
+  color: var(--gris-texte);
 }
 
-main {
-  padding: 2em;
-  max-width: 900px;
-  margin: 2em auto 0 auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(44,62,80,0.07);
-}
-
-section {
-  margin-bottom: 2em;
-}
-
-h1, h2, h3 {
-  color: #2c3e50;
-  margin-top: 0;
-}
-
-/* --- En-tête et Navigation --- */
-header {
-  background: #2c3e50;
-  color: #fff;
-  padding: 1.5em 2em;
+/* --- Header --- */
+.dashboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 2em;
-}
-
-nav {
-  margin-top: 0.5em;
-}
-
-nav a {
-  color: #fff;
-  margin-right: 1.5em;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-  font-size: 1.1em;
-}
-
-nav a:last-child {
-  margin-right: 0;
-}
-
-nav a:hover, nav a.active {
-  color: #18bc9c;
-  text-decoration: underline;
-}
-
-/* --- Formulaires --- */
-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1em;
-  margin-bottom: 1em;
-}
-
-form input, form select, form button {
-  padding: 0.7em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
-}
-
-form input, form select {
-  background: #f9f9f9;
-}
-
-form button {
-  background: #18bc9c;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-form button:hover {
-  background: #149174;
-}
-
-/* --- Tableaux --- */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1em;
-  background: #fafbfc;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-th, td {
-  border: 1px solid #e1e4e8;
-  padding: 0.8em;
-  text-align: left;
-}
-
-th {
-  background: #ecf0f1;
-  color: #2c3e50;
-}
-
-tr:nth-child(even) {
-  background: #f4f8fb;
-}
-
-/* --- Boutons --- */
-button, .btn {
-  padding: 0.5em 1em;
-  border-radius: 4px;
-  border: none;
-  background: #3498db;
-  color: #fff;
-  cursor: pointer;
-  margin-right: 0.5em;
-  transition: background 0.2s;
-  font-size: 1em;
-}
-
-button:last-child, .btn:last-child {
-  margin-right: 0;
-}
-
-button:hover, .btn:hover {
-  background: #217dbb;
-}
-
-/* --- Statistiques & Notifications --- */
-#stats, #notifications {
-  display: flex;
-  gap: 2em;
-  flex-wrap: wrap;
-}
-
-#stats > div, #notifications > div {
-  background: #ecf0f1;
-  color: #2c3e50;
+  background-color: var(--blanc);
   padding: 1em 2em;
-  border-radius: 8px;
-  min-width: 150px;
-  text-align: center;
-  font-size: 1.1em;
-  box-shadow: 0 1px 4px rgba(44,62,80,0.05);
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* --- Emploi du temps --- */
-#planning {
-  margin-top: 2em;
+/* Logo */
+.logo-placeholder img {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+/* Titre prend tout l’espace restant entre logo et icônes */
+.dashboard-header h1 {
+  flex-grow: 1;
+  margin: 0 1rem;
+  font-size: 1.6rem;
+  color: var(--vert);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Conteneur icônes */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  flex-shrink: 0;
+}
+
+.header-icons a {
+  color: var(--gris-texte);
+  font-size: 1.3em;
+  transition: color 0.2s ease;
+}
+
+.header-icons a:hover {
+  color: var(--vert);
+}
+
+/* Notification + pastille */
+.notif-icon {
+  position: relative;
+  color: var(--gris-texte);
+  font-size: 1.3em;
+  text-decoration: none;
+}
+
+.notif-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #e74c3c; /* rouge vif */
+  color: white;
+  font-size: 0.7em;
+  padding: 0 6px;
+  border-radius: 12px;
+  font-weight: bold;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* User menu */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--gris-texte);
+  font-size: 1.2em;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+}
+
+#user-name {
+  font-weight: 600;
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
+.user-icon i.fa-caret-down {
+  font-size: 0.8em;
+}
+
+/* Dropdown menu */
+.user-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: var(--blanc);
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 6px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  z-index: 1000;
 }
 
-#planning div {
-  padding: 0.7em 1.2em;
-  background: #ecf0f1;
-  border-radius: 4px;
-  font-size: 1.05em;
+.user-dropdown a {
+  padding: 0.7em 1em;
+  color: var(--gris-texte);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
 }
 
-/* --- Portail Parents --- */
-#fiche-eleve {
-  margin-top: 1.5em;
-  background: #f9f9f9;
-  border-radius: 8px;
+.user-dropdown a:hover {
+  background: var(--vert);
+  color: white;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* --- Layout principal : menu à gauche + contenu à droite --- */
+.main-layout {
+  display: flex;
+  gap: 2em;
+  padding: 2em;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* --- Box menu latéral gauche --- */
+.menu-box {
+  flex: 0 0 220px;
+  background-color: var(--blanc);
   padding: 1.5em;
-  box-shadow: 0 1px 4px rgba(44,62,80,0.05);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  height: fit-content;
 }
 
-#select-eleve {
-  min-width: 180px;
-  padding: 0.7em;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 1em;
+.menu-box nav a {
+  display: block;
+  margin: 0.6em 0;
+  color: var(--gris-texte);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5em;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.menu-box nav a:hover {
+  background-color: var(--orange);
+  color: white;
+}
+
+/* --- Zone de contenu à droite --- */
+.content-area {
+  flex: 1;
+  min-width: 300px;
+}
+
+#stats {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+#stats > div {
+  background: var(--orange);
+  color: white;
+  padding: 1em 1.5em;
+  border-radius: 10px;
+  min-width: 160px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* --- Footer --- */
+.dashboard-footer {
+  background-color: var(--gris-texte);
+  color: var(--blanc);
+  text-align: center;
+  padding: 1.5em 1em;
+  font-size: 0.9em;
+  border-top: 3px solid var(--vert);
+  margin-top: 2em;
+}
+
+.dashboard-footer .footer-content {
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.dashboard-footer strong {
+  color: var(--orange);
+}
+
+/* --- Bouton Remonter en haut --- */
+#btn-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 1000;
+  transition: background 0.3s;
+}
+
+#btn-top:hover {
+  background-color: #e67e22;
 }
 
 /* --- Responsive --- */
-@media (max-width: 700px) {
-  main {
-    padding: 1em;
-    max-width: 100%;
-    margin-top: 1em;
-  }
-  header {
+@media (max-width: 768px) {
+  .main-layout {
     flex-direction: column;
-    align-items: flex-start;
     padding: 1em;
   }
-  nav {
-    margin-top: 1em;
+
+  .menu-box {
+    width: 100%;
+    flex: none;
   }
-  #stats, #notifications {
+
+  .dashboard-header h1 {
+    font-size: 1.3em;
+  }
+
+  #stats {
     flex-direction: column;
-    gap: 1em;
+  }
+
+  .dashboard-footer p {
+    font-size: 0.85em;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 600px) {
+  #user-name {
+    display: none;
   }
 }
