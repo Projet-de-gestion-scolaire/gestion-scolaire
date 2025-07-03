@@ -171,13 +171,22 @@ function setNotifs(notifs) {
 }
 function renderNotifs() {
   const tbody = document.querySelector('#table-notif tbody');
+  const notifs = getNotifs();
   tbody.innerHTML = '';
+  
+  if (notifs.length === 0) {
+    const tr = document.createElement(`tr`);
+    tr.innerHTML = `<td colspan="3">Aucune notification pour le moment.</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
   getNotifs().forEach((notif, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${notif.titre}</td>
-      <td>${notif.contenu}</td>
+      <td>${notif.date}</td>
       <td>
+        <button onclick="voirPlusNotif(${i})">voir plus</button>
         <button onclick="deleteNotif(${i})">Supprimer</button>
       </td>
     `;
@@ -188,8 +197,18 @@ document.getElementById('form-notif').addEventListener('submit', function(e) {
   e.preventDefault();
   const titre = document.getElementById('titre-notif').value;
   const contenu = document.getElementById('contenu-notif').value;
+  const toast = document.getElementById(`message-toast`);
+
+  toast.textContent = `notification ajouter !`;
+  toast.style.display = `block`;
+
+  setTimeout (() => {
+    toast.style.display = `none`;
+  }, 2000);
+
   const notifs = getNotifs();
-  notifs.push({ titre, contenu });
+  const date = new Date().toLocaleString();
+  notifs.push({ titre, contenu, date });
   setNotifs(notifs);
   renderNotifs();
   this.reset();
@@ -200,6 +219,11 @@ window.deleteNotif = function(i) {
   setNotifs(notifs);
   renderNotifs();
 };
+  window.voirPlusNotif = function(i) {
+  const notif = getNotifs()[i];
+  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`);
+};
+
 document.addEventListener('DOMContentLoaded', renderNotifs);
 function getParametres() {
   return JSON.parse(localStorage.getItem('parametres') || '{}');
