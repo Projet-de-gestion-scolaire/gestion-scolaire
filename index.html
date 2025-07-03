@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <title>Tableau de Bord - Gestion Scolaire</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- Header -->
-  <header class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition duration-300 hover:bg-gray-50">
+  <header
+    class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition duration-300 hover:bg-gray-50">
 
     <div class="flex items-center space-x-4">
       <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
@@ -19,10 +24,12 @@
     <div class="flex items-center space-x-4">
       <a href="#" title="Notifications" class="relative text-gray-600 hover:text-blue-600">
         <i class="fas fa-bell text-xl"></i>
-        <span class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+        <span
+          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
       </a>
       <div class="relative">
-        <button id="user-toggle" class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
+        <button id="user-toggle"
+          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
           <i class="fas fa-user-circle text-2xl"></i>
           <span>Mme Diallo</span>
           <i class="fas fa-caret-down text-sm"></i>
@@ -47,22 +54,36 @@
       <h2 class="text-xl font-semibold text-gray-800 mb-4">📊 Tableau de bord</h2>
       <nav class="space-y-2 font-medium text-gray-700">
         <a href="index.html" class="block py-2 px-4 rounded bg-blue-100 text-blue-800 font-semibold">🏠 Accueil</a>
-        <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘 Élèves</a>
-        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅 Emploi du temps</a>
-        <a href="professeur.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
-        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔 Notifications</a>
-        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙ Paramètres</a>
+        <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘
+          Élèves</a>
+        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅
+          Emploi du temps</a>
+        <a href="professeur.html"
+          class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
+        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔
+          Notifications</a>
+        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙
+          Paramètres</a>
       </nav>
     </aside>
 
     <!-- Contenu principal -->
     <main class="flex-1 space-y-6">
-      
+
       <!-- Message de bienvenue -->
       <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
         <i class="fas fa-calendar-alt text-blue-700 text-xl"></i>
         <p class="font-medium">Bienvenue Mme Diallo – 2 juillet 2025</p>
       </div>
+      <!-- Bienvenue et performance -->
+      <div class="mb-6">
+        <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de la
+          performance scolaire :</p>
+        <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
+          <canvas id="performanceChart" class="mx-auto"></canvas>
+        </div>
+      </div>
+
 
       <!-- Cartes statistiques -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -94,19 +115,23 @@
 
       <!-- Liens rapides -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-        <a href="eleve.html" class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
+        <a href="eleve.html"
+          class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
           <i class="fas fa-user-plus text-blue-600 text-xl"></i>
           <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
         </a>
-        <a href="professeur.html" class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+        <a href="professeur.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
           <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
           <span class="font-medium text-gray-800">👨‍🏫 Ajouter un prof</span>
         </a>
-        <a href="emploi.html" class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+        <a href="emploi.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
           <i class="fas fa-calendar text-green-600 text-xl"></i>
           <span class="font-medium text-gray-800">📅 Emploi du temps</span>
         </a>
-        <a href="parametres.html" class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
+        <a href="parametres.html"
+          class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
           <i class="fas fa-cog text-gray-700 text-xl"></i>
           <span class="font-medium text-gray-800">⚙ Paramètres</span>
         </a>
@@ -127,7 +152,7 @@
         <ul class="list-disc pl-5 text-gray-700">
           <li>Réunion pédagogique – 3 juillet 2025</li>
           <li>Devoir de mathématiques – 5 juillet 2025</li>
-            <li>Evaluation mensuelle – 5-12 juillet 2025</li>
+          <li>Evaluation mensuelle – 5-12 juillet 2025</li>
         </ul>
       </section>
     </main>
@@ -136,8 +161,8 @@
   <!-- Footer -->
   <footer class="mt-10 bg-gray-800 text-white text-center py-3 text-sm">
     <p>&copy; 2025 École X - Tous droits réservés</p>
-    <p><strong>Contact :</strong> 622 00 00 00 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
-    <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
+    <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+    <p>Version 1.0 - Développé par l'équipe pédagogique</p>
   </footer>
 
   <!-- Script dropdown utilisateur -->
@@ -152,7 +177,36 @@
         dropdown.classList.add('hidden');
       }
     });
+    // Graphique de performance scolaire
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Réussite', 'Échec'],
+        datasets: [{
+          label: 'Performance',
+          data: [75, 25], // Change les valeurs ici si besoin
+          backgroundColor: ['#27ae60', '#e74c3c'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: 14
+              }
+            }
+          }
+        }
+      }
+    });
+
   </script>
 
 </body>
+
 </html>

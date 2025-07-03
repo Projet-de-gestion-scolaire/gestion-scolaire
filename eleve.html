@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +7,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
 <body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- HEADER -->
@@ -18,40 +16,33 @@
       <h1 class="text-xl font-bold text-blue-900">Gestion Administrative</h1>
     </div>
     <div class="flex items-center space-x-4">
-      <a href="#" class="relative text-gray-600 hover:text-blue-600" title="Notifications">
-        <i class="fas fa-bell text-xl"></i>
+      <a href="#" class="relative text-gray-600 hover:text-blue-600"><i class="fas fa-bell text-xl"></i>
         <span class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
       </a>
       <div class="relative">
         <button id="user-toggle" class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
-          <i class="fas fa-user-circle text-2xl"></i>
-          <span>Mme Diallo</span>
-          <i class="fas fa-caret-down text-sm"></i>
+          <i class="fas fa-user-circle text-2xl"></i><span>Mme Diallo</span><i class="fas fa-caret-down text-sm"></i>
         </button>
         <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Profil</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Déconnexion</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
         </div>
       </div>
-      <a href="parametres.html" class="text-gray-600 hover:text-blue-600" title="Paramètres">
-        <i class="fas fa-cog text-xl"></i>
-      </a>
+      <a href="parametres.html" class="text-gray-600 hover:text-blue-600"><i class="fas fa-cog text-xl"></i></a>
     </div>
   </header>
 
-  <!-- LAYOUT PRINCIPAL -->
   <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
-
-    <!-- MENU LATÉRAL -->
+    <!-- MENU -->
     <aside class="bg-white w-64 min-h-screen p-4 shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Tableau de bord-Menu</h2>
-      <nav class="space-y-2 font-medium text-gray-700">
-        <a href="index.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🏠 Accueil</a>
-        <a href="eleves.html" class="block py-2 px-4 rounded bg-blue-100 text-blue-800 font-semibold">👨‍🏫 Élèves</a>
-        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅 Emploi du temps</a>
-        <a href="professeur.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
-        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔 Notifications</a>
-        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙ Paramètres</a>
+      <h2 class="text-xl font-semibold mb-4">Tableau de bord - Menu</h2>
+      <nav class="space-y-2">
+        <a href="index.html" class="block py-2 px-4 hover:bg-blue-100">🏠 Accueil</a>
+        <a href="eleves.html" class="block py-2 px-4 bg-blue-100 font-semibold text-blue-800">👨‍🏫 Élèves</a>
+        <a href="emploi.html" class="block py-2 px-4 hover:bg-green-100">📅 Emploi</a>
+        <a href="professeur.html" class="block py-2 px-4 hover:bg-green-100">👨‍🏫 Professeurs</a>
+        <a href="notification.html" class="block py-2 px-4 hover:bg-blue-100">🔔 Notifications</a>
+        <a href="parametres.html" class="block py-2 px-4 hover:bg-gray-200">⚙ Paramètres</a>
       </nav>
     </aside>
 
@@ -59,31 +50,44 @@
     <main class="flex-1">
       <h2 class="text-2xl font-bold mb-4">Gestion des Élèves</h2>
 
-      <!-- Formulaire -->
-      <form id="form-eleve" class="bg-white rounded-lg shadow p-6 mb-6 flex flex-wrap gap-4">
-        <input type="text" id="nom" placeholder="Nom de l'élève" required class="border rounded px-4 py-2 flex-grow" />
-        <input type="text" id="classe" placeholder="Classe (ex: 6eme)" required class="border rounded px-4 py-2 flex-grow" />
-        <select id="statut" required class="border rounded px-4 py-2 flex-grow">
-          <option value="">Statut</option>
-          <option value="actif">Actif</option>
-          <option value="attente">En attente</option>
-          <option value="exclu">Exclu</option>
-        </select>
-        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded">Ajouter</button>
-      </form>
+      <!-- Bouton Ajouter -->
+      <div class="mb-4">
+        <button id="btn-ajouter" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded">
+          ➕ Ajouter un élève
+        </button>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <div id="formulaire-eleve" class="bg-white rounded-lg shadow p-6 mb-6 hidden">
+        <h3 id="form-titre" class="text-lg font-semibold mb-4">Ajouter un élève</h3>
+        <form id="form-eleve" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <input type="text" id="nom" placeholder="Nom complet" required class="border rounded px-4 py-2" />
+          <input type="text" id="sexe" placeholder="Sexe (M ou F)" required class="border rounded px-4 py-2" />
+          <input type="date" id="naissance" required class="border rounded px-4 py-2" />
+          <input type="text" id="filiation" placeholder="Filiation" required class="border rounded px-4 py-2" />
+          <input type="text" id="matricule" placeholder="Matricule" required class="border rounded px-4 py-2" />
+          <input type="text" id="classe" placeholder="Classe" required class="border rounded px-4 py-2" />
+          <select id="statut" required class="border rounded px-4 py-2">
+            <option value="">Statut</option>
+            <option value="actif">Actif</option>
+            <option value="attente">En attente</option>
+            <option value="exclu">Exclu</option>
+          </select>
+          <div class="md:col-span-2 lg:col-span-3 flex gap-4">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded w-full">Enregistrer</button>
+            <button type="button" id="btn-annuler" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full">Annuler</button>
+          </div>
+        </form>
+      </div>
 
       <!-- Filtres -->
       <div class="flex flex-wrap gap-4 mb-4">
-        <input type="text" id="search-eleves" placeholder="Rechercher un élève..." class="border rounded px-4 py-2 w-64" />
+        <input type="text" id="search-eleves" placeholder="Rechercher..." class="border rounded px-4 py-2 w-64" />
         <select id="filter-classe" class="border rounded px-4 py-2 w-64">
           <option value="">Toutes les classes</option>
           <option value="6eme">6ème</option>
           <option value="5eme">5ème</option>
           <option value="4eme">4ème</option>
-          <option value="3eme">3ème</option>
-          <option value="2nde">2nde</option>
-          <option value="1ere">1ère</option>
-          <option value="terminale">Terminale</option>
         </select>
       </div>
 
@@ -92,18 +96,21 @@
 
       <!-- Tableau -->
       <div class="overflow-auto">
-        <table id="table-eleves" class="min-w-full bg-white shadow rounded overflow-hidden">
+        <table id="table-eleves" class="min-w-full bg-white shadow rounded">
           <thead class="bg-yellow-500 text-white">
             <tr>
-              <th class="py-3 px-4 text-left">Nom</th>
-              <th class="py-3 px-4 text-left">Classe</th>
-              <th class="py-3 px-4 text-left">Statut</th>
-              <th class="py-3 px-4 text-left">Actions</th>
+              <th class="py-3 px-4">N°</th>
+              <th class="py-3 px-4">Nom</th>
+              <th class="py-3 px-4">Sexe</th>
+              <th class="py-3 px-4">Naissance</th>
+              <th class="py-3 px-4">Filiation</th>
+              <th class="py-3 px-4">Matricule</th>
+              <th class="py-3 px-4">Classe</th>
+              <th class="py-3 px-4">Statut</th>
+              <th class="py-3 px-4">Actions</th>
             </tr>
           </thead>
-          <tbody class="text-gray-700">
-            <!-- Contenu généré dynamiquement -->
-          </tbody>
+          <tbody class="text-gray-700"></tbody>
         </table>
       </div>
     </main>
@@ -112,31 +119,25 @@
   <!-- FOOTER -->
   <footer class="mt-10 bg-gray-800 text-white text-center py-4 text-sm">
     <p>&copy; 2025 École X - Tous droits réservés</p>
-    <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
-    <p>Version 1.0 - Développé par l'équipe pédagogique</p>
   </footer>
 
-  <!-- SCRIPT JS -->
+  <!-- SCRIPT -->
   <script>
-    // Dropdown utilisateur
-    const toggle = document.getElementById("user-toggle");
-    const dropdown = document.getElementById("user-dropdown");
-    toggle.addEventListener("click", () => {
-      dropdown.classList.toggle("hidden");
-    });
-    document.addEventListener("click", (e) => {
-      if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add("hidden");
-      }
-    });
-
-    // Élèves
+    const formulaire = document.getElementById("formulaire-eleve");
     const form = document.getElementById("form-eleve");
-    const inputNom = document.getElementById("nom");
-    const inputClasse = document.getElementById("classe");
-    const inputStatut = document.getElementById("statut");
+    const btnAjouter = document.getElementById("btn-ajouter");
+    const btnAnnuler = document.getElementById("btn-annuler");
+    const formTitre = document.getElementById("form-titre");
     const messageBox = document.getElementById("message-box");
     const tbody = document.querySelector("#table-eleves tbody");
+    const inputNom = document.getElementById("nom");
+    const inputSexe = document.getElementById("sexe");
+    const inputNaissance = document.getElementById("naissance");
+    const inputFiliation = document.getElementById("filiation");
+    const inputMatricule = document.getElementById("matricule");
+    const inputClasse = document.getElementById("classe");
+    const inputStatut = document.getElementById("statut");
+
     let editIndex = null;
 
     const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]");
@@ -146,70 +147,79 @@
       const data = getEleves();
       const search = document.getElementById("search-eleves").value.toLowerCase();
       const classe = document.getElementById("filter-classe").value;
-
-      const filtres = data.filter(e =>
-        e.nom.toLowerCase().includes(search) &&
-        (classe === "" || e.classe === classe)
-      );
-
+      const filtres = data.filter(e => e.nom.toLowerCase().includes(search) && (!classe || e.classe === classe));
       tbody.innerHTML = filtres.length === 0
-        ? `<tr><td colspan="4" class="text-center py-4">Aucun élève trouvé.</td></tr>`
+        ? `<tr><td colspan="9" class="text-center py-4">Aucun élève trouvé.</td></tr>`
         : filtres.map((e, i) => `
-          <tr class="border-t">
-            <td class="py-2 px-4">${e.nom}</td>
-            <td class="py-2 px-4">${e.classe}</td>
-            <td class="py-2 px-4">${e.statut}</td>
-            <td class="py-2 px-4 space-x-2">
-              <button onclick="editEleve(${i})" class="bg-green-600 text-white px-3 py-1 rounded">Modifier</button>
-              <button onclick="deleteEleve(${i})" class="bg-red-500 text-white px-3 py-1 rounded">Supprimer</button>
-              <button onclick="viewEleve(${i})" class="bg-blue-500 text-white px-3 py-1 rounded">Voir</button>
-            </td>
-          </tr>
-        `).join("");
+        <tr class="border-t">
+          <td class="py-2 px-4">${i + 1}</td>
+          <td class="py-2 px-4">${e.nom}</td>
+          <td class="py-2 px-4">${e.sexe}</td>
+          <td class="py-2 px-4">${e.dateNaissance}</td>
+          <td class="py-2 px-4">${e.filiation}</td>
+          <td class="py-2 px-4">${e.matricule}</td>
+          <td class="py-2 px-4">${e.classe}</td>
+          <td class="py-2 px-4">${e.statut}</td>
+          <td class="py-2 px-4">
+            <button onclick="editEleve(${i})" class="text-xs bg-green-600 text-white px-2 py-1 rounded">Modifier</button>
+            <button onclick="deleteEleve(${i})" class="text-xs bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
+          </td>
+        </tr>`).join("");
     };
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nom = inputNom.value.trim();
-      const classe = inputClasse.value.trim();
-      const statut = inputStatut.value;
-
-      if (!nom || !classe || !statut) {
-        return showMessage("Veuillez remplir tous les champs", "bg-red-100 text-red-600");
-      }
-
-      const data = getEleves();
-      if (editIndex !== null) {
-        data[editIndex] = { nom, classe, statut };
-        showMessage(`Élève "${nom}" modifié.`, "bg-green-100 text-green-700");
-        editIndex = null;
-      } else {
-        data.push({ nom, classe, statut });
-        showMessage(`Élève "${nom}" ajouté.`, "bg-green-100 text-green-700");
-      }
-
-      setEleves(data);
-      form.reset();
-      renderEleves();
-    });
 
     const showMessage = (text, classes) => {
       messageBox.textContent = text;
-      messageBox.className = `mb-4 px-4 py-3 rounded text-sm font-medium ${classes}`;
+      messageBox.className = `mb-4 px-4 py-3 rounded ${classes}`;
       messageBox.classList.remove("hidden");
       setTimeout(() => messageBox.classList.add("hidden"), 3000);
     };
 
-    const editEleve = (index) => {
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const eleve = {
+        nom: inputNom.value.trim(),
+        sexe: inputSexe.value.trim(),
+        dateNaissance: inputNaissance.value,
+        filiation: inputFiliation.value.trim(),
+        matricule: inputMatricule.value.trim(),
+        classe: inputClasse.value.trim(),
+        statut: inputStatut.value
+      };
+      if (Object.values(eleve).some(v => !v)) {
+        return showMessage("Veuillez remplir tous les champs", "bg-red-100 text-red-700");
+      }
+
       const data = getEleves();
-      const eleve = data[index];
-      inputNom.value = eleve.nom;
-      inputClasse.value = eleve.classe;
-      inputStatut.value = eleve.statut;
+      if (editIndex !== null) {
+        data[editIndex] = eleve;
+        showMessage("Élève modifié", "bg-green-100 text-green-700");
+        editIndex = null;
+      } else {
+        data.push(eleve);
+        showMessage("Élève ajouté", "bg-green-100 text-green-700");
+      }
+      setEleves(data);
+      form.reset();
+      formulaire.classList.add("hidden");
+      formTitre.textContent = "Ajouter un élève";
+      renderEleves();
+    });
+
+    const editEleve = index => {
+      const e = getEleves()[index];
+      inputNom.value = e.nom;
+      inputSexe.value = e.sexe;
+      inputNaissance.value = e.dateNaissance;
+      inputFiliation.value = e.filiation;
+      inputMatricule.value = e.matricule;
+      inputClasse.value = e.classe;
+      inputStatut.value = e.statut;
       editIndex = index;
+      formTitre.textContent = "Modifier un élève";
+      formulaire.classList.remove("hidden");
     };
 
-    const deleteEleve = (index) => {
+    const deleteEleve = index => {
       const data = getEleves();
       if (confirm(`Supprimer ${data[index].nom} ?`)) {
         data.splice(index, 1);
@@ -219,15 +229,21 @@
       }
     };
 
-    const viewEleve = (index) => {
-      const eleve = getEleves()[index];
-      alert(`Nom : ${eleve.nom}\nClasse : ${eleve.classe}\nStatut : ${eleve.statut}`);
-    };
+    btnAjouter.addEventListener("click", () => {
+      form.reset();
+      editIndex = null;
+      formTitre.textContent = "Ajouter un élève";
+      formulaire.classList.remove("hidden");
+    });
+
+    btnAnnuler.addEventListener("click", () => {
+      formulaire.classList.add("hidden");
+      form.reset();
+    });
 
     document.getElementById("search-eleves").addEventListener("input", renderEleves);
     document.getElementById("filter-classe").addEventListener("change", renderEleves);
     renderEleves();
   </script>
 </body>
-
 </html>
