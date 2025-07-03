@@ -128,7 +128,9 @@ function renderProfs() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${prof.nom}</td>
+      <td>${prof.prenom}</td>
       <td>${prof.matiere}</td>
+      <td>${prof.salle}</td>
       <td>
         <button onclick="editProf(${i})">Modifier</button>
         <button onclick="deleteProf(${i})">Supprimer</button>
@@ -140,7 +142,9 @@ function renderProfs() {
 document.getElementById('form-prof').addEventListener('submit', function(e) {
   e.preventDefault();
   const nom = document.getElementById('nom-prof').value;
+  const prenom = document.getElementById(`prenom-prof`).value;
   const matiere = document.getElementById('matiere-prof').value;
+  const salle = document.getElementById(`salle-prof`).value;
   const profs = getProfs();
   profs.push({ nom, matiere });
   setProfs(profs);
@@ -157,7 +161,9 @@ window.editProf = function(i) {
   const profs = getProfs();
   const prof = profs[i];
   document.getElementById('nom-prof').value = prof.nom;
+  document.getElementById(`prenom-prof`).value = prof.prenom;
   document.getElementById('matiere-prof').value = prof.matiere;
+  document.getElementById('salle-prof').value = prof.salle;
   profs.splice(i, 1);
   setProfs(profs);
   renderProfs();
