@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- HEADER -->
@@ -17,11 +19,13 @@
     </div>
     <div class="flex items-center space-x-4">
       <a href="#" class="relative text-gray-600 hover:text-blue-600"><i class="fas fa-bell text-xl"></i>
-        <span class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+        <span
+          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">🔔3</span>
       </a>
       <div class="relative">
-        <button id="user-toggle" class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
-          <i class="fas fa-user-circle text-2xl"></i><span>Mme Diallo</span><i class="fas fa-caret-down text-sm"></i>
+        <button id="user-toggle"
+          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
+          <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i class="fas fa-caret-down text-sm"></i>
         </button>
         <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
           <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
@@ -68,28 +72,60 @@
           <input type="text" id="matricule" placeholder="Matricule" required class="border rounded px-4 py-2" />
           <input type="text" id="classe" placeholder="Classe" required class="border rounded px-4 py-2" />
           <select id="statut" required class="border rounded px-4 py-2">
-            <option value="">Statut</option>
-            <option value="actif">Actif</option>
-            <option value="attente">En attente</option>
-            <option value="exclu">Exclu</option>
+
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
+
           </select>
           <div class="md:col-span-2 lg:col-span-3 flex gap-4">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded w-full">Enregistrer</button>
-            <button type="button" id="btn-annuler" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full">Annuler</button>
+            <button type="submit"
+              class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded w-full">Enregistrer</button>
+            <button type="button" id="btn-annuler"
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full">Annuler</button>
           </div>
         </form>
       </div>
 
-      <!-- Filtres -->
-      <div class="flex flex-wrap gap-4 mb-4">
-        <input type="text" id="search-eleves" placeholder="Rechercher..." class="border rounded px-4 py-2 w-64" />
-        <select id="filter-classe" class="border rounded px-4 py-2 w-64">
-          <option value="">Toutes les classes</option>
-          <option value="6eme">6ème</option>
-          <option value="5eme">5ème</option>
-          <option value="4eme">4ème</option>
-        </select>
+      <!-- Filtres dans une box -->
+      <div class="bg-white p-4 rounded-lg shadow mb-6">
+        <h4 class="text-lg font-semibold mb-4">🔍 Rechercher un élève</h4>
+        <div class="flex flex-wrap gap-4">
+          <input type="text" id="search-eleves" placeholder="Nom, matricule, etc."
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+
+          <select id="filter-classe"
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">Toutes les classes</option>
+            <option value="6eme">6ème</option>
+            <option value="5eme">5ème</option>
+            <option value="4eme">4ème</option>
+            <option value="3eme">3ème</option>
+            <option value="10eme">10ème</option>
+            <option value="terminale">Terminale</option>
+          </select>
+
+          <select id="filter-statut"
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">Tous les statuts</option>
+            <option value="present">Présent</option>
+            <option value="absent">Absent</option>
+          </select>
+          <select id="filter-sexe"
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">Tous les sexes</option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+          </select>
+
+          <button id="btn-reset-filtres"
+            class="mt-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded">
+            🔄 Réinitialiser les filtres
+          </button>
+
+        </div>
       </div>
+
+
 
       <!-- Message -->
       <div id="message-box" class="hidden mb-4 px-4 py-3 rounded text-sm font-medium"></div>
@@ -142,30 +178,49 @@
 
     const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]");
     const setEleves = (data) => localStorage.setItem("eleves", JSON.stringify(data));
+    const normalize = (str) =>
+      str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
     const renderEleves = () => {
       const data = getEleves();
-      const search = document.getElementById("search-eleves").value.toLowerCase();
-      const classe = document.getElementById("filter-classe").value;
-      const filtres = data.filter(e => e.nom.toLowerCase().includes(search) && (!classe || e.classe === classe));
+      const search = normalize(document.getElementById("search-eleves").value);
+      const classe = normalize(document.getElementById("filter-classe").value);
+      const statut = normalize(document.getElementById("filter-statut").value);
+      const sexe = document.getElementById("filter-sexe").value.toLowerCase();
+
+
+      const filtres = data.filter(e => {
+        const nomOK = !search || e.nom.toLowerCase().includes(search);
+        const classeOK = !classe || e.classe.toLowerCase() === classe;
+        const statutOK = !statut || e.statut.toLowerCase() === statut;
+        const sexeOK = !sexe || e.sexe.toLowerCase() === sexe;
+        return nomOK && classeOK && statutOK && sexeOK;
+      });
+
       tbody.innerHTML = filtres.length === 0
         ? `<tr><td colspan="9" class="text-center py-4">Aucun élève trouvé.</td></tr>`
         : filtres.map((e, i) => `
-        <tr class="border-t">
-          <td class="py-2 px-4">${i + 1}</td>
-          <td class="py-2 px-4">${e.nom}</td>
-          <td class="py-2 px-4">${e.sexe}</td>
-          <td class="py-2 px-4">${e.dateNaissance}</td>
-          <td class="py-2 px-4">${e.filiation}</td>
-          <td class="py-2 px-4">${e.matricule}</td>
-          <td class="py-2 px-4">${e.classe}</td>
-          <td class="py-2 px-4">${e.statut}</td>
-          <td class="py-2 px-4">
-            <button onclick="editEleve(${i})" class="text-xs bg-green-600 text-white px-2 py-1 rounded">Modifier</button>
-            <button onclick="deleteEleve(${i})" class="text-xs bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
-          </td>
-        </tr>`).join("");
+      <tr class="border-t">
+        <td class="py-2 px-4">${i + 1}</td>
+        <td class="py-2 px-4">${e.nom}</td>
+        <td class="py-2 px-4">${e.sexe}</td>
+        <td class="py-2 px-4">${e.dateNaissance}</td>
+        <td class="py-2 px-4">${e.filiation}</td>
+        <td class="py-2 px-4">${e.matricule}</td>
+        <td class="py-2 px-4">${e.classe}</td>
+        <td class="py-2 px-4">${e.statut}</td>
+        <td class="py-2 px-4">
+          <div class="flex space-x-1">
+            <button onclick="viewEleve(${i})" class="text-xs bg-blue-600 text-white px-2 py-1 rounded">Voir</button>
+            <button onclick="editEleve(${i})" class="text-xs bg-green-600 text-white px-2 py-1 rounded">Modif</button>
+            <button onclick="deleteEleve(${i})" class="text-xs bg-red-500 text-white px-2 py-1 rounded">Supp</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
     };
+
+
 
     const showMessage = (text, classes) => {
       messageBox.textContent = text;
@@ -243,7 +298,17 @@
 
     document.getElementById("search-eleves").addEventListener("input", renderEleves);
     document.getElementById("filter-classe").addEventListener("change", renderEleves);
+    document.getElementById("filter-statut").addEventListener("change", renderEleves);
+    document.getElementById("btn-reset-filtres").addEventListener("click", () => {
+      document.getElementById("search-eleves").value = "";
+      document.getElementById("filter-classe").value = "";
+      document.getElementById("filter-statut").value = "";
+      renderEleves();
+    });
+
+
     renderEleves();
   </script>
 </body>
+
 </html>
