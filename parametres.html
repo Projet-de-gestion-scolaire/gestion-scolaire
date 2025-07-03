@@ -1,40 +1,571 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <title>Paramètres de l'établissement</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: var(--main-bg, #f4f8fb);
+      color: var(--main-color, #222);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dashboard-header,
+    .dashboard-footer {
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .header-icons a,
+    .settings-icon,
+    .notif-icon {
+      color: var(--header-color, #fff) !important;
+    }
+
+    .form-ajout-emploi button[type="submit"],
+    .btn-suppr,
+    .btn-modif,
+    .btn-voir,
+    .btn-close-modal {
+      background: var(--accent, #18bc9c);
+      color: #fff;
+    }
+
+    .form-ajout-emploi button[type="submit"]:hover,
+    .btn-suppr:hover,
+    .btn-modif:hover,
+    .btn-voir:hover,
+    .btn-close-modal:hover {
+      filter: brightness(0.9);
+    }
+
+    .table-emploi-site th {
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+    }
+
+    .table-emploi-site tr:nth-child(even) {
+      background: var(--main-bg, #f4f8fb);
+    }
+
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em 0.7em 1em;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      min-height: 60px;
+      z-index: 1001;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+    }
+
+    .logo-placeholder img {
+      height: 38px;
+      vertical-align: middle;
+    }
+
+    .dashboard-header h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+    }
+
+    .notif-icon,
+    .settings-icon,
+    .user-icon {
+      font-size: 1.3em;
+      color: var(--header-color, #fff);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .notif-count {
+      position: absolute;
+      top: -7px;
+      right: -10px;
+      background: #e74c3c;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8em;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+
+    .user-menu-wrapper {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      min-width: 120px;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .user-dropdown a {
+      color: var(--header-color, #fff);
+      padding: 0.7em 1.2em;
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.2s;
+    }
+
+    .user-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .user-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .user-menu-wrapper:hover .user-dropdown,
+    .user-menu-wrapper:focus-within .user-dropdown {
+      display: flex;
+    }
+
+    .main-layout {
+      margin-top: 70px;
+    }
+
+    /* Ajoute d'autres éléments selon besoin */
+
+    .logout-header-btn:hover {
+      background: #c0392b !important;
+      color: #fff !important;
+      text-decoration: none;
+    }
+
+    /* Styles pour la section de paramètres */
+    .settings-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 2em;
+      margin: 1em 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .settings-section h2 {
+      font-size: 1.4em;
+      margin-bottom: 1em;
+      color: #333;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2em;
+    }
+
+    .settings-row label {
+      flex: 0 0 200px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .settings-row input,
+    .settings-row select {
+      flex: 1;
+      padding: 0.7em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      margin-left: 10px;
+    }
+
+    .settings-row button {
+      margin-left: 10px;
+    }
+
+    .settings-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 0.7em 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      color: #222;
+      background: #fff;
+      transition: border 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border: 1.5px solid var(--accent, #18bc9c);
+      outline: none;
+    }
+
+    .btn-save,
+    .btn-reset {
+      background: var(--accent, #18bc9c);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-save:hover,
+    .btn-reset:hover {
+      filter: brightness(0.9);
+    }
+
+    /* Styles spécifiques pour la section de paramètres utilisateur moderne */
+    .settings-section {
+      background: var(--main-bg, #f4f8fb);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      padding: 2em 2.5em 2em 2.5em;
+      max-width: 480px;
+      margin: 2em auto 0 auto;
+    }
+
+    .settings-section h2 {
+      margin-bottom: 1.5em;
+      font-size: 1.3em;
+      color: var(--header-bg, #2c3e50);
+    }
+
+    .settings-form .form-group {
+      margin-bottom: 1.3em;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .settings-form label {
+      font-weight: 500;
+      margin-bottom: 0.5em;
+    }
+
+    .settings-form input[type="text"],
+    .settings-form select {
+      padding: 0.7em 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      background: var(--main-bg, #f4f8fb);
+      color: var(--main-color, #222);
+      transition: border 0.2s;
+    }
+
+    .settings-form input[type="text"]:focus,
+    .settings-form select:focus {
+      border: 1.5px solid var(--accent, #18bc9c);
+      outline: none;
+    }
+
+    .btn-save,
+    .btn-reset {
+      background: var(--accent, #18bc9c);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      margin-right: 0.7em;
+      transition: background 0.2s;
+    }
+
+    .btn-save:hover,
+    .btn-reset:hover {
+      filter: brightness(0.9);
+    }
+
+    /* Switch style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked+.slider {
+      background: var(--accent, #18bc9c);
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(22px);
+    }
+  </style>
 </head>
+
 <body>
-  <header>
+  <header class="dashboard-header">
+    <div class="logo-placeholder">
+      <a href="index.html"><img src="icone-ecole.png" alt="Logo de l'école" /></a>
+    </div>
     <h1>Paramètres</h1>
-    <nav>
-      <a href="index.html">Accueil</a>
-      <a href="eleves.html">Élèves</a>
-      <a href="emploi-du-temps.html">Emploi du temps</a>
-      <a href="portail-parents.html">Portail parents</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notifications.html">Notifications</a>
-      <a href="parametres.html">Paramètres</a>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Informations de l'établissement</h2>
-      <form id="form-param">
-        <input type="text" id="nom-etab" placeholder="Nom de l'établissement" required>
-        <input type="text" id="adresse-etab" placeholder="Adresse" required>
-        <input type="tel" id="tel-etab" placeholder="Téléphone" required>
-        <button type="submit">Enregistrer</button>
-      </form>
-    </section>
-    <section>
-      <h2>Résumé</h2>
-      <div id="resume-param">
-        <!-- Résumé affiché dynamiquement -->
+    <div class="header-icons">
+      <a href="notification.html" title="Notifications" class="notif-icon">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count" id="notif-count">3</span>
+      </a>
+      <div class="user-menu-wrapper">
+        <a href="#" id="user-toggle" title="Utilisateur" class="user-icon">
+          <i class="fas fa-user-circle"></i>
+          <span id="user-name">Nenette</span>
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <div id="user-dropdown" class="user-dropdown hidden">
+          <a href="profil.html">Profil</a>
+
+        </div>
       </div>
-    </section>
-  </main>
-  <script src="script.js"></script>
+      <a href="#" id="logout-btn-header" class="logout-header-btn"
+        style="background: var(--btn-suppr-bg, #e74c3c); color: #fff; border-radius: 5px; padding: 7px 18px; font-size: 1em; font-weight: 500; margin-left: 10px; display: flex; align-items: center; gap: 7px; text-decoration: none; transition: background 0.2s;">
+        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+      </a>
+      <a href="parametres.html" title="Paramètres" class="settings-icon">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- CONTENU PRINCIPAL AVEC MENU À GAUCHE -->
+  <div class="main-layout">
+    <aside class="menu-box">
+      <nav>
+        <a href="eleve.html">Élèves</a>
+        <a href="emploi.html">Emploi du temps</a>
+        <a href="professeur.html">Professeurs</a>
+        <a href="notification.html">Notifications</a>
+        <a href="parent.html">Portail parents</a>
+        <a href="parametres.html">Paramètres</a>
+      </nav>
+    </aside>
+    <main>
+      <section class="settings-section">
+        <h2>Préférences utilisateur</h2>
+        <form id="settings-form" class="settings-form">
+          <div class="form-group">
+            <label for="theme-select">Thème du site</label>
+            <select id="theme-select" name="theme">
+              <option value="clair">Clair</option>
+              <option value="sombre">Sombre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="notif-toggle">Notifications</label>
+            <label class="switch">
+              <input type="checkbox" id="notif-toggle" name="notifications">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dashboard-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 École X - Tous droits réservés</p>
+      <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+      <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
+    </div>
+  </footer>
+
+  <script>
+    // Thème clair/sombre global pour toutes les pages
+    (function () {
+      const themes = {
+        clair: {
+          '--main-bg': '#f4f8fb',
+          '--main-color': '#222',
+          '--header-bg': '#2c3e50',
+          '--header-color': '#fff',
+          '--accent': '#18bc9c'
+        },
+        sombre: {
+          '--main-bg': '#23272f',
+          '--main-color': '#f4f8fb',
+          '--header-bg': '#181c22',
+          '--header-color': '#fff',
+          '--accent': '#18bc9c'
+        }
+      };
+
+      function applyTheme(theme) {
+        const t = themes[theme] || themes.clair;
+        for (const v in t) {
+          document.documentElement.style.setProperty(v, t[v]);
+        }
+      }
+      // Appliquer le thème au chargement
+      applyTheme(localStorage.getItem('theme-site') || 'clair');
+      // Ajout d'un bouton de switch si absent
+      if (!document.getElementById('switch-theme')) {
+        const btn = document.createElement('button');
+        btn.id = 'switch-theme';
+        btn.textContent = 'Mode sombre/claire';
+        btn.style.position = 'fixed';
+        btn.style.bottom = '20px';
+        btn.style.right = '20px';
+        btn.style.zIndex = '9999';
+        btn.style.background = 'var(--header-bg, #2c3e50)';
+        btn.style.color = 'var(--header-color, #fff)';
+        btn.style.border = 'none';
+        btn.style.padding = '10px 18px';
+        btn.style.borderRadius = '6px';
+        btn.style.cursor = 'pointer';
+        btn.style.boxShadow = '0 2px 8px rgba(44,62,80,0.07)';
+        document.body.appendChild(btn);
+        btn.onclick = function () {
+          const current = localStorage.getItem('theme-site') === 'sombre' ? 'clair' : 'sombre';
+          localStorage.setItem('theme-site', current);
+          applyTheme(current);
+        };
+      }
+    })();
+
+    // Déconnexion depuis la page paramètres
+    document.addEventListener('DOMContentLoaded', function () {
+      var btnLogout = document.getElementById('logout-btn-param');
+      if (btnLogout) {
+        btnLogout.onclick = function () {
+          // Ici, ajoute la logique de déconnexion réelle si besoin (suppression token, etc.)
+          window.location.href = 'login.html';
+        };
+      }
+    });
+
+    // Déconnexion depuis le menu utilisateur du header
+    document.addEventListener('DOMContentLoaded', function () {
+      var btnLogoutHeader = document.getElementById('logout-btn-header');
+      if (btnLogoutHeader) {
+        btnLogoutHeader.onclick = function (e) {
+          e.preventDefault();
+          window.location.href = 'login.html';
+        };
+      }
+    });
+
+    // Paramétrage dynamique
+    (function () {
+      // Thème
+      const themeSelect = document.getElementById('theme-select');
+      if (themeSelect) {
+        const currentTheme = localStorage.getItem('theme-site') || 'clair';
+        themeSelect.value = currentTheme;
+        themeSelect.onchange = function () {
+          localStorage.setItem('theme-site', themeSelect.value);
+          location.reload();
+        };
+      }
+      // Notifications
+      const notifToggle = document.getElementById('notif-toggle');
+      const notifStatus = document.getElementById('notif-status');
+      if (notifToggle && notifStatus) {
+        const notifPref = localStorage.getItem('notif-enabled');
+        notifToggle.checked = notifPref !== 'false';
+        notifStatus.textContent = notifToggle.checked ? 'Activées' : 'Désactivées';
+        notifToggle.onchange = function () {
+          localStorage.setItem('notif-enabled', notifToggle.checked);
+          notifStatus.textContent = notifToggle.checked ? 'Activées' : 'Désactivées';
+        };
+      }
+      // Nom d'utilisateur
+      const usernameInput = document.getElementById('username-input');
+      const saveUsernameBtn = document.getElementById('save-username');
+      if (usernameInput && saveUsernameBtn) {
+        saveUsernameBtn.onclick = function () {
+          const newName = usernameInput.value.trim();
+          if (newName.length > 2) {
+            localStorage.setItem('user-name', newName);
+            document.getElementById('user-name').textContent = newName;
+            alert('Nom d\'utilisateur mis à jour !');
+          } else {
+            alert('Le nom doit contenir au moins 3 caractères.');
+          }
+        };
+        // Affichage du nom stocké
+        const storedName = localStorage.getItem('user-name');
+        if (storedName) {
+          usernameInput.value = storedName;
+          document.getElementById('user-name').textContent = storedName;
+        }
+      }
+      // Réinitialisation du mot de passe (démo)
+      const resetPwdBtn = document.getElementById('reset-password');
+      if (resetPwdBtn) {
+        resetPwdBtn.onclick = function () {
+          alert('Un lien de réinitialisation a été envoyé à votre adresse email. (Démo)');
+        };
+      }
+    })();
+  </script>
 </body>
+
 </html>

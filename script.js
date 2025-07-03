@@ -262,3 +262,69 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ici tu peux ajouter ta logique de logout (ex: clear session, rediriger, etc.)
   });
 });
+
+// --- Emploi du temps dynamique ---
+if (document.getElementById('form-emploi')) {
+  const form = document.getElementById('form-emploi');
+  const tableBody = document.querySelector('#table-emploi tbody');
+  const matiereSelect = document.getElementById('matiere');
+  const enseignantSelect = document.getElementById('enseignant');
+
+  function getEmplois() {
+    return JSON.parse(localStorage.getItem('emplois') || '[]');
+  }
+  function setEmplois(emplois) {
+    localStorage.setItem('emplois', JSON.stringify(emplois));
+  }
+  function remplirListeEnseignants() {
+    enseignantSelect.innerHTML = '<option value="">Enseignant</option>';
+    (JSON.parse(localStorage.getItem('profs')||'[]')).forEach(prof => {
+      const opt = document.createElement('option');
+      opt.value = prof.nom;
+      opt.textContent = prof.nom + (prof.matiere ? ' ('+prof.matiere+')' : '');
+      enseignantSelect.appendChild(opt);
+    });
+  }
+  function renderTable() {
+    const emplois = getEmplois();
+    tableBody.innerHTML = '';
+    emplois.forEach((e, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${e.jour}</td>
+        <td>${e.heure}</td>
+        <td>${e.matiere}</td>
+        <td>${e.enseignant}</td>
+        <td>${e.classe}</td>
+        <td><button class="btn-suppr" data-index="${i}">Supprimer</button></td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+  form.onsubmit = function(e) {
+    e.preventDefault();
+    const emploi = {
+      jour: form.jour.value,
+      heure: form.heure.value,
+      matiere: form.matiere.value,
+      enseignant: form.enseignant.value,
+      classe: form.classe.value
+    };
+    const emplois = getEmplois();
+    emplois.push(emploi);
+    setEmplois(emplois);
+    renderTable();
+    form.reset();
+  };
+  tableBody.onclick = function(e) {
+    if (e.target.classList.contains('btn-suppr')) {
+      const index = e.target.getAttribute('data-index');
+      const emplois = getEmplois();
+      emplois.splice(index, 1);
+      setEmplois(emplois);
+      renderTable();
+    }
+  };
+  remplirListeEnseignants();
+  renderTable();
+}

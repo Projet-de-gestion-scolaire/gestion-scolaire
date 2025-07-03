@@ -2,28 +2,564 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emploi du temps</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --main-bg: #f4f8fb;
+      --main-color: #222;
+      --header-bg: #2c3e50;
+      --header-color: #fff;
+      --accent: #18bc9c;
+      --table-bg: #fafbfc;
+      --table-header-bg: #ecf0f1;
+      --table-header-color: #2c3e50;
+      --table-row-alt: #f4f8fb;
+      --btn-suppr-bg: #e74c3c;
+      --btn-suppr-bg-hover: #c0392b;
+      --btn-modif-bg: #3498db;
+      --btn-modif-bg-hover: #217dbb;
+      --btn-voir-bg: #27ae60;
+      --btn-voir-bg-hover: #219150;
+      --modal-bg: #fff;
+      --modal-shadow: 0 4px 24px rgba(44,62,80,0.18);
+      --modal-content-color: #222;
+      --btn-close-bg: #e67e22;
+      --btn-close-bg-hover: #b96a16;
+      --input-bg: #fff;
+    }
+    .form-ajout-emploi {
+      margin-bottom: 2em;
+      background: var(--table-bg);
+      border-radius: 10px;
+      padding: 2em 1.5em 1.5em 1.5em;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5em;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    .form-ajout-emploi select,
+    .form-ajout-emploi input[type="time"],
+    .form-ajout-emploi input[type="text"] {
+      padding: 0.7em 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      background: var(--input-bg);
+      min-width: 130px;
+      box-sizing: border-box;
+      transition: border 0.2s;
+      color: var(--main-color);
+    }
+    .form-ajout-emploi select:focus,
+    .form-ajout-emploi input:focus {
+      border: 1.5px solid var(--accent);
+      outline: none;
+    }
+    .form-ajout-emploi button[type="submit"] {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.8em 2em;
+      border-radius: 5px;
+      font-size: 1.1em;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0 1px 4px rgba(44,62,80,0.05);
+      transition: background 0.2s;
+    }
+    .form-ajout-emploi button[type="submit"]:hover {
+      background: #149174;
+    }
+    .table-emploi-site {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--table-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      margin-top: 1em;
+    }
+    .table-emploi-site th, .table-emploi-site td {
+      border: 1px solid #e1e4e8;
+      padding: 0.8em 0.5em;
+      text-align: center;
+      font-size: 1em;
+      color: var(--main-color);
+    }
+    .table-emploi-site th {
+      background: var(--table-header-bg);
+      color: var(--table-header-color);
+      font-weight: 600;
+    }
+    .table-emploi-site tr:nth-child(even) {
+      background: var(--table-row-alt);
+    }
+    .btn-suppr {
+      background: var(--btn-suppr-bg);
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s;
+    }
+    .btn-suppr:hover {
+      background: var(--btn-suppr-bg-hover);
+    }
+    .btn-modif {
+      background: var(--btn-modif-bg);
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-right: 6px;
+      transition: background 0.2s;
+    }
+    .btn-modif:hover {
+      background: var(--btn-modif-bg-hover);
+    }
+    .btn-voir {
+      background: var(--btn-voir-bg);
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-right: 6px;
+      transition: background 0.2s;
+    }
+    .btn-voir:hover {
+      background: var(--btn-voir-bg-hover);
+    }
+    .modal-content {
+      background: var(--modal-bg);
+      border-radius: 10px;
+      box-shadow: var(--modal-shadow);
+      padding: 2em 2.5em 1.5em 2.5em;
+      max-width: 350px;
+      margin: auto;
+      text-align: left;
+      position: relative;
+      font-size: 1.1em;
+      color: var(--modal-content-color);
+    }
+    #modal-detail {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(44,62,80,0.25);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .btn-close-modal {
+      background: var(--btn-close-bg);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 5px;
+      font-size: 1em;
+      margin-top: 1.5em;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-close-modal:hover {
+      background: var(--btn-close-bg-hover);
+    }
+    body {
+      background: var(--main-bg);
+      color: var(--main-color);
+    }
+    @media (max-width: 700px) {
+      .form-ajout-emploi {
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em;
+      }
+      .table-emploi-site th, .table-emploi-site td {
+        font-size: 0.95em;
+        padding: 0.5em 0.2em;
+      }
+    }
+    .dashboard-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em 0.7em 1em;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      min-height: 60px;
+      z-index: 1001;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+    }
+    .logo-placeholder img {
+      height: 38px;
+      vertical-align: middle;
+    }
+    .dashboard-header h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+    }
+    .notif-icon, .settings-icon, .user-icon {
+      font-size: 1.3em;
+      color: var(--header-color, #fff);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .notif-count {
+      position: absolute;
+      top: -7px;
+      right: -10px;
+      background: #e74c3c;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8em;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+    .user-menu-wrapper {
+      position: relative;
+    }
+    .user-dropdown {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      min-width: 120px;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+    .user-dropdown a {
+      color: var(--header-color, #fff);
+      padding: 0.7em 1.2em;
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s;
+    }
+    .user-dropdown a:last-child {
+      border-bottom: none;
+    }
+    .user-dropdown a:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    .user-menu-wrapper:hover .user-dropdown,
+    .user-menu-wrapper:focus-within .user-dropdown {
+      display: flex;
+    }
+    .main-layout {
+      margin-top: 70px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Emploi du temps</h1>
-    <nav>
-      <a href="index.html">Accueil</a>
-      <a href="eleve.html">Élèves</a>
-      <a href="emploi.html">Emploi du temps</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notification.html">notifications</a>
-      <a href="parent.html">Portail parents</a>
-      <a href="parametres.html">Paramètres</a>
-    </nav>
+  <!-- HEADER -->
+  <header class="dashboard-header">
+    <div class="logo-placeholder"> 
+      <a href="index.html"><img src="icone-ecole.png" alt="Logo de l'école" /></a>
+    </div>
+    <h1>Gestion administrative</h1>
+    <div class="header-icons">
+      <a href="notification.html" title="Notifications" class="notif-icon">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count" id="notif-count">3</span>
+      </a>
+      <div class="user-menu-wrapper">
+        <a href="#" id="user-toggle" title="Utilisateur" class="user-icon">
+          <i class="fas fa-user-circle"></i>
+          <span id="user-name">Nenette</span>
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <div id="user-dropdown" class="user-dropdown hidden">
+          <a href="profil.html">Profil</a>
+          <a href="#" id="logout-btn">Déconnexion</a>
+        </div>
+      </div>
+      <a href="parametres.html" title="Paramètres" class="settings-icon">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
   </header>
-  <main>
-    <button id="switch-vue">Vue Enseignant/Élève</button>
-    <section id="planning">
-      <!-- Planning généré dynamiquement -->
-    </section>
-  </main>
-  <script src="script.js"></script>
+
+  <!-- CONTENU PRINCIPAL AVEC MENU À GAUCHE -->
+  <div class="main-layout">
+    <aside class="menu-box">
+      <nav>
+        <a href="eleve.html">Élèves</a>
+        <a href="emploi.html">Emploi du temps</a>
+        <a href="professeur.html">Professeurs</a>
+        <a href="notification.html">Notifications</a>
+        <a href="parent.html">Portail parents</a>
+        <a href="parametres.html">Paramètres</a>
+      </nav>
+    </aside>
+
+    <main class="content-area">
+      <section id="planning">
+        <h2>Ajouter un emploi du temps</h2>
+        <form id="form-emploi" class="form-ajout-emploi" autocomplete="off">
+          <select id="jour" required>
+            <option value="">Jour</option>
+            <option>Lundi</option>
+            <option>Mardi</option>
+            <option>Mercredi</option>
+            <option>Jeudi</option>
+            <option>Vendredi</option>
+            <option>Samedi</option>
+          </select>
+          <input type="time" id="heure" required placeholder="Heure">
+          <input type="text" id="matiere" required placeholder="Matière">
+          <input type="text" id="salle" required placeholder="Salle">
+          <input type="text" id="enseignant" required placeholder="Professeur">
+          <button type="submit">Ajouter</button>
+        </form>
+        <h2 style="margin-top:2em;">Liste des emplois du temps</h2>
+        <table id="table-emploi" class="table-emploi-site">
+          <thead>
+            <tr>
+              <th>Jour</th>
+              <th>Heure</th>
+              <th>Matière</th>
+              <th>Salle</th>
+              <th>Professeur</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Lignes générées dynamiquement -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dashboard-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 École X - Tous droits réservés</p>
+      <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+      <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
+    </div>
+  </footer>
+
+  <button id="btn-top" title="Remonter en haut">&#8679;</button>
+
+  <!-- Script JavaScript -->
+  <script>
+    // Gestion dynamique du formulaire et du tableau
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('form-emploi');
+      const tbody = document.querySelector('#table-emploi tbody');
+      let emplois = JSON.parse(localStorage.getItem('emplois') || '[]');
+
+      function ajouterLigne(emploi, index) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${emploi.jour}</td>
+          <td>${emploi.heure}</td>
+          <td>${emploi.matiere}</td>
+          <td>${emploi.salle}</td>
+          <td>${emploi.enseignant}</td>
+          <td>
+            <button class="btn-voir" title="Voir"><i class="fas fa-eye"></i></button>
+            <button class="btn-modif" title="Modifier"><i class="fas fa-edit"></i></button>
+            <button class="btn-suppr" title="Supprimer"><i class="fas fa-trash"></i></button>
+          </td>
+        `;
+        // Voir détail
+        tr.querySelector('.btn-voir').onclick = function() {
+          afficherDetail(emploi);
+        };
+        // Suppression
+        tr.querySelector('.btn-suppr').onclick = function() {
+          emplois.splice(index, 1);
+          localStorage.setItem('emplois', JSON.stringify(emplois));
+          renderTable();
+        };
+        // Modification
+        tr.querySelector('.btn-modif').onclick = function() {
+          form.jour.value = emploi.jour;
+          form.heure.value = emploi.heure;
+          form.matiere.value = emploi.matiere;
+          form.salle.value = emploi.salle;
+          form.enseignant.value = emploi.enseignant;
+          emplois.splice(index, 1);
+          localStorage.setItem('emplois', JSON.stringify(emplois));
+          renderTable();
+          form.scrollIntoView({behavior:'smooth'});
+        };
+        tbody.appendChild(tr);
+      }
+
+      // Affichage du détail dans une modal simple
+      function afficherDetail(emploi) {
+        let modal = document.getElementById('modal-detail');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'modal-detail';
+          modal.innerHTML = `
+            <div class="modal-content">
+              <h3>Détail de l'emploi du temps</h3>
+              <ul>
+                <li><strong>Jour :</strong> <span id="detail-jour"></span></li>
+                <li><strong>Heure :</strong> <span id="detail-heure"></span></li>
+                <li><strong>Matière :</strong> <span id="detail-matiere"></span></li>
+                <li><strong>Salle :</strong> <span id="detail-salle"></span></li>
+                <li><strong>Professeur :</strong> <span id="detail-enseignant"></span></li>
+              </ul>
+              <button id="close-modal" class="btn-close-modal">Fermer</button>
+            </div>
+          `;
+          document.body.appendChild(modal);
+        }
+        document.getElementById('detail-jour').textContent = emploi.jour;
+        document.getElementById('detail-heure').textContent = emploi.heure;
+        document.getElementById('detail-matiere').textContent = emploi.matiere;
+        document.getElementById('detail-salle').textContent = emploi.salle;
+        document.getElementById('detail-enseignant').textContent = emploi.enseignant;
+        modal.style.display = 'flex';
+        document.getElementById('close-modal').onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
+
+      function renderTable() {
+        tbody.innerHTML = '';
+        emplois.forEach(ajouterLigne);
+      }
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        const emploi = {
+          jour: form.jour.value,
+          heure: form.heure.value,
+          matiere: form.matiere.value,
+          salle: form.salle.value,
+          enseignant: form.enseignant.value
+        };
+        emplois.push(emploi);
+        localStorage.setItem('emplois', JSON.stringify(emplois));
+        renderTable();
+        form.reset();
+      };
+
+      renderTable();
+    });
+    // Bouton de retour en haut
+    const btnTop = document.getElementById('btn-top');
+    btnTop.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    // Afficher le bouton de retour en haut après un certain scroll
+      // Thème clair/sombre global pour toutes les pages
+      (function () {
+        const themes = {
+          clair: {
+            '--main-bg': '#f4f8fb',
+            '--main-color': '#222',
+            '--header-bg': '#2c3e50',
+            '--header-color': '#fff',
+            '--accent': '#18bc9c',
+            '--table-bg': '#fafbfc',
+            '--table-header-bg': '#ecf0f1',
+            '--table-header-color': '#2c3e50',
+            '--table-row-alt': '#f4f8fb',
+            '--btn-suppr-bg': '#e74c3c',
+            '--btn-suppr-bg-hover': '#c0392b',
+            '--btn-modif-bg': '#3498db',
+            '--btn-modif-bg-hover': '#217dbb',
+            '--btn-voir-bg': '#27ae60',
+            '--btn-voir-bg-hover': '#219150',
+            '--modal-bg': '#fff',
+            '--modal-content-color': '#222',
+            '--btn-close-bg': '#e67e22',
+            '--btn-close-bg-hover': '#b96a16',
+            '--input-bg': '#fff'
+          },
+          sombre: {
+            '--main-bg': '#23272f',
+            '--main-color': '#f4f8fb',
+            '--header-bg': '#181c22',
+            '--header-color': '#fff',
+            '--accent': '#18bc9c',
+            '--table-bg': '#23272f',
+            '--table-header-bg': '#23272f',
+            '--table-header-color': '#18bc9c',
+            '--table-row-alt': '#181c22',
+            '--btn-suppr-bg': '#e74c3c',
+            '--btn-suppr-bg-hover': '#c0392b',
+            '--btn-modif-bg': '#3498db',
+            '--btn-modif-bg-hover': '#217dbb',
+            '--btn-voir-bg': '#27ae60',
+            '--btn-voir-bg-hover': '#219150',
+            '--modal-bg': '#181c22',
+            '--modal-content-color': '#f4f8fb',
+            '--btn-close-bg': '#e67e22',
+            '--btn-close-bg-hover': '#b96a16',
+            '--input-bg': '#23272f'
+          }
+        };
+
+        function applyTheme(theme) {
+          const t = themes[theme] || themes.clair;
+          for (const v in t) {
+            document.documentElement.style.setProperty(v, t[v]);
+          }
+        }
+        // Appliquer le thème au chargement
+        applyTheme(localStorage.getItem('theme-site') || 'clair');
+        // Ajout d'un bouton de switch si absent
+        if (!document.getElementById('switch-theme')) {
+          const btn = document.createElement('button');
+          btn.id = 'switch-theme';
+          btn.textContent = 'Mode sombre/claire';
+          btn.style.position = 'fixed';
+          btn.style.bottom = '20px';
+          btn.style.right = '20px';
+          btn.style.zIndex = '9999';
+          btn.style.background = 'var(--header-bg, #2c3e50)';
+          btn.style.color = 'var(--header-color, #fff)';
+          btn.style.border = 'none';
+          btn.style.padding = '10px 18px';
+          btn.style.borderRadius = '6px';
+          btn.style.cursor = 'pointer';
+          btn.style.boxShadow = '0 2px 8px rgba(44,62,80,0.07)';
+          document.body.appendChild(btn);
+          btn.onclick = function () {
+            const current = localStorage.getItem('theme-site') === 'sombre' ? 'clair' : 'sombre';
+            localStorage.setItem('theme-site', current);
+            applyTheme(current);
+          };
+        }
+      })();
+  </script>
 </body>
 </html>

@@ -29,6 +29,7 @@
     </section>
     <section>
       <h2>Liste des professeurs</h2>
+      <input type="text" id="recherche-prof" placeholder="Rechercher un professeur..." style="margin-bottom:1em;width:100%;max-width:350px;">
       <table id="table-prof">
         <thead>
           <tr>
@@ -44,5 +45,13 @@
     </section>
   </main>
   <script src="script.js"></script>
+  <script>
+    // Rafraîchit la liste des professeurs sans recharger la page Emploi du temps
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.opener && window.opener.remplirListeEnseignants) {
+        window.opener.remplirListeEnseignants();
+      }
+    });
+  </script>
 </body>
 </html>
