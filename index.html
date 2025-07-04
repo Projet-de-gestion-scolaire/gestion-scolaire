@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
   <title>Tableau de Bord - Gestion Scolaire</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,6 +15,21 @@
 
   <!-- Header -->
   <header class="bg-white shadow flex items-center justify-between p-4">
+=======
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <title>Tableau de Bord - Gestion Scolaire</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header
+    class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition duration-300 hover:bg-gray-50">
+
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
     <div class="flex items-center space-x-4">
       <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
       <h1 class="text-xl font-bold text-blue-900">Gestion Administrative</h1>
@@ -20,10 +37,19 @@
     <div class="flex items-center space-x-4">
       <a href="#" title="Notifications" class="relative text-gray-600 hover:text-blue-600">
         <i class="fas fa-bell text-xl"></i>
+<<<<<<< HEAD
         <span class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
       </a>
       <div class="relative">
         <button id="user-toggle" class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
+=======
+        <span
+          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+      </a>
+      <div class="relative">
+        <button id="user-toggle"
+          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
           <i class="fas fa-user-circle text-2xl"></i>
           <span>Mme Diallo</span>
           <i class="fas fa-caret-down text-sm"></i>
@@ -40,29 +66,63 @@
   </header>
 
   <!-- Main Layout -->
+<<<<<<< HEAD
   <div class="flex max-w-7xl mx-auto mt-6 gap-6 px-4">
+=======
+  <div class="flex max-w-7xl mx-auto mt-6 gap-6 px-4 pt-24">
+
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
 
     <!-- Menu latéral -->
     <aside class="bg-white w-64 min-h-screen p-4 shadow-md">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">📊 Tableau de bord</h2>
       <nav class="space-y-2 font-medium text-gray-700">
         <a href="index.html" class="block py-2 px-4 rounded bg-blue-100 text-blue-800 font-semibold">🏠 Accueil</a>
+<<<<<<< HEAD
         <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘 Élèves</a>
         <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅 Emploi du temps</a>
         <a href="professeur.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
         <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔 Notifications</a>
         <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙ Paramètres</a>
+=======
+        <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘
+          Élèves</a>
+        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅
+          Emploi du temps</a>
+        <a href="professeur.html"
+          class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
+        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔
+          Notifications</a>
+        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙
+          Paramètres</a>
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
       </nav>
     </aside>
 
     <!-- Contenu principal -->
     <main class="flex-1 space-y-6">
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
       <!-- Message de bienvenue -->
       <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
         <i class="fas fa-calendar-alt text-blue-700 text-xl"></i>
         <p class="font-medium">Bienvenue Mme Diallo – 2 juillet 2025</p>
       </div>
+<<<<<<< HEAD
+=======
+      <!-- Bienvenue et performance -->
+      <div class="mb-6">
+        <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de la
+          performance scolaire :</p>
+        <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
+          <canvas id="performanceChart" class="mx-auto"></canvas>
+        </div>
+      </div>
+
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
 
       <!-- Cartes statistiques -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,6 +150,7 @@
           <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
           <p id="card-a-faire" class="text-3xl font-bold">5</p>
         </div>
+<<<<<<< HEAD
         <div class="bg-yellow-400 text-gray-900 p-6 rounded-xl shadow hover:scale-105 transform transition col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center">
           <h3 class="text-lg font-semibold mb-1">📊 Présence des élèves</h3>
           <canvas id="presenceChart" width="400" height="120" class="my-2"></canvas>
@@ -98,10 +159,13 @@
             <span id="stat-absence" class="text-2xl font-bold"></span>
           </div>
         </div>
+=======
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
       </section>
 
       <!-- Liens rapides -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+<<<<<<< HEAD
         <a href="eleve.html" class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
           <i class="fas fa-user-plus text-blue-600 text-xl"></i>
           <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
@@ -115,6 +179,25 @@
           <span class="font-medium text-gray-800">📅 Emploi du temps</span>
         </a>
         <a href="parametres.html" class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
+=======
+        <a href="eleve.html"
+          class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-user-plus text-blue-600 text-xl"></i>
+          <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
+        </a>
+        <a href="professeur.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
+          <span class="font-medium text-gray-800">👨‍🏫 Ajouter un prof</span>
+        </a>
+        <a href="emploi.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-calendar text-green-600 text-xl"></i>
+          <span class="font-medium text-gray-800">📅 Emploi du temps</span>
+        </a>
+        <a href="parametres.html"
+          class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
           <i class="fas fa-cog text-gray-700 text-xl"></i>
           <span class="font-medium text-gray-800">⚙ Paramètres</span>
         </a>
@@ -135,16 +218,27 @@
         <ul class="list-disc pl-5 text-gray-700">
           <li>Réunion pédagogique – 3 juillet 2025</li>
           <li>Devoir de mathématiques – 5 juillet 2025</li>
+<<<<<<< HEAD
+=======
+          <li>Evaluation mensuelle – 5-12 juillet 2025</li>
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
         </ul>
       </section>
     </main>
   </div>
 
   <!-- Footer -->
+<<<<<<< HEAD
   <footer class="mt-10 bg-gray-800 text-white text-center py-6 text-sm">
     <p>&copy; 2025 École X - Tous droits réservés</p>
     <p><strong>Contact :</strong> 622 00 00 00 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
     <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
+=======
+  <footer class="mt-10 bg-gray-800 text-white text-center py-3 text-sm">
+    <p>&copy; 2025 École X - Tous droits réservés</p>
+    <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+    <p>Version 1.0 - Développé par l'équipe pédagogique</p>
+>>>>>>> 46133a3fdc04fe0d2b8a2ebce49e7e3d78741bf3
   </footer>
 
   <!-- Script dropdown utilisateur -->

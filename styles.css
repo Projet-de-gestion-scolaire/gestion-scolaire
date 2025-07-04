@@ -1,4 +1,4 @@
-/* --- Palette personnalisée --- */
+/* --- Couleurs personnalisées --- */
 :root {
   --orange: #f39c12;
   --vert: #27ae60;
@@ -7,7 +7,7 @@
   --gris-texte: #2c3e50;
 }
 
-/* --- Général --- */
+/* --- Global --- */
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -24,70 +24,47 @@ body {
   padding: 1em 2em;
   border-bottom: 1px solid #ddd;
   flex-wrap: wrap;
-  gap: 1rem;
-  width: 100%;
-  box-sizing: border-box;
 }
 
-/* Logo */
 .logo-placeholder img {
   width: 50px;
   height: 50px;
-  flex-shrink: 0;
 }
 
-/* Titre prend tout l’espace restant entre logo et icônes */
-.dashboard-header h1 {
-  flex-grow: 1;
-  margin: 0 1rem;
-  font-size: 1.6rem;
-  color: var(--vert);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Conteneur icônes */
 .header-icons {
   display: flex;
   align-items: center;
   gap: 1.5em;
-  flex-shrink: 0;
 }
 
 .header-icons a {
   color: var(--gris-texte);
   font-size: 1.3em;
-  transition: color 0.2s ease;
+  text-decoration: none;
 }
 
 .header-icons a:hover {
   color: var(--vert);
 }
 
-/* Notification + pastille */
+/* Notification */
 .notif-icon {
   position: relative;
-  color: var(--gris-texte);
-  font-size: 1.3em;
-  text-decoration: none;
 }
 
 .notif-count {
   position: absolute;
   top: -6px;
   right: -8px;
-  background: #e74c3c; /* rouge vif */
+  background: #e74c3c;
   color: white;
   font-size: 0.7em;
   padding: 0 6px;
   border-radius: 12px;
   font-weight: bold;
-  user-select: none;
-  pointer-events: none;
 }
 
-/* User menu */
+/* Utilisateur */
 .user-menu-wrapper {
   position: relative;
 }
@@ -99,8 +76,6 @@ body {
   color: var(--gris-texte);
   font-size: 1.2em;
   cursor: pointer;
-  text-decoration: none;
-  user-select: none;
 }
 
 #user-name {
@@ -113,7 +88,6 @@ body {
   font-size: 0.8em;
 }
 
-/* Dropdown menu */
 .user-dropdown {
   position: absolute;
   top: 120%;
@@ -133,7 +107,6 @@ body {
   color: var(--gris-texte);
   text-decoration: none;
   font-weight: 500;
-  transition: background 0.2s;
 }
 
 .user-dropdown a:hover {
@@ -145,7 +118,7 @@ body {
   display: none !important;
 }
 
-/* --- Layout principal : menu à gauche + contenu à droite --- */
+/* --- Layout Principal --- */
 .main-layout {
   display: flex;
   gap: 2em;
@@ -155,7 +128,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* --- Box menu latéral gauche --- */
+/* --- Menu latéral --- */
 .menu-box {
   flex: 0 0 220px;
   background-color: var(--blanc);
@@ -182,25 +155,40 @@ body {
   color: white;
 }
 
-/* --- Zone de contenu à droite --- */
+/* --- Zone de contenu --- */
 .content-area {
   flex: 1;
   min-width: 300px;
 }
 
-#stats {
-  display: flex;
-  gap: 1em;
-  flex-wrap: wrap;
+/* --- Cartes Statistiques --- */
+#dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5em;
 }
 
-#stats > div {
+.card {
   background: var(--orange);
   color: white;
-  padding: 1em 1.5em;
+  padding: 1.2em 1.5em;
   border-radius: 10px;
-  min-width: 160px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  margin: 0 0 0.5em 0;
+  font-size: 1.1em;
+}
+
+.card p {
+  font-size: 1.8em;
+  font-weight: bold;
 }
 
 /* --- Footer --- */
@@ -224,7 +212,7 @@ body {
   color: var(--orange);
 }
 
-/* --- Bouton Remonter en haut --- */
+/* --- Bouton Remonter --- */
 #btn-top {
   position: fixed;
   bottom: 30px;
@@ -263,8 +251,8 @@ body {
     font-size: 1.3em;
   }
 
-  #stats {
-    flex-direction: column;
+  #dashboard-cards {
+    grid-template-columns: 1fr;
   }
 
   .dashboard-footer p {
