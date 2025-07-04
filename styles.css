@@ -64,12 +64,11 @@ nav a:hover, nav a.active {
 }
 
 /* --- Formulaires --- */
-form {
+form#form-prof {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 1em;
-  margin-bottom: 1em;
+  align-items: center;
 }
 
 form input, form select, form button {
@@ -95,6 +94,10 @@ form button:hover {
   background: #149174;
 }
 
+form#form-prof input {
+  flex: 1;
+  min-width: 0;
+}
 /* --- Tableaux --- */
 table {
   width: 100%;

@@ -146,7 +146,7 @@ document.getElementById('form-prof').addEventListener('submit', function(e) {
   const matiere = document.getElementById('matiere-prof').value;
   const salle = document.getElementById(`salle-prof`).value;
   const profs = getProfs();
-  profs.push({ nom, matiere });
+  profs.push({ nom, prenom, matiere, salle });
   setProfs(profs);
   renderProfs();
   this.reset();
@@ -198,6 +198,11 @@ function renderNotifs() {
     `;
     tbody.appendChild(tr);
   });
+
+  window.voirPlusNotif = function(i) {
+  const notif = getNotifs()[i];
+  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`);
+};
 }
 document.getElementById('form-notif').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -219,15 +224,16 @@ document.getElementById('form-notif').addEventListener('submit', function(e) {
   renderNotifs();
   this.reset();
 });
+
+
+  const notif = getNotifs()[i];
+  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`)
+
 window.deleteNotif = function(i) {
   const notifs = getNotifs();
   notifs.splice(i, 1);
   setNotifs(notifs);
   renderNotifs();
-};
-  window.voirPlusNotif = function(i) {
-  const notif = getNotifs()[i];
-  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`);
 };
 
 document.addEventListener('DOMContentLoaded', renderNotifs);
