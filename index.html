@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
@@ -89,6 +90,14 @@
           <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
           <p id="card-a-faire" class="text-3xl font-bold">5</p>
         </div>
+        <div class="bg-yellow-400 text-gray-900 p-6 rounded-xl shadow hover:scale-105 transform transition col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center">
+          <h3 class="text-lg font-semibold mb-1">📊 Présence des élèves</h3>
+          <canvas id="presenceChart" width="400" height="120" class="my-2"></canvas>
+          <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center">
+            <span id="stat-presence" class="text-2xl font-bold"></span>
+            <span id="stat-absence" class="text-2xl font-bold"></span>
+          </div>
+        </div>
       </section>
 
       <!-- Liens rapides -->
@@ -151,6 +160,69 @@
       }
     });
     
+  </script>
+
+  <!-- Script statistiques -->
+  <script>
+    // Statistiques présences/absences + courbe
+    function updatePresenceStats() {
+      const eleves = JSON.parse(localStorage.getItem('eleves') || '[]');
+      const total = eleves.length;
+      const absents = eleves.filter(e => e.statut === 'absent').length;
+      const presents = total - absents;
+      const pctPresence = total ? Math.round((presents / total) * 100) : 0;
+      const pctAbsence = total ? Math.round((absents / total) * 100) : 0;
+      document.getElementById('stat-presence').textContent = `Présents : ${pctPresence}%`;
+      document.getElementById('stat-absence').textContent = `Absents : ${pctAbsence}%`;
+      // Génération de la courbe (données fictives sur 7 jours)
+      const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      let dataPresence = [];
+      let dataAbsence = [];
+      // Générer des données fictives réalistes à partir du total actuel
+      for(let i=0;i<7;i++){
+        let pres = total ? Math.max(0, Math.round(presents + (Math.random()-0.5)*total*0.1)) : 0;
+        let abs = total - pres;
+        dataPresence.push(pres);
+        dataAbsence.push(abs);
+      }
+      if(window.presenceChart) window.presenceChart.destroy();
+      const ctx = document.getElementById('presenceChart').getContext('2d');
+      window.presenceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: days,
+          datasets: [
+            {
+              label: 'Présents',
+              data: dataPresence,
+              borderColor: '#059669',
+              backgroundColor: 'rgba(16,185,129,0.1)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Absents',
+              data: dataAbsence,
+              borderColor: '#f59e42',
+              backgroundColor: 'rgba(251,191,36,0.1)',
+              tension: 0.3,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: 'top' }
+          },
+          scales: {
+            y: { beginAtZero: true, max: total || 10 }
+          }
+        }
+      });
+    }
+    updatePresenceStats();
+    window.addEventListener('storage', updatePresenceStats);
   </script>
 
 </body>

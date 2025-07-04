@@ -407,6 +407,12 @@
     </aside>
     <main>
       <section class="settings-section">
+        <h2>Paramètres de l'établissement</h2>
+        <ul id="param-list" class="mb-4" style="list-style: disc inside; color: #333;">
+          <!-- Liste dynamique des paramètres -->
+        </ul>
+      </section>
+      <section class="settings-section">
         <h2>Préférences utilisateur</h2>
         <form id="settings-form" class="settings-form">
           <div class="form-group">
@@ -425,6 +431,23 @@
           </div>
         </form>
       </section>
+      <section class="settings-section">
+        <h2>Rapport de l'établissement</h2>
+        <p>Un rapport PDF est généré automatiquement chaque jour. Vous pouvez le consulter, le télécharger ou l'imprimer.</p>
+        <div class="flex gap-3 mt-2">
+          <button id="view-report" class="btn-save" type="button">Voir le rapport du jour</button>
+        </div>
+      </section>
+      <div id="modal-report" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.18);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;max-width:700px;width:95vw;padding:2em 1.5em 1.5em 1.5em;border-radius:10px;box-shadow:0 2px 16px rgba(44,62,80,0.13);position:relative;">
+          <button id="close-modal-report" style="position:absolute;top:10px;right:10px;font-size:1.3em;background:none;border:none;color:#e74c3c;cursor:pointer;"><i class="fas fa-times"></i></button>
+          <iframe id="pdf-frame" style="width:100%;height:480px;border:none;"></iframe>
+          <div class="flex gap-3 mt-4 justify-end">
+            <button id="download-report" class="btn-save" type="button">Télécharger</button>
+            <button id="print-report" class="btn-reset" type="button">Imprimer</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -432,11 +455,12 @@
   <footer class="dashboard-footer">
     <div class="footer-content">
       <p>&copy; 2025 École X - Tous droits réservés</p>
-      <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+      <p><strong>Contact :</strong> 620 33 49 38 | <strong>Email :</strong> sanohmous620@gmail.com</p>
       <p>Version 1.0 - Développé par l'équipe numérique pédagogique</p>
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     // Thème clair/sombre global pour toutes les pages
     (function () {
@@ -565,6 +589,97 @@
         };
       }
     })();
+
+    // Affichage dynamique des paramètres
+    function renderParamList() {
+      const param = JSON.parse(localStorage.getItem('parametres')||'{}');
+      const user = localStorage.getItem('user-name') || 'Nenette';
+      const notif = localStorage.getItem('notif-enabled') !== 'false' ? 'Activées' : 'Désactivées';
+      const theme = localStorage.getItem('theme-site') || 'clair';
+      const list = [
+        `Nom de l'établissement : <b>${param.nom||'Non renseigné'}</b>`,
+        `Adresse : <b>${param.adresse||'Non renseignée'}</b>`,
+        `Téléphone : <b>${param.tel||'Non renseigné'}</b>`,
+        `Utilisateur : <b>${user}</b>`,
+        `Notifications : <b>${notif}</b>`,
+        `Thème : <b>${theme.charAt(0).toUpperCase()+theme.slice(1)}</b>`
+      ];
+      document.getElementById('param-list').innerHTML = list.map(x=>`<li>${x}</li>`).join('');
+    }
+    renderParamList();
+    window.addEventListener('storage', renderParamList);
+
+    // Génération automatique du rapport PDF chaque jour
+    function generateDailyReport() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 15;
+      doc.setFontSize(16);
+      doc.text('Rapport de l\'établissement', 15, y);
+      y += 10;
+      doc.setFontSize(12);
+      // Présences/absences
+      const eleves = JSON.parse(localStorage.getItem('eleves') || '[]');
+      const absents = eleves.filter(e => e.statut === 'absent');
+      doc.text(`Nombre d'élèves : ${eleves.length}`, 15, y);
+      y += 8;
+      doc.text(`Absents : ${absents.length}`, 15, y);
+      y += 8;
+      // Évaluations fictives
+      doc.text('Évaluations (exemple) :', 15, y);
+      y += 7;
+      eleves.slice(0, 10).forEach(e => {
+        doc.text(`- ${e.nom} (${e.classe}) : 15/20`, 18, y);
+        y += 7;
+      });
+      if (eleves.length > 10) {
+        doc.text('...etc.', 18, y);
+        y += 7;
+      }
+      // Date
+      y += 5;
+      doc.setFontSize(10);
+      const dateStr = new Date().toLocaleDateString();
+      doc.text('Généré le : ' + new Date().toLocaleString(), 15, y);
+      // Stocker le PDF en base64 dans localStorage (clé unique par jour)
+      const pdfData = doc.output('datauristring');
+      localStorage.setItem('rapport-'+dateStr, pdfData);
+      localStorage.setItem('rapport-latest', pdfData);
+    }
+    // Générer le rapport du jour si pas déjà fait
+    (function(){
+      const dateStr = new Date().toLocaleDateString();
+      if (!localStorage.getItem('rapport-'+dateStr)) {
+        generateDailyReport();
+      }
+    })();
+
+    // Affichage du rapport dans une modale
+    document.getElementById('view-report').onclick = function () {
+      const dateStr = new Date().toLocaleDateString();
+      const pdfData = localStorage.getItem('rapport-'+dateStr) || localStorage.getItem('rapport-latest');
+      if (!pdfData) { alert('Aucun rapport disponible.'); return; }
+      document.getElementById('pdf-frame').src = pdfData;
+      document.getElementById('modal-report').style.display = 'flex';
+    };
+    document.getElementById('close-modal-report').onclick = function () {
+      document.getElementById('modal-report').style.display = 'none';
+      document.getElementById('pdf-frame').src = '';
+    };
+    document.getElementById('download-report').onclick = function () {
+      const dateStr = new Date().toLocaleDateString();
+      const pdfData = localStorage.getItem('rapport-'+dateStr) || localStorage.getItem('rapport-latest');
+      if (!pdfData) return;
+      const a = document.createElement('a');
+      a.href = pdfData;
+      a.download = 'rapport-ecole-'+dateStr+'.pdf';
+      a.click();
+    };
+    document.getElementById('print-report').onclick = function () {
+      const frame = document.getElementById('pdf-frame');
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+    };
   </script>
 </body>
 
