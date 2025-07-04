@@ -9,38 +9,156 @@
   <title>Tableau de Bord - Gestion Scolaire</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .dashboard-header {
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em 0.7em 1em;
+      min-height: 60px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .logo-placeholder img {
+      height: 38px;
+      vertical-align: middle;
+    }
+
+    .dashboard-header h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+    }
+
+    .notif-icon,
+    .settings-icon,
+    .user-icon {
+      font-size: 1.3em;
+      color: var(--header-color, #fff);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .notif-count {
+      position: absolute;
+      top: -7px;
+      right: -10px;
+      background: #e74c3c;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8em;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+
+    .user-menu-wrapper {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      min-width: 120px;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .user-dropdown a {
+      color: var(--header-color, #fff);
+      padding: 0.7em 1.2em;
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.2s;
+    }
+
+    .user-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .user-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .user-menu-wrapper:hover .user-dropdown,
+    .user-menu-wrapper:focus-within .user-dropdown {
+      display: flex;
+    }
+
+    .logout-header-btn {
+      background: var(--btn-suppr-bg, #e74c3c);
+      color: #fff;
+      border-radius: 5px;
+      padding: 7px 18px;
+      font-size: 1em;
+      font-weight: 500;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .logout-header-btn:hover {
+      background: #c0392b !important;
+      color: #fff !important;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- Header -->
-  <header
-    class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition duration-300 hover:bg-gray-50">
-
-    <div class="flex items-center space-x-4">
-      <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
-      <h1 class="text-xl font-bold text-blue-900">Gestion Administrative</h1>
+  <header class="dashboard-header">
+    <div class="logo-placeholder">
+      <a href="index.html"><img src="logo.png" alt="Logo école" class="h-10" /></a>
     </div>
-    <div class="flex items-center space-x-4">
-      <a href="#" title="Notifications" class="relative text-gray-600 hover:text-blue-600">
-        <i class="fas fa-bell text-xl"></i>
-        <span
-          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+    <h1>Tableau de Bord</h1>
+    <div class="header-icons flex items-center gap-5">
+      <a href="notification.html" title="Notifications" class="notif-icon relative">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count absolute -top-2 -right-2">3</span>
       </a>
-      <div class="relative">
-        <button id="user-toggle"
-          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
-          <i class="fas fa-user-circle text-2xl"></i>
-          <span>Mme Diallo</span>
-          <i class="fas fa-caret-down text-sm"></i>
-        </button>
-        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+      <div class="user-menu-wrapper relative">
+        <a href="#" id="user-toggle" title="Utilisateur" class="user-icon flex items-center gap-1">
+          <i class="fas fa-user-circle"></i>
+          <span id="user-name">Mme Diallo</span>
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <div id="user-dropdown" class="user-dropdown hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
           <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Profil</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Déconnexion</a>
         </div>
       </div>
-      <a href="parametres.html" title="Paramètres" class="text-gray-600 hover:text-blue-600">
-        <i class="fas fa-cog text-xl"></i>
+      <a href="#" id="logout-btn-header" class="logout-header-btn flex items-center gap-2"
+        style="background: var(--btn-suppr-bg, #e74c3c); color: #fff; border-radius: 5px; padding: 7px 18px; font-size: 1em; font-weight: 500; margin-left: 10px; text-decoration: none; transition: background 0.2s;">
+        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+      </a>
+      <a href="parametres.html" title="Paramètres" class="settings-icon">
+        <i class="fas fa-cog"></i>
       </a>
     </div>
   </header>
