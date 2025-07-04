@@ -19,12 +19,9 @@
   </header>
   <main>
     <section>
-      <h2>Ajouter une notification</h2>
-      <form id="form-notif">
-        <input type="text" id="titre-notif" placeholder="Titre" required>
-        <input type="text" id="contenu-notif" placeholder="Contenu" required>
-        <button type="submit">Ajouter</button>
-      </form>
+      <div id="message-toast" class="toast-message">
+        Notification ajoutée !
+      </div> 
     </section>
     <section>
       <h2>Liste des notifications</h2>
@@ -32,7 +29,7 @@
         <thead>
           <tr>
             <th>Titre</th>
-            <th>Contenu</th>
+            <th>Date</th>
             <th>Actions</th>
           </tr>
         </thead>
