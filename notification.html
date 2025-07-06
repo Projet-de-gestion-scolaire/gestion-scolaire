@@ -1,51 +1,652 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Notifications</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Définitions des couleurs personnalisées en CSS pur */
+        /* Celles-ci doivent correspondre aux classes Tailwind que vous utilisez */
+        .bg-primary-blue {
+            background-color: #0F172A;
+        }
+
+        .text-primary-blue {
+            color: #0F172A;
+        }
+
+        .bg-accent-blue {
+            background-color: #2563EB;
+        }
+
+        .hover\:bg-accent-blue:hover {
+            background-color: #2563EB;
+        }
+
+        /* Assure la couleur de survol */
+        .bg-accent-blue-dark {
+            background-color: #1D4ED8;
+        }
+
+        /* Pour les états 'dark' des boutons par exemple */
+        .hover\:bg-accent-blue-dark:hover {
+            background-color: #1D4ED8;
+        }
+
+        .bg-accent-green {
+            background-color: #10B981;
+        }
+
+        .hover\:bg-accent-green-dark:hover {
+            background-color: #059669;
+        }
+
+        .bg-accent-yellow {
+            background-color: #FBBF24;
+        }
+
+        .hover\:bg-accent-yellow-dark:hover {
+            background-color: #F59E0B;
+        }
+
+        .bg-accent-red {
+            background-color: #EF4444;
+        }
+
+        .hover\:bg-accent-red-dark:hover {
+            background-color: #DC2626;
+        }
+
+        .bg-accent-cyan {
+            background-color: #06B6D4;
+        }
+
+        .hover\:bg-accent-cyan-dark:hover {
+            background-color: #0891B2;
+        }
+
+        /* NOUVELLES COULEURS (ajustées par rapport à l'autre fichier) */
+        .bg-accent-purple {
+            background-color: #8B5CF6;
+        }
+
+        .hover\:bg-accent-purple-dark:hover {
+            background-color: #7C3AED;
+        }
+
+        .bg-accent-orange {
+            background-color: #F97316;
+        }
+
+        .hover\:bg-accent-orange-dark:hover {
+            background-color: #EA580C;
+        }
+
+
+        /* Styles pour les éléments du menu latéral (SIDEBAR) */
+        #main-sidebar nav a:not(.bg-accent-blue) {
+            color: #4B5563;
+            font-weight: 600;
+        }
+
+        #main-sidebar nav a.group:hover span.group-hover\:text-white {
+            color: white !important;
+        }
+
+        #main-sidebar nav a.group:hover span.text-gray-600 {
+            color: white !important;
+        }
+
+        /* Styles pour le header au défilement */
+        .scrolled-header {
+            background-color: #0F172A;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scrolled-header .text-primary-blue {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-600 {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-700 {
+            color: white;
+        }
+
+        .scrolled-header .hover\:text-accent-blue:hover {
+            color: #DBEAFE;
+        }
+
+        .scrolled-header .hover\:text-accent-cyan:hover {
+            color: #67E8F9;
+        }
+
+        .scrolled-header .hover\:text-accent-green:hover {
+            color: #86EFAC;
+        }
+
+        /* Styles pour la barre latérale sur mobile */
+        #main-sidebar.active {
+            transform: translateX(0);
+        }
+
+        #sidebar-overlay.active {
+            opacity: 0.5;
+            display: block;
+        }
+
+        /* Styles spécifiques aux notifications */
+        .notification-card {
+            border-left-width: 4px;
+        }
+
+        .notification-info {
+            border-left-color: #2563EB; /* accent-blue */
+        }
+        .notification-success {
+            border-left-color: #10B981; /* accent-green */
+        }
+        .notification-warning {
+            border-left-color: #FBBF24; /* accent-yellow */
+        }
+        .notification-error {
+            border-left-color: #EF4444; /* accent-red */
+        }
+        .notification-read {
+            opacity: 0.7;
+            background-color: #F3F4F6; /* gray-100 */
+        }
+        .notification-unread {
+            background-color: #FFFFFF; /* white */
+        }
+
+    </style>
 </head>
-<body>
-  <header>
-    <h1>Notifications</h1>
-    <nav>
-      <a href="index.html">Accueil</a>
-      <a href="eleves.html">Élèves</a>
-      <a href="emploi-du-temps.html">Emploi du temps</a>
-      <a href="portail-parents.html">Portail parents</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notifications.html">Notifications</a>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Ajouter une notification</h2>
-      <form id="form-notif">
-        <input type="text" id="titre-notif" placeholder="Titre" required>
-        <input type="text" id="contenu-notif" placeholder="Contenu" required>
-        <button type="submit">Ajouter</button>
-      </form>
-    </section>
-    <section>
-      <h2>Liste des notifications</h2>
-      <table id="table-notif">
-        <thead>
-          <tr>
-            <th>Titre</th>
-            <th>Contenu</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Quelque chose</td>
-            <td>Quelque chose</td>
-            <td>Quelque chose</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
-  <script src="script.js"></script>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <header id="main-header"
+        class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
+                    class="fas fa-bell text-xl"></i>
+                <span id="unread-notification-count"
+                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5 flex items-center justify-center">0</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
+                        class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i
+                    class="fas fa-cog text-xl"></i></a>
+        </div>
+    </header>
+
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar"
+            class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+                </a>
+
+                <a href="eleve.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+
+                <a href="classes.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+                </a>
+
+                <a href="emploi.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du
+                        temps</span>
+                </a>
+
+                <a href="professeur.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+                </a>
+
+                <a href="notification.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                    <span class="text-xl mr-3 text-white">🔔</span>
+                    <span class="hidden md:inline text-white">Notifications</span>
+                </a>
+
+                <a href="parametres.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <h2 class="text-2xl font-bold mb-6 text-primary-blue">Gestion des Notifications</h2>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Ajouter une Nouvelle Notification</h3>
+
+                <form id="form-notification" class="flex flex-col gap-4 mb-6">
+                    <div>
+                        <label for="notification-message" class="block text-sm font-medium text-gray-700 mb-1">Message:</label>
+                        <textarea id="notification-message" placeholder="Entrez le message de la notification" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue resize-y h-24"></textarea>
+                    </div>
+                    <div>
+                        <label for="notification-type" class="block text-sm font-medium text-gray-700 mb-1">Type:</label>
+                        <select id="notification-type" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="info">Information</option>
+                            <option value="success">Succès</option>
+                            <option value="warning">Avertissement</option>
+                            <option value="error">Erreur</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" id="btn-submit-notification"
+                            class="bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter Notification</button>
+                        <button type="button" id="btn-cancel-notification"
+                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                    </div>
+                </form>
+
+                <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Notifications</h4>
+
+                <div class="mb-4 flex flex-col md:flex-row gap-4 items-center">
+                    <input type="text" id="notification-search" placeholder="Rechercher par message ou type..."
+                        class="border border-gray-300 rounded px-4 py-2 flex-grow focus:outline-none focus:ring-2 focus:ring-accent-cyan" />
+                    <select id="notification-filter-type" class="border border-gray-300 rounded px-4 py-2">
+                        <option value="all">Tous les types</option>
+                        <option value="info">Information</option>
+                        <option value="success">Succès</option>
+                        <option value="warning">Avertissement</option>
+                        <option value="error">Erreur</option>
+                    </select>
+                    <select id="notification-filter-status" class="border border-gray-300 rounded px-4 py-2">
+                        <option value="all">Tous les statuts</option>
+                        <option value="unread">Non lues</option>
+                        <option value="read">Lues</option>
+                    </select>
+                    <button id="mark-all-read" class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md">
+                        Marquer tout lu
+                    </button>
+                    <button id="delete-all-read" class="bg-accent-red hover:bg-accent-red-dark text-white px-4 py-2 rounded shadow-md">
+                        Supprimer lues
+                    </button>
+                </div>
+
+
+                <div id="notifications-list" class="space-y-4">
+                    </div>
+
+                <div id="no-notifications-message" class="text-center py-8 text-gray-500 hidden">
+                    Aucune notification trouvée.
+                </div>
+            </div>
+
+            <div id="message-box" class="hidden mt-6 px-4 py-3 rounded text-sm font-medium"></div>
+
+        </main>
+    </div>
+
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Références aux éléments du DOM
+        const formNotification = document.getElementById("form-notification");
+        const notificationMessage = document.getElementById("notification-message");
+        const notificationType = document.getElementById("notification-type");
+        const btnSubmitNotification = document.getElementById("btn-submit-notification");
+        const btnCancelNotification = document.getElementById("btn-cancel-notification");
+        const notificationsList = document.getElementById("notifications-list");
+        const noNotificationsMessage = document.getElementById("no-notifications-message");
+        const notificationSearch = document.getElementById("notification-search");
+        const notificationFilterType = document.getElementById("notification-filter-type");
+        const notificationFilterStatus = document.getElementById("notification-filter-status");
+        const unreadNotificationCount = document.getElementById("unread-notification-count");
+        const markAllReadBtn = document.getElementById("mark-all-read");
+        const deleteAllReadBtn = document.getElementById("delete-all-read");
+
+
+        const messageBox = document.getElementById("message-box");
+
+        // Éléments DOM pour la responsivité (récupérés de classes.html)
+        const menuToggle = document.getElementById("menu-toggle");
+        const mainSidebar = document.getElementById("main-sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const userToggle = document.getElementById("user-toggle");
+        const userDropdown = document.getElementById("user-dropdown");
+        const mainHeader = document.getElementById("main-header");
+
+        let editNotificationId = null;
+
+        // Helpers stockage
+        const getNotifications = () => JSON.parse(localStorage.getItem("notifications") || "[]");
+        const setNotifications = data => {
+            localStorage.setItem("notifications", JSON.stringify(data));
+            // Déclencher un événement 'storage' pour que le header se mette à jour sur toutes les pages
+            window.dispatchEvent(new Event('storage'));
+        };
+
+        const showMessage = (txt, color = "green") => {
+            messageBox.textContent = txt;
+            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${
+                color === 'green' ? 'bg-green-100 text-green-700' :
+                color === 'red' ? 'bg-red-100 text-red-700' :
+                color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                'bg-gray-100 text-gray-700'
+                }`;
+            messageBox.classList.remove("hidden");
+            setTimeout(() => messageBox.classList.add("hidden"), 3000);
+        };
+
+        // --- Gestion des Notifications ---
+        formNotification.addEventListener("submit", e => {
+            e.preventDefault();
+            const message = notificationMessage.value.trim();
+            const type = notificationType.value;
+
+            if (!message) {
+                return showMessage("Le message de la notification ne peut pas être vide.", "red");
+            }
+
+            let notifications = getNotifications();
+
+            if (editNotificationId !== null) {
+                const index = notifications.findIndex(n => n.id === editNotificationId);
+                if (index > -1) {
+                    notifications[index].message = message;
+                    notifications[index].type = type;
+                    // Ne pas changer la date ni le statut de lecture lors de l'édition
+                    showMessage("Notification modifiée avec succès.", "green");
+                }
+            } else {
+                const newNotification = {
+                    id: Date.now(), // Utiliser un timestamp comme ID unique
+                    message,
+                    type,
+                    date: new Date().toISOString(), // Date de création
+                    read: false // Non lue par défaut
+                };
+                notifications.unshift(newNotification); // Ajouter au début pour les voir en premier
+                showMessage("Notification ajoutée avec succès.", "green");
+            }
+
+            setNotifications(notifications);
+            formNotification.reset();
+            editNotificationId = null;
+            btnSubmitNotification.textContent = "Ajouter Notification";
+            btnCancelNotification.classList.add("hidden");
+            renderNotifications();
+        });
+
+        btnCancelNotification.addEventListener("click", () => {
+            formNotification.reset();
+            editNotificationId = null;
+            btnSubmitNotification.textContent = "Ajouter Notification";
+            btnCancelNotification.classList.add("hidden");
+        });
+
+        function renderNotifications() {
+            let notifications = getNotifications();
+
+            // Filtrage et recherche
+            const searchTerm = notificationSearch.value.toLowerCase().trim();
+            const filterType = notificationFilterType.value;
+            const filterStatus = notificationFilterStatus.value;
+
+            const filteredNotifications = notifications.filter(n => {
+                const matchesSearch = searchTerm === "" ||
+                    n.message.toLowerCase().includes(searchTerm) ||
+                    n.type.toLowerCase().includes(searchTerm);
+
+                const matchesType = filterType === "all" || n.type === filterType;
+
+                const matchesStatus = filterStatus === "all" ||
+                    (filterStatus === "read" && n.read) ||
+                    (filterStatus === "unread" && !n.read);
+
+                return matchesSearch && matchesType && matchesStatus;
+            });
+
+
+            if (filteredNotifications.length === 0) {
+                noNotificationsMessage.classList.remove("hidden");
+                notificationsList.innerHTML = "";
+            } else {
+                noNotificationsMessage.classList.add("hidden");
+                notificationsList.innerHTML = filteredNotifications.map(n => {
+                    const date = new Date(n.date).toLocaleString('fr-FR', {
+                        year: 'numeric', month: 'numeric', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                    const icon = getNotificationIcon(n.type);
+                    const borderColorClass = `notification-${n.type}`;
+                    const readClass = n.read ? 'notification-read' : 'notification-unread';
+
+                    return `
+                        <div class="notification-card bg-white p-4 rounded-lg shadow-sm flex items-start space-x-4 ${borderColorClass} ${readClass}">
+                            <div class="text-2xl flex-shrink-0">
+                                ${icon}
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-sm text-gray-500 mb-1">${date}</p>
+                                <p class="text-gray-800 font-medium">${n.message}</p>
+                            </div>
+                            <div class="flex-shrink-0 flex space-x-2">
+                                <button onclick="toggleReadStatus(${n.id})"
+                                    class="text-xs ${n.read ? 'bg-gray-400 hover:bg-gray-500' : 'bg-accent-green hover:bg-accent-green-dark'} text-white px-2 py-1 rounded shadow-sm">
+                                    ${n.read ? 'Marquer non lue' : 'Marquer lue'}
+                                </button>
+                                <button onclick="editNotification(${n.id})"
+                                    class="text-xs bg-accent-blue hover:bg-accent-blue-dark text-white px-2 py-1 rounded shadow-sm">
+                                    Modifier
+                                </button>
+                                <button onclick="deleteNotification(${n.id})"
+                                    class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">
+                                    Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            }
+            updateUnreadCount();
+        }
+
+        function getNotificationIcon(type) {
+            switch (type) {
+                case 'info': return '<i class="fas fa-info-circle text-accent-blue"></i>';
+                case 'success': return '<i class="fas fa-check-circle text-accent-green"></i>';
+                case 'warning': return '<i class="fas fa-exclamation-triangle text-accent-yellow"></i>';
+                case 'error': return '<i class="fas fa-times-circle text-accent-red"></i>';
+                default: return '<i class="fas fa-bell text-gray-500"></i>';
+            }
+        }
+
+        window.editNotification = id => {
+            const notifications = getNotifications();
+            const notificationToEdit = notifications.find(n => n.id === id);
+            if (notificationToEdit) {
+                notificationMessage.value = notificationToEdit.message;
+                notificationType.value = notificationToEdit.type;
+                editNotificationId = id;
+                btnSubmitNotification.textContent = "Modifier Notification";
+                btnCancelNotification.classList.remove("hidden");
+                notificationMessage.focus();
+                showMessage("Vous êtes en train de modifier une notification.", "blue");
+            }
+        };
+
+        window.deleteNotification = id => {
+            let notifications = getNotifications();
+            const index = notifications.findIndex(n => n.id === id);
+            if (index > -1) {
+                if (confirm("Supprimer cette notification ?")) {
+                    notifications.splice(index, 1);
+                    setNotifications(notifications);
+                    showMessage("Notification supprimée.", "green");
+                    renderNotifications();
+                    if (editNotificationId === id) { // Si la notif supprimée était en cours d'édition
+                        formNotification.reset();
+                        editNotificationId = null;
+                        btnSubmitNotification.textContent = "Ajouter Notification";
+                        btnCancelNotification.classList.add("hidden");
+                    }
+                }
+            }
+        };
+
+        window.toggleReadStatus = id => {
+            let notifications = getNotifications();
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                notification.read = !notification.read;
+                setNotifications(notifications);
+                renderNotifications();
+                showMessage(`Notification marquée comme ${notification.read ? 'lue' : 'non lue'}.`, "green");
+            }
+        };
+
+        markAllReadBtn.addEventListener('click', () => {
+            let notifications = getNotifications();
+            let changedCount = 0;
+            notifications.forEach(n => {
+                if (!n.read) {
+                    n.read = true;
+                    changedCount++;
+                }
+            });
+            if (changedCount > 0) {
+                setNotifications(notifications);
+                renderNotifications();
+                showMessage(`${changedCount} notification(s) marquée(s) comme lue(s).`, "green");
+            } else {
+                showMessage("Aucune nouvelle notification à marquer comme lue.", "blue");
+            }
+        });
+
+        deleteAllReadBtn.addEventListener('click', () => {
+            let notifications = getNotifications();
+            const unreadNotifications = notifications.filter(n => !n.read);
+            if (unreadNotifications.length < notifications.length) {
+                if (confirm("Supprimer toutes les notifications lues ?")) {
+                    setNotifications(unreadNotifications);
+                    renderNotifications();
+                    showMessage("Notifications lues supprimées.", "green");
+                }
+            } else {
+                showMessage("Aucune notification lue à supprimer.", "blue");
+            }
+        });
+
+
+        // Mise à jour du compteur de notifications non lues dans le header
+        function updateUnreadCount() {
+            const notifications = getNotifications();
+            const unreadCount = notifications.filter(n => !n.read).length;
+            unreadNotificationCount.textContent = unreadCount;
+            if (unreadCount > 0) {
+                unreadNotificationCount.classList.remove('hidden');
+            } else {
+                unreadNotificationCount.classList.add('hidden');
+            }
+        }
+
+        // Filtres et recherche
+        notificationSearch.addEventListener('input', renderNotifications);
+        notificationFilterType.addEventListener('change', renderNotifications);
+        notificationFilterStatus.addEventListener('change', renderNotifications);
+
+
+        // --- Fonctions de Responsivité et d'Interaction UI (récupérées de classes.html) ---
+        menuToggle.addEventListener("click", () => {
+            mainSidebar.classList.toggle("active");
+            sidebarOverlay.classList.toggle("active");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            mainSidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("active");
+        });
+
+        userToggle.addEventListener("click", () => {
+            userDropdown.classList.toggle("hidden");
+        });
+
+        // Fermer le dropdown si on clique en dehors
+        window.addEventListener("click", e => {
+            if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+
+        // Sticky header on scroll
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 0) {
+                mainHeader.classList.add("scrolled-header");
+            } else {
+                mainHeader.classList.remove("scrolled-header");
+            }
+        });
+
+        // Initialisation au chargement de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            renderNotifications();
+            updateUnreadCount(); // Mettre à jour le compteur dès le chargement
+        });
+
+        // Écouter les changements dans le localStorage pour tenir à jour la liste des notifications
+        // Si une autre page ajoute une notification, celle-ci sera affichée dynamiquement.
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'notifications') {
+                renderNotifications();
+                updateUnreadCount();
+            }
+        });
+    </script>
 </body>
+
 </html>

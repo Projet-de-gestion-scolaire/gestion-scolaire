@@ -5,26 +5,177 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion des Élèves</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* Définitions des couleurs personnalisées en CSS pur */
+    /* Celles-ci doivent correspondre aux classes Tailwind que vous utilisez */
+    .bg-primary-blue {
+      background-color: #0F172A;
+    }
+
+    .text-primary-blue {
+      color: #0F172A;
+    }
+
+    .bg-accent-blue {
+      background-color: #2563EB;
+    }
+
+    .hover\:bg-accent-blue:hover {
+      background-color: #2563EB;
+    }
+
+    /* Assure la couleur de survol */
+    .bg-accent-blue-dark {
+      background-color: #1D4ED8;
+    }
+
+    /* Pour les états 'dark' des boutons par exemple */
+    .hover\:bg-accent-blue-dark:hover {
+      background-color: #1D4ED8;
+    }
+
+    .bg-accent-green {
+      background-color: #10B981;
+    }
+
+    .hover\:bg-accent-green-dark:hover {
+      background-color: #059669;
+    }
+
+    .bg-accent-yellow {
+      background-color: #FBBF24;
+    }
+
+    .hover\:bg-accent-yellow-dark:hover {
+      background-color: #F59E0B;
+    }
+
+    .bg-accent-red {
+      background-color: #EF4444;
+    }
+
+    .hover\:bg-accent-red-dark:hover {
+      background-color: #DC2626;
+    }
+
+    .bg-accent-cyan {
+      background-color: #06B6D4;
+    }
+
+    .hover\:bg-accent-cyan-dark:hover {
+      background-color: #0891B2;
+    }
+
+    .bg-accent-purple {
+      background-color: #8B5CF6;
+    }
+
+    .hover\:bg-accent-purple-dark:hover {
+      background-color: #7C3AED;
+    }
+
+    .bg-accent-orange {
+      background-color: #F97316;
+    }
+
+    .hover\:bg-accent-orange-dark:hover {
+      background-color: #EA580C;
+    }
+
+
+    /* Styles pour les éléments du menu latéral (SIDEBAR) */
+    /* Cible les liens du menu non actifs */
+    #main-sidebar nav a:not(.bg-accent-blue) {
+      /* Styles par défaut pour les liens non survolés et non actifs */
+      color: #4B5563;
+      /* text-gray-700 */
+      font-weight: 600;
+      /* font-semibold */
+    }
+
+    /* Styles de survol pour les liens du menu (pour le texte et les icônes) */
+    /* Note: Tailwind utilise `group` sur le parent et `group-hover:text-white` sur l'enfant. */
+    /* Il faut donc cibler l'enfant lorsque le parent est en état de survol. */
+    /* Ici, le `hover:bg-accent-blue` est déjà sur le <a> parent, donc on s'assure que le texte devient blanc */
+    #main-sidebar nav a.group:hover span.group-hover\:text-white {
+      color: white !important;
+      /* Force le texte à devenir blanc au survol */
+    }
+
+    /* Et pour les icônes (text-gray-600 par défaut) */
+    #main-sidebar nav a.group:hover span.text-gray-600 {
+      color: white !important;
+      /* Force les icônes à devenir blanches au survol */
+    }
+
+    /* Styles pour le header au défilement */
+    .scrolled-header {
+      background-color: #0F172A;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .scrolled-header .text-primary-blue {
+      color: white;
+    }
+
+    .scrolled-header .text-gray-600 {
+      color: white;
+    }
+
+    .scrolled-header .text-gray-700 {
+      color: white;
+    }
+
+    .scrolled-header .hover\:text-accent-blue:hover {
+      color: #DBEAFE;
+    }
+
+    .scrolled-header .hover\:text-accent-cyan:hover {
+      color: #67E8F9;
+    }
+
+    .scrolled-header .hover\:text-accent-green:hover {
+      color: #86EFAC;
+    }
+
+    /* Styles pour la barre latérale sur mobile */
+    #main-sidebar.active {
+      transform: translateX(0);
+    }
+
+    #sidebar-overlay.active {
+      opacity: 0.5;
+      display: block;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-  <!-- HEADER -->
-  <header class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4">
+  <header id="main-header"
+    class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
     <div class="flex items-center space-x-4">
       <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
-      <h1 class="text-xl font-bold text-blue-900">Gestion Administrative</h1>
+      <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
     </div>
+
+    <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+
     <div class="flex items-center space-x-4">
-      <a href="#" class="relative text-gray-600 hover:text-blue-600"><i class="fas fa-bell text-xl"></i>
+      <a href="#" class="relative text-gray-600 hover:text-accent-cyan"><i class="fas fa-bell text-xl"></i>
         <span
-          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">🔔3</span>
+          class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
       </a>
       <div class="relative">
         <button id="user-toggle"
-          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
+          class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
           <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i class="fas fa-caret-down text-sm"></i>
         </button>
         <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
@@ -32,118 +183,325 @@
           <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
         </div>
       </div>
-      <a href="parametres.html" class="text-gray-600 hover:text-blue-600"><i class="fas fa-cog text-xl"></i></a>
+      <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i class="fas fa-cog text-xl"></i></a>
     </div>
   </header>
 
   <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
-    <!-- MENU -->
-    <aside class="bg-white w-64 min-h-screen p-4 shadow-md">
-      <h2 class="text-xl font-semibold mb-4">Tableau de bord - Menu</h2>
+    <aside id="main-sidebar" class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+      <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
       <nav class="space-y-2">
-        <a href="index.html" class="block py-2 px-4 hover:bg-blue-100">🏠 Accueil</a>
-        <a href="eleves.html" class="block py-2 px-4 bg-blue-100 font-semibold text-blue-800">👨‍🏫 Élèves</a>
-        <a href="emploi.html" class="block py-2 px-4 hover:bg-green-100">📅 Emploi</a>
-        <a href="professeur.html" class="block py-2 px-4 hover:bg-green-100">👨‍🏫 Professeurs</a>
-        <a href="notification.html" class="block py-2 px-4 hover:bg-blue-100">🔔 Notifications</a>
-        <a href="parametres.html" class="block py-2 px-4 hover:bg-gray-200">⚙ Paramètres</a>
+        <a href="index.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+        </a>
+
+        <a href="eleves.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+          <span class="text-xl mr-3 text-white">👨‍🎓</span>
+          <span class="hidden md:inline text-white">Élèves</span>
+        </a>
+
+        <a href="classes.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+        </a>
+
+        <a href="emploi.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du temps</span>
+        </a>
+
+        <a href="professeur.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+        </a>
+
+        <a href="notification.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+        </a>
+
+        <a href="parametres.html"
+          class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+          <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+          <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+        </a>
       </nav>
     </aside>
 
-    <!-- CONTENU PRINCIPAL -->
     <main class="flex-1">
-      <h2 class="text-2xl font-bold mb-4">Gestion des Élèves</h2>
+      <h2 class="text-2xl font-bold mb-4 text-primary-blue">Gestion des Élèves</h2>
 
-      <!-- Bouton Ajouter -->
-      <div class="mb-4">
-        <button id="btn-ajouter" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded">
-          ➕ Ajouter un élève
+      <div class="mb-4 flex gap-4 flex-wrap">
+        <button id="btn-ajouter"
+          class="bg-accent-yellow hover:bg-accent-yellow-dark text-white font-semibold px-4 py-2 rounded shadow-md">
+          ➕ Ajouter ou modifier un élève
+        </button>
+        <button id="btn-ajouter-notes"
+          class="bg-accent-blue hover:bg-accent-blue-dark text-white font-semibold px-4 py-2 rounded shadow-md">
+          📝 Ajouter des notes d’évaluation
+        </button>
+        <button id="btn-enregistrer-presences"
+          class="bg-accent-cyan hover:bg-accent-cyan-dark text-white font-semibold px-4 py-2 rounded shadow-md">
+          ✅ Enregistrer les présences
+        </button>
+        <button id="btn-suivre-devoirs"
+          class="bg-accent-purple hover:bg-accent-purple-dark text-white font-semibold px-4 py-2 rounded shadow-md">
+          📚 Suivre les devoirs
+        </button>
+        <button id="btn-gerer-scolarite"
+          class="bg-accent-orange hover:bg-accent-orange-dark text-white font-semibold px-4 py-2 rounded shadow-md">
+          💸 Gérer la scolarité
         </button>
       </div>
 
-      <!-- FORMULAIRE -->
-      <div id="formulaire-eleve" class="bg-white rounded-lg shadow p-6 mb-6 hidden">
-        <h3 id="form-titre" class="text-lg font-semibold mb-4">Ajouter un élève</h3>
+      <div id="formulaire-eleve" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden border border-gray-200">
+        <h3 id="form-titre" class="text-lg font-semibold mb-4 text-primary-blue">Ajouter ou modifier un élève</h3>
         <form id="form-eleve" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <input type="text" id="nom" placeholder="Nom complet" required class="border rounded px-4 py-2" />
-          <input type="text" id="sexe" placeholder="Sexe (M ou F)" required class="border rounded px-4 py-2" />
-          <input type="date" id="naissance" required class="border rounded px-4 py-2" />
-          <input type="text" id="filiation" placeholder="Filiation" required class="border rounded px-4 py-2" />
-          <input type="text" id="matricule" placeholder="Matricule" required class="border rounded px-4 py-2" />
-          <input type="text" id="classe" placeholder="Classe" required class="border rounded px-4 py-2" />
-          <select id="statut" required class="border rounded px-4 py-2">
-
-            <option value="present">Present</option>
-            <option value="absent">Absent</option>
-
+          <input type="text" id="nom" placeholder="Nom complet" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <select type="text" id="sexe" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue">
+            <option value="">Sélectionner le sexe</option>
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
           </select>
-          <div class="md:col-span-2 lg:col-span-3 flex gap-4">
+          <input type="date" id="naissance" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="text" id="filiation" placeholder="Filiation (Nom du père et de la mère)" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="text" id="matricule" placeholder="Matricule (4 chiffres)" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue"
+            pattern="\d{4}" title="Le matricule doit contenir 4 chiffres." />
+          <select id="classe" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue"></select>
+          <select id="statut" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue">
+            <option value="present">Présent</option>
+            <option value="absent">Absent</option>
+          </select>
+
+          <div class="col-span-full">
+            <h4 class="text-md font-semibold mt-4 mb-2 text-primary-blue">Informations Complémentaires</h4>
+          </div>
+          <input type="date" id="dateInscription" placeholder="Date d'inscription"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="text" id="adresse" placeholder="Adresse complète"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="tel" id="telephone" placeholder="Téléphone (ex: +224 620 00 00 00)"
+            pattern="^\+?[0-9\s\-\(\)]{8,20}$" title="Veuillez entrer un numéro de téléphone valide."
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="email" id="email" placeholder="Adresse email"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+
+          <div class="col-span-full">
+            <label for="photoEleve" class="block text-sm font-medium text-gray-700 mb-1">Photo de l'élève</label>
+            <input type="file" id="photoEleve" accept="image/*"
+              class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+            <img id="previewPhoto" class="mt-2 hidden w-32 h-32 object-cover rounded-full border-2 border-gray-300"
+              alt="Aperçu photo" />
+          </div>
+
+
+          <div class="md:col-span-2 lg:col-span-3 flex gap-4 mt-4">
             <button type="submit"
-              class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded w-full">Enregistrer</button>
+              class="bg-accent-green hover:bg-accent-green-dark text-white px-6 py-2 rounded w-full shadow-md">Enregistrer</button>
             <button type="button" id="btn-annuler"
-              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full">Annuler</button>
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full shadow-md">Annuler</button>
           </div>
         </form>
       </div>
 
-      <!-- Filtres dans une box -->
-      <div class="bg-white p-4 rounded-lg shadow mb-6">
-        <h4 class="text-lg font-semibold mb-4">🔍 Rechercher un élève</h4>
-        <div class="flex flex-wrap gap-4">
-          <input type="text" id="search-eleves" placeholder="Nom, matricule, etc."
-            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+      <div class="bg-white p-4 rounded-lg shadow-lg mb-6 border border-gray-200">
+        <h4 class="text-lg font-semibold mb-4 text-primary-blue">🔍 Rechercher un élève</h4>
+        <div class="flex flex-wrap gap-4 items-end">
+          <input type="text" id="search-eleves" placeholder="Nom, matricule..."
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
 
           <select id="filter-classe"
-            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-accent-blue">
             <option value="">Toutes les classes</option>
-            <option value="6eme">6ème</option>
-            <option value="5eme">5ème</option>
-            <option value="4eme">4ème</option>
-            <option value="3eme">3ème</option>
-            <option value="10eme">10ème</option>
-            <option value="terminale">Terminale</option>
           </select>
 
           <select id="filter-statut"
-            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-accent-blue">
             <option value="">Tous les statuts</option>
             <option value="present">Présent</option>
             <option value="absent">Absent</option>
           </select>
           <select id="filter-sexe"
-            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-accent-blue">
             <option value="">Tous les sexes</option>
-            <option value="M">M</option>
-            <option value="F">F</option>
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
           </select>
 
           <button id="btn-reset-filtres"
-            class="mt-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded">
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded shadow-md">
             🔄 Réinitialiser les filtres
           </button>
-
         </div>
       </div>
 
+      <div id="form-notes" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden border border-gray-200">
+        <h3 class="text-lg font-semibold mb-4 text-primary-blue">Ajouter des notes d’évaluation</h3>
+        <form id="notes-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <input type="text" id="note-matricule" placeholder="Matricule de l’élève" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="text" id="periode-evaluation"
+            placeholder="Période ou type d'évaluation (ex: Trimestre 1, Devoir 2)" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="date" id="date-evaluation" placeholder="Date de l'évaluation" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+
+          <div id="champs-notes-dynamiques"
+            class="md:col-span-3 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          </div>
+          <div class="md:col-span-3 lg:col-span-3 flex gap-4">
+            <button type="submit"
+              class="bg-accent-green hover:bg-accent-green-dark text-white px-6 py-2 rounded w-full shadow-md">
+              Enregistrer les notes
+            </button>
+            <button type="button" id="btn-annuler-notes"
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full shadow-md">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="form-presences" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden border border-gray-200">
+        <h3 class="text-lg font-semibold mb-4 text-primary-blue">Enregistrer les Présences</h3>
+        <form id="presences-form">
+          <div class="mb-4">
+            <label for="date-presence" class="block text-sm font-medium text-gray-700 mb-1">Date de la présence
+              :</label>
+            <input type="date" id="date-presence" required
+              class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue w-full md:w-1/2" />
+          </div>
+          <div class="mb-4">
+            <label for="filter-classe-presence" class="block text-sm font-medium text-gray-700 mb-1">Filtrer par classe
+              :</label>
+            <select id="filter-classe-presence"
+              class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue w-full md:w-1/2">
+              <option value="">Toutes les classes</option>
+            </select>
+          </div>
+          <div id="liste-eleves-presences" class="space-y-3 mb-6">
+            <p class="text-gray-500">Sélectionnez une date pour charger les élèves.</p>
+          </div>
+          <div class="flex gap-4 mt-4">
+            <button type="submit"
+              class="bg-accent-green hover:bg-accent-green-dark text-white px-6 py-2 rounded w-full shadow-md">
+              Enregistrer les présences
+            </button>
+            <button type="button" id="btn-annuler-presences"
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full shadow-md">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="form-devoirs" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden border border-gray-200">
+        <h3 class="text-lg font-semibold mb-4 text-primary-blue">Suivi des devoirs</h3>
+        <form id="devoirs-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" id="devoir-matricule" placeholder="Matricule de l’élève" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <select id="devoir-matiere" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue">
+            <option value="">Sélectionner la matière</option>
+          </select>
+          <input type="text" id="devoir-description" placeholder="Description du devoir (ex: Exercices p.10)" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue col-span-full" />
+          <label for="devoir-date-assignation" class="block text-sm font-medium text-gray-700">Date
+            d'assignation:</label>
+          <input type="date" id="devoir-date-assignation" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <label for="devoir-date-remise" class="block text-sm font-medium text-gray-700">Date de remise
+            (effective):</label>
+          <input type="date" id="devoir-date-remise"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <select id="devoir-statut" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue col-span-full">
+            <option value="">Statut du devoir</option>
+            <option value="fait">Fait</option>
+            <option value="non fait">Non fait</option>
+            <option value="en retard">En retard</option>
+          </select>
+          <div class="col-span-full flex gap-4 mt-4">
+            <button type="submit"
+              class="bg-accent-green hover:bg-accent-green-dark text-white px-6 py-2 rounded w-full shadow-md">
+              Enregistrer le devoir
+            </button>
+            <button type="button" id="btn-annuler-devoirs"
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full shadow-md">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="form-scolarite" class="bg-white rounded-lg shadow-lg p-6 mb-6 hidden border border-gray-200">
+        <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des frais de scolarité</h3>
+        <form id="scolarite-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" id="scolarite-matricule" placeholder="Matricule de l’élève" required
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+
+          <div class="col-span-full mb-4 p-3 bg-gray-50 rounded-md">
+            <label for="scolarite-total-du" class="block text-sm font-medium text-gray-700 mb-1">Montant total des frais
+              de scolarité dû (Année):</label>
+            <input type="number" id="scolarite-total-du" placeholder="Montant total dû" min="0" step="any"
+              class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue w-full" />
+          </div>
+
+          <h4 class="col-span-full text-md font-semibold mb-2 text-primary-blue">Enregistrer un nouveau paiement</h4>
+          <label for="scolarite-date-paiement" class="block text-sm font-medium text-gray-700">Date du paiement:</label>
+          <input type="date" id="scolarite-date-paiement"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <label for="scolarite-montant-paiement" class="block text-sm font-medium text-gray-700">Montant payé:</label>
+          <input type="number" id="scolarite-montant-paiement" placeholder="Montant du paiement" min="0" step="any"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+          <input type="text" id="scolarite-description-paiement" placeholder="Description (ex: 1er acompte, Solde T1)"
+            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue col-span-full" />
+
+          <div class="col-span-full flex gap-4 mt-4">
+            <button type="submit"
+              class="bg-accent-green hover:bg-accent-green-dark text-white px-6 py-2 rounded w-full shadow-md">
+              Enregistrer les frais
+            </button>
+            <button type="button" id="btn-annuler-scolarite"
+              class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded w-full shadow-md">
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
 
 
-      <!-- Message -->
       <div id="message-box" class="hidden mb-4 px-4 py-3 rounded text-sm font-medium"></div>
 
-      <!-- Tableau -->
-      <div class="overflow-auto">
-        <table id="table-eleves" class="min-w-full bg-white shadow rounded">
-          <thead class="bg-yellow-500 text-white">
+      <h3 class="text-lg font-semibold mb-2 text-primary-blue">📋 Liste des élèves</h3>
+      <div class="overflow-auto shadow-lg rounded-lg border border-gray-200">
+        <table id="table-eleves" class="min-w-full bg-white">
+          <thead class="bg-accent-blue text-white">
             <tr>
-              <th class="py-3 px-4">N°</th>
-              <th class="py-3 px-4">Nom</th>
-              <th class="py-3 px-4">Sexe</th>
-              <th class="py-3 px-4">Naissance</th>
-              <th class="py-3 px-4">Filiation</th>
-              <th class="py-3 px-4">Matricule</th>
-              <th class="py-3 px-4">Classe</th>
-              <th class="py-3 px-4">Statut</th>
-              <th class="py-3 px-4">Actions</th>
+              <th class="py-3 px-4 text-left">N°</th>
+              <th class="py-3 px-4 text-left">Nom</th>
+              <th class="py-3 px-4 text-left">Sexe</th>
+              <th class="py-3 px-4 text-left">Naissance</th>
+              <th class="py-3 px-4 text-left">Filiation</th>
+              <th class="py-3 px-4 text-left">Matricule</th>
+              <th class="py-3 px-4 text-left">Classe</th>
+              <th class="py-3 px-4 text-left">Statut</th>
+              <th class="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody class="text-gray-700"></tbody>
@@ -152,162 +510,927 @@
     </main>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="mt-10 bg-gray-800 text-white text-center py-4 text-sm">
+  <div id="fiche-eleve" class="bg-white shadow-lg rounded p-4 mt-6 hidden border border-gray-200 max-w-2xl mx-auto">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-bold text-primary-blue">👤 Fiche de l’élève</h3>
+      <button id="btn-fermer-fiche" class="text-accent-red hover:text-accent-red-dark font-semibold text-lg">
+        ✖ Fermer
+      </button>
+    </div>
+    <div id="fiche-contenu" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-800">
+    </div>
+  </div>
+
+  <div id="sidebar-overlay"
+    class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+
+  <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
     <p>&copy; 2025 École X - Tous droits réservés</p>
   </footer>
 
-  <!-- SCRIPT -->
   <script>
-    const formulaire = document.getElementById("formulaire-eleve");
+    // Références aux éléments du DOM
+    const formEl = document.getElementById("formulaire-eleve");
     const form = document.getElementById("form-eleve");
-    const btnAjouter = document.getElementById("btn-ajouter");
-    const btnAnnuler = document.getElementById("btn-annuler");
-    const formTitre = document.getElementById("form-titre");
+    const notesFormEl = document.getElementById("form-notes");
+    const notesForm = document.getElementById("notes-form");
+    const presencesFormEl = document.getElementById("form-presences");
+    const presencesForm = document.getElementById("presences-form");
+    const devoirsFormEl = document.getElementById("form-devoirs"); // Nouveau
+    const devoirsForm = document.getElementById("devoirs-form"); // Nouveau
+    const scolariteFormEl = document.getElementById("form-scolarite"); // Nouveau
+    const scolariteForm = document.getElementById("scolarite-form"); // Nouveau
+
+    const ficheEl = document.getElementById("fiche-eleve");
+    const ficheContenu = document.getElementById("fiche-contenu");
     const messageBox = document.getElementById("message-box");
     const tbody = document.querySelector("#table-eleves tbody");
-    const inputNom = document.getElementById("nom");
-    const inputSexe = document.getElementById("sexe");
-    const inputNaissance = document.getElementById("naissance");
-    const inputFiliation = document.getElementById("filiation");
-    const inputMatricule = document.getElementById("matricule");
-    const inputClasse = document.getElementById("classe");
-    const inputStatut = document.getElementById("statut");
+    const champsNotesDynamiques = document.getElementById("champs-notes-dynamiques");
+    const listeElevesPresences = document.getElementById("liste-eleves-presences");
+    const devoirMatiereSelect = document.getElementById("devoir-matiere"); // Nouveau
+    const scolariteMatriculeInput = document.getElementById("scolarite-matricule"); // Nouveau
+    const scolariteTotalDuInput = document.getElementById("scolarite-total-du"); // Nouveau
+
+
+    const photoInput = document.getElementById("photoEleve");
+    const previewPhoto = document.getElementById("previewPhoto");
+
+    const menuToggle = document.getElementById("menu-toggle");
+    const mainSidebar = document.getElementById("main-sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+    const userToggle = document.getElementById("user-toggle");
+    const userDropdown = document.getElementById("user-dropdown");
+    const mainHeader = document.getElementById("main-header");
+
 
     let editIndex = null;
 
+    // Helpers stockage (COMMUNS - Ces fonctions sont nécessaires dans toutes les pages qui les utilisent)
     const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]");
-    const setEleves = (data) => localStorage.setItem("eleves", JSON.stringify(data));
-    const normalize = (str) =>
-      str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    const setEleves = data => localStorage.setItem("eleves", JSON.stringify(data));
+    const getClasses = () => JSON.parse(localStorage.getItem("classes") || "[]");
+    const getMatieres = () => JSON.parse(localStorage.getItem("matieres") || '["Français", "Mathématiques", "Physique"]');
 
-    const renderEleves = () => {
-      const data = getEleves();
-      const search = normalize(document.getElementById("search-eleves").value);
-      const classe = normalize(document.getElementById("filter-classe").value);
-      const statut = normalize(document.getElementById("filter-statut").value);
-      const sexe = document.getElementById("filter-sexe").value.toLowerCase();
+    const normalize = str => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+    // Fonction pour gérer la prévisualisation de la photo
+    photoInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewPhoto.src = e.target.result;
+          previewPhoto.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewPhoto.src = '';
+        previewPhoto.classList.add('hidden');
+      }
+    });
+
+    // Formulaires : soumission élève (MISE À JOUR pour initialiser historiqueNotes, attendanceRecords, homeworks, payments)
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const eleves = getEleves();
+
+      const data = {
+        nom: form.nom.value.trim(),
+        sexe: form.sexe.value.trim(),
+        dateNaissance: form.naissance.value,
+        filiation: form.filiation.value.trim(),
+        matricule: form.matricule.value.trim().padStart(4, '0'),
+        classe: form.classe.value.trim(),
+        statut: form.statut.value,
+        dateInscription: form.dateInscription.value,
+        adresse: form.adresse.value.trim(),
+        telephone: form.telephone.value.trim(),
+        email: form.email.value.trim(),
+        photo: '',
+        historiqueNotes: [],
+        attendanceRecords: [],
+        homeworks: [], // NOUVEAU: Initialisation pour les devoirs
+        totalFeesDue: 0, // NOUVEAU: Montant total des frais
+        balanceDue: 0,   // NOUVEAU: Solde restant dû
+        payments: []     // NOUVEAU: Historique des paiements
+      };
+
+      if (photoInput.files.length > 0) {
+        const file = photoInput.files[0];
+        data.photo = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        });
+      } else if (editIndex !== null && eleves[editIndex].photo) {
+        data.photo = eleves[editIndex].photo;
+      }
 
 
-      const filtres = data.filter(e => {
-        const nomOK = !search || e.nom.toLowerCase().includes(search);
-        const classeOK = !classe || e.classe.toLowerCase() === classe;
-        const statutOK = !statut || e.statut.toLowerCase() === statut;
-        const sexeOK = !sexe || e.sexe.toLowerCase() === sexe;
-        return nomOK && classeOK && statutOK && sexeOK;
+      if (Object.values(data).slice(0, 7).some(v => !v)) return show("Veuillez remplir les champs obligatoires (Nom, Sexe, Naissance, Filiation, Matricule, Classe, Statut)", "red");
+      if (!/^\d{4}$/.test(data.matricule)) return show("Matricule invalide (doit être 4 chiffres)", "red");
+
+      const existingEleve = eleves.find(e => e.matricule === data.matricule);
+      if (editIndex !== null) {
+        if (existingEleve && eleves.indexOf(existingEleve) !== editIndex) {
+          return show("Matricule déjà utilisé par un autre élève", "red");
+        }
+        // Lors de la modification, conserver tous les historiques et données financières
+        data.historiqueNotes = eleves[editIndex].historiqueNotes || [];
+        data.attendanceRecords = eleves[editIndex].attendanceRecords || [];
+        data.homeworks = eleves[editIndex].homeworks || [];
+        data.totalFeesDue = eleves[editIndex].totalFeesDue || 0;
+        data.balanceDue = eleves[editIndex].balanceDue || 0;
+        data.payments = eleves[editIndex].payments || [];
+
+        eleves.splice(editIndex, 1, data);
+        show("Élève modifié", "green");
+      } else {
+        if (existingEleve) {
+          return show("Matricule déjà utilisé par un autre élève", "red");
+        }
+        eleves.push(data);
+        show("Élève ajouté", "green");
+      }
+      setEleves(eleves);
+      form.reset();
+      photoInput.value = '';
+      previewPhoto.classList.add('hidden');
+      formEl.classList.add("hidden");
+      editIndex = null;
+      render();
+    });
+
+    // Formulaire notes
+    notesForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const matricule = notesForm["note-matricule"].value.trim();
+      const periode = notesForm["periode-evaluation"].value.trim();
+      const dateEvaluation = notesForm["date-evaluation"].value;
+
+      if (!periode || !dateEvaluation) {
+        return show("Veuillez renseigner la période et la date de l'évaluation", "red");
+      }
+
+      const eleves = getEleves();
+      const eleve = eleves.find(e => e.matricule === matricule);
+
+      if (!eleve) return show("Matricule non trouvé", "red");
+
+      const matieres = getMatieres();
+      const notesMatiere = {};
+      let totalNotes = 0;
+      let countNotes = 0;
+
+      matieres.forEach(matiere => {
+        const inputId = `note-${normalize(matiere)}`;
+        const noteInput = document.getElementById(inputId);
+        const noteValue = noteInput ? parseFloat(noteInput.value) : NaN;
+
+        if (!isNaN(noteValue) && noteValue >= 0 && noteValue <= 20) {
+          notesMatiere[normalize(matiere)] = noteValue;
+          totalNotes += noteValue;
+          countNotes++;
+        }
       });
 
-      tbody.innerHTML = filtres.length === 0
-        ? `<tr><td colspan="9" class="text-center py-4">Aucun élève trouvé.</td></tr>`
-        : filtres.map((e, i) => `
-      <tr class="border-t">
-        <td class="py-2 px-4">${i + 1}</td>
-        <td class="py-2 px-4">${e.nom}</td>
-        <td class="py-2 px-4">${e.sexe}</td>
-        <td class="py-2 px-4">${e.dateNaissance}</td>
-        <td class="py-2 px-4">${e.filiation}</td>
-        <td class="py-2 px-4">${e.matricule}</td>
-        <td class="py-2 px-4">${e.classe}</td>
-        <td class="py-2 px-4">${e.statut}</td>
-        <td class="py-2 px-4">
-          <div class="flex space-x-1">
-            <button onclick="viewEleve(${i})" class="text-xs bg-blue-600 text-white px-2 py-1 rounded">Voir</button>
-            <button onclick="editEleve(${i})" class="text-xs bg-green-600 text-white px-2 py-1 rounded">Modif</button>
-            <button onclick="deleteEleve(${i})" class="text-xs bg-red-500 text-white px-2 py-1 rounded">Supp</button>
-          </div>
-        </td>
-      </tr>
-    `).join("");
+      if (countNotes === 0) {
+        return show("Veuillez saisir au moins une note valide.", "red");
+      }
+
+      const moyennePeriode = totalNotes / countNotes;
+
+      eleve.historiqueNotes = eleve.historiqueNotes || [];
+      eleve.historiqueNotes.push({
+        periode: periode,
+        dateEvaluation: dateEvaluation,
+        notesMatiere: notesMatiere,
+        moyennePeriode: moyennePeriode
+      });
+
+      setEleves(eleves);
+      notesForm.reset();
+      notesFormEl.classList.add("hidden");
+      show("Notes enregistrées pour l'évaluation " + periode, "green");
+      render();
+      ficheEl.classList.add("hidden");
+    });
+
+    // Formulaire de présences
+    presencesForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const datePresence = presencesForm["date-presence"].value;
+      if (!datePresence) {
+        return show("Veuillez sélectionner une date de présence.", "red");
+      }
+
+      const eleves = getEleves();
+      let updatedCount = 0;
+
+      eleves.forEach(eleve => {
+        const eleveCheckbox = document.getElementById(`presence-${eleve.matricule}`);
+        if (!eleveCheckbox) return;
+
+        const status = document.querySelector(`input[name="status-${eleve.matricule}"]:checked`)?.value;
+
+        if (status) {
+          eleve.attendanceRecords = eleve.attendanceRecords || [];
+
+          const existingRecordIndex = eleve.attendanceRecords.findIndex(record => record.date === datePresence);
+
+          if (existingRecordIndex !== -1) {
+            eleve.attendanceRecords[existingRecordIndex].status = status;
+          } else {
+            eleve.attendanceRecords.push({ date: datePresence, status: status });
+          }
+          updatedCount++;
+        }
+      });
+
+      if (updatedCount === 0) {
+        return show("Aucune présence n'a été enregistrée ou modifiée. Vérifiez que des élèves sont affichés.", "red");
+      }
+
+      setEleves(eleves);
+      presencesForm.reset();
+      presencesFormEl.classList.add("hidden");
+      show(`${updatedCount} présences enregistrées pour le ${datePresence}`, "green");
+      render();
+    });
+
+    // NOUVEAU: Formulaire de suivi des devoirs
+    devoirsForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const matricule = devoirsForm["devoir-matricule"].value.trim();
+      const matiere = devoirsForm["devoir-matiere"].value.trim();
+      const description = devoirsForm["devoir-description"].value.trim();
+      const dateAssignation = devoirsForm["devoir-date-assignation"].value;
+      const dateRemise = devoirsForm["devoir-date-remise"].value;
+      const statut = devoirsForm["devoir-statut"].value;
+
+      if (!matricule || !matiere || !description || !dateAssignation || !statut) {
+        return show("Veuillez remplir tous les champs obligatoires du devoir.", "red");
+      }
+
+      const eleves = getEleves();
+      const eleve = eleves.find(e => e.matricule === matricule);
+
+      if (!eleve) return show("Matricule non trouvé pour le devoir", "red");
+
+      eleve.homeworks = eleve.homeworks || [];
+      eleve.homeworks.push({
+        matiere: matiere,
+        description: description,
+        dateAssignation: dateAssignation,
+        dateRemise: dateRemise || null, // Peut être vide si non remis
+        statut: statut,
+        id: Date.now() // Un ID unique pour faciliter la modification/suppression future
+      });
+
+      setEleves(eleves);
+      devoirsForm.reset();
+      devoirsFormEl.classList.add("hidden");
+      show("Devoir enregistré pour " + eleve.nom, "green");
+      render();
+      ficheEl.classList.add("hidden");
+    });
+
+    // NOUVEAU: Formulaire de gestion des frais de scolarité
+    scolariteForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const matricule = scolariteForm["scolarite-matricule"].value.trim();
+      const totalFeesDue = parseFloat(scolariteForm["scolarite-total-du"].value);
+      const datePaiement = scolariteForm["scolarite-date-paiement"].value;
+      const montantPaiement = parseFloat(scolariteForm["scolarite-montant-paiement"].value);
+      const descriptionPaiement = scolariteForm["scolarite-description-paiement"].value.trim();
+
+      if (!matricule) {
+        return show("Veuillez renseigner le matricule de l'élève.", "red");
+      }
+
+      const eleves = getEleves();
+      const eleve = eleves.find(e => e.matricule === matricule);
+
+      if (!eleve) return show("Matricule non trouvé pour la scolarité", "red");
+
+      // Mettre à jour le montant total dû si renseigné
+      if (!isNaN(totalFeesDue) && totalFeesDue >= 0) {
+        eleve.totalFeesDue = totalFeesDue;
+      }
+
+      // Enregistrer un nouveau paiement si les champs sont remplis
+      if (datePaiement && !isNaN(montantPaiement) && montantPaiement > 0) {
+        eleve.payments = eleve.payments || [];
+        eleve.payments.push({
+          date: datePaiement,
+          montant: montantPaiement,
+          description: descriptionPaiement,
+          id: Date.now()
+        });
+        show(`Paiement de ${montantPaiement} enregistré pour ${eleve.nom}`, "green");
+      } else if (isNaN(totalFeesDue) && (!datePaiement || isNaN(montantPaiement) || montantPaiement <= 0)) {
+        // Si ni le total dû n'est mis à jour, ni un paiement valide n'est enregistré
+        return show("Veuillez soit définir un montant total dû, soit enregistrer un paiement valide (date et montant).", "red");
+      } else if (!isNaN(totalFeesDue) && totalFeesDue >= 0) {
+        show(`Montant total dû mis à jour à ${totalFeesDue} pour ${eleve.nom}`, "green");
+      }
+
+      // Recalculer le solde dû
+      const totalPaid = eleve.payments.reduce((sum, p) => sum + p.montant, 0);
+      eleve.balanceDue = eleve.totalFeesDue - totalPaid;
+
+      setEleves(eleves);
+      scolariteForm.reset();
+      scolariteFormEl.classList.add("hidden");
+      // Réinitialiser les champs spécifiques du formulaire pour une nouvelle saisie ou modification
+      scolariteMatriculeInput.value = "";
+      scolariteTotalDuInput.value = "";
+      render();
+      ficheEl.classList.add("hidden");
+    });
+
+    // NOUVEAU: Charger les élèves dans le formulaire de présence
+    function populateAttendanceFormElements() {
+      const datePresence = document.getElementById("date-presence").value;
+      const filterClasse = document.getElementById("filter-classe-presence").value;
+      const eleves = getEleves();
+      listeElevesPresences.innerHTML = '';
+
+      if (!datePresence) {
+        listeElevesPresences.innerHTML = '<p class="text-gray-500">Sélectionnez une date pour charger les élèves.</p>';
+        presencesForm.querySelector('button[type="submit"]').disabled = true;
+        return;
+      }
+      presencesForm.querySelector('button[type="submit"]').disabled = false;
+
+      const filteredEleves = eleves.filter(e =>
+        (!filterClasse || normalize(e.classe) === normalize(filterClasse))
+      ).sort((a, b) => a.nom.localeCompare(b.nom));
+
+      if (filteredEleves.length === 0) {
+        listeElevesPresences.innerHTML = '<p class="text-gray-500">Aucun élève trouvé pour cette classe ou date.</p>';
+        return;
+      }
+
+      filteredEleves.forEach(eleve => {
+        const existingRecord = eleve.attendanceRecords?.find(record => record.date === datePresence);
+        const currentStatus = existingRecord ? existingRecord.status : 'absent';
+
+        listeElevesPresences.innerHTML += `
+                    <div class="flex items-center space-x-4 border-b border-gray-100 py-2">
+                        <input type="hidden" name="matricule-${eleve.matricule}" value="${eleve.matricule}" id="presence-${eleve.matricule}" />
+                        <div class="w-1/2 md:w-1/3 text-gray-800 font-medium">${eleve.nom} (${eleve.matricule})</div>
+                        <div class="flex-1 flex justify-end space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="status-${eleve.matricule}" value="present" class="form-radio text-accent-green" ${currentStatus === 'present' ? 'checked' : ''}>
+                                <span class="ml-2 text-green-700">Présent</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="status-${eleve.matricule}" value="absent" class="form-radio text-accent-red" ${currentStatus === 'absent' ? 'checked' : ''}>
+                                <span class="ml-2 text-red-700">Absent</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+      });
+    }
+
+    // NOUVEAU: Pré-remplir le formulaire de devoir
+    window.remplirFormDevoir = matricule => {
+      devoirsForm.reset();
+      populateMatieresSelect(devoirMatiereSelect); // Assurez-vous que les matières sont chargées
+      document.getElementById("devoir-matricule").value = matricule;
+      devoirsFormEl.classList.remove("hidden");
+      formEl.classList.add("hidden");
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      devoirsFormEl.scrollIntoView({ behavior: "smooth" });
     };
 
+    // NOUVEAU: Pré-remplir le formulaire de scolarité
+    window.remplirFormScolarite = matricule => {
+      scolariteForm.reset();
+      const eleve = getEleves().find(e => e.matricule === matricule);
+      if (!eleve) {
+        show("Élève non trouvé", "red");
+        return;
+      }
+      scolariteMatriculeInput.value = matricule;
+      scolariteTotalDuInput.value = eleve.totalFeesDue || ""; // Afficher le montant total dû actuel
+      scolariteFormEl.classList.remove("hidden");
+      formEl.classList.add("hidden");
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.scrollIntoView({ behavior: "smooth" });
+    };
 
+    // Affichage tableau
+    function render() {
+      const data = getEleves();
+      const s = normalize(document.getElementById("search-eleves").value);
+      const filtreClasse = normalize(document.getElementById("filter-classe").value);
+      const filtreStatut = normalize(document.getElementById("filter-statut").value);
+      const filtreSexe = normalize(document.getElementById("filter-sexe").value);
 
-    const showMessage = (text, classes) => {
-      messageBox.textContent = text;
-      messageBox.className = `mb-4 px-4 py-3 rounded ${classes}`;
+      const filtres = data.filter(e =>
+        (!s || normalize(e.nom).includes(s) || normalize(e.matricule).includes(s)) &&
+        (!filtreClasse || normalize(e.classe) === filtreClasse) &&
+        (!filtreStatut || normalize(e.statut) === filtreStatut) &&
+        (!filtreSexe || normalize(e.sexe) === filtreSexe)
+      );
+
+      tbody.innerHTML = filtres.length === 0 ? `<tr><td colspan="9" class="text-center py-4 text-gray-500">Aucun élève trouvé.</td></tr>` :
+        filtres.map((e, i) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-4">${i + 1}</td>
+                        <td class="py-2 px-4">${e.nom}</td>
+                        <td class="py-2 px-4">${e.sexe}</td>
+                        <td class="py-2 px-4">${e.dateNaissance}</td>
+                        <td class="py-2 px-4">${e.filiation}</td>
+                        <td class="py-2 px-4">${e.matricule}</td>
+                        <td class="py-2 px-4">${e.classe}</td>
+                        <td class="py-2 px-4"><span class="px-2 py-1 rounded-full text-xs font-semibold ${e.statut === 'present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${e.statut === 'present' ? 'Présent' : 'Absent'}</span></td>
+                        <td class="py-2 px-4 flex space-x-2">
+                            <button onclick="view(${i})" class="text-xs bg-accent-blue hover:bg-accent-blue-dark text-white px-2 py-1 rounded shadow-sm">Voir</button>
+                            <button onclick="edit(${i})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="supprimer(${i})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+    }
+
+    // Affichage messages
+    const show = (txt, color = "green") => {
+      messageBox.textContent = txt;
+      messageBox.className = `mb-4 px-4 py-3 rounded text-sm font-medium ${color === 'green' ? 'bg-green-100 text-green-700' :
+        color === 'red' ? 'bg-red-100 text-red-700' :
+          'bg-gray-100 text-gray-700'
+        }`;
       messageBox.classList.remove("hidden");
       setTimeout(() => messageBox.classList.add("hidden"), 3000);
     };
 
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const eleve = {
-        nom: inputNom.value.trim(),
-        sexe: inputSexe.value.trim(),
-        dateNaissance: inputNaissance.value,
-        filiation: inputFiliation.value.trim(),
-        matricule: inputMatricule.value.trim(),
-        classe: inputClasse.value.trim(),
-        statut: inputStatut.value
-      };
-      if (Object.values(eleve).some(v => !v)) {
-        return showMessage("Veuillez remplir tous les champs", "bg-red-100 text-red-700");
+    // Fonction pour calculer le taux de présence
+    function calculateAttendanceRate(attendanceRecords) {
+      if (!attendanceRecords || attendanceRecords.length === 0) {
+        return { rate: 0, presentCount: 0, totalCount: 0 };
       }
+      const totalDays = attendanceRecords.length;
+      const presentDays = attendanceRecords.filter(record => record.status === 'present').length;
+      const rate = (presentDays / totalDays) * 100;
+      return { rate: rate.toFixed(2), presentCount: presentDays, totalCount: totalDays };
+    }
 
-      const data = getEleves();
-      if (editIndex !== null) {
-        data[editIndex] = eleve;
-        showMessage("Élève modifié", "bg-green-100 text-green-700");
-        editIndex = null;
+    // Affichage fiche élève (MISE À JOUR avec l'historique des notes et de présence)
+    window.view = i => {
+      const e = getEleves()[i];
+      const historiqueNotes = e.historiqueNotes || [];
+      const attendanceRecords = e.attendanceRecords || [];
+      const homeworks = e.homeworks || []; // NOUVEAU
+      const payments = e.payments || []; // NOUVEAU
+      const matieresConfig = getMatieres();
+
+      let historiqueNotesHtml = '';
+      if (historiqueNotes.length > 0) {
+        historiqueNotesHtml = historiqueNotes.map(evaluation => {
+          let notesDetailHtml = '';
+          matieresConfig.forEach(matiere => {
+            const normalizedMatiere = normalize(matiere);
+            const note = evaluation.notesMatiere[normalizedMatiere] !== undefined ? evaluation.notesMatiere[normalizedMatiere] : 'N/A';
+            notesDetailHtml += `<div><strong>${matiere} :</strong> ${note}</div>`;
+          });
+
+          return `
+                        <div class="border border-gray-200 p-3 rounded-md mb-3 bg-white">
+                            <h5 class="font-semibold text-primary-blue mb-2">Évaluation : ${evaluation.periode} (${evaluation.dateEvaluation})</h5>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mb-2">
+                                ${notesDetailHtml}
+                            </div>
+                            <div class="text-right">
+                                <strong>Moyenne :</strong> <span class="font-bold text-lg ${evaluation.moyennePeriode >= 10 ? 'text-green-600' : 'text-red-600'}">${evaluation.moyennePeriode.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+        }).join('');
       } else {
-        data.push(eleve);
-        showMessage("Élève ajouté", "bg-green-100 text-green-700");
+        historiqueNotesHtml = '<p class="text-gray-500">Aucune note enregistrée pour cet élève.</p>';
       }
-      setEleves(data);
-      form.reset();
-      formulaire.classList.add("hidden");
-      formTitre.textContent = "Ajouter un élève";
-      renderEleves();
-    });
 
-    const editEleve = index => {
-      const e = getEleves()[index];
-      inputNom.value = e.nom;
-      inputSexe.value = e.sexe;
-      inputNaissance.value = e.dateNaissance;
-      inputFiliation.value = e.filiation;
-      inputMatricule.value = e.matricule;
-      inputClasse.value = e.classe;
-      inputStatut.value = e.statut;
-      editIndex = index;
-      formTitre.textContent = "Modifier un élève";
-      formulaire.classList.remove("hidden");
+      const attendanceRate = calculateAttendanceRate(attendanceRecords);
+      let historiquePresenceHtml = `
+                <p class="mb-2"><strong>Taux de présence :</strong> <span class="font-bold text-lg ${attendanceRate.rate >= 80 ? 'text-green-600' : 'text-red-600'}">${attendanceRate.rate}%</span> (${attendanceRate.presentCount} jours sur ${attendanceRate.totalCount})</p>
+                <div class="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 bg-white">
+            `;
+      if (attendanceRecords.length > 0) {
+        const sortedRecords = [...attendanceRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+        historiquePresenceHtml += sortedRecords.map(record => `
+                    <div class="flex justify-between items-center py-1 border-b border-gray-100 last:border-b-0">
+                        <span>${record.date}</span>
+                        <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${record.status === 'present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${record.status === 'present' ? 'Présent' : 'Absent'}
+                        </span>
+                    </div>
+                `).join('');
+      } else {
+        historiquePresenceHtml += '<p class="text-gray-500">Aucun enregistrement de présence.</p>';
+      }
+      historiquePresenceHtml += '</div>';
+
+      // NOUVEAU: HTML pour l'historique des devoirs
+      let historiqueDevoirsHtml = `
+                <div class="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 bg-white">
+            `;
+      if (homeworks.length > 0) {
+        const sortedHomeworks = [...homeworks].sort((a, b) => new Date(b.dateAssignation) - new Date(a.dateAssignation));
+        historiqueDevoirsHtml += sortedHomeworks.map(hw => `
+                    <div class="py-1 border-b border-gray-100 last:border-b-0">
+                        <p><strong>Matière:</strong> ${hw.matiere}</p>
+                        <p><strong>Description:</strong> ${hw.description}</p>
+                        <p><strong>Assigné le:</strong> ${hw.dateAssignation} - <strong>Remis le:</strong> ${hw.dateRemise || 'N/A'}</p>
+                        <p><strong>Statut:</strong> <span class="px-2 py-0.5 rounded-full text-xs font-semibold 
+                            ${hw.statut === 'fait' ? 'bg-green-100 text-green-800' : hw.statut === 'en retard' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}">
+                            ${hw.statut}
+                        </span></p>
+                    </div>
+                `).join('');
+      } else {
+        historiqueDevoirsHtml += '<p class="text-gray-500">Aucun devoir enregistré pour cet élève.</p>';
+      }
+      historiqueDevoirsHtml += '</div>';
+
+      // NOUVEAU: HTML pour les frais de scolarité
+      let scolariteHtml = `
+                <p class="mb-2"><strong>Total dû :</strong> <span class="font-bold text-lg">${e.totalFeesDue || 0} GNF</span></p>
+                <p class="mb-2"><strong>Solde restant :</strong> <span class="font-bold text-lg ${e.balanceDue <= 0 ? 'text-green-600' : 'text-red-600'}">${e.balanceDue || 0} GNF</span></p>
+                <h5 class="font-semibold text-primary-blue mt-4 mb-2">Historique des paiements :</h5>
+                <div class="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 bg-white">
+            `;
+      if (payments.length > 0) {
+        const sortedPayments = [...payments].sort((a, b) => new Date(b.date) - new Date(a.date));
+        scolariteHtml += sortedPayments.map(p => `
+                    <div class="flex justify-between items-center py-1 border-b border-gray-100 last:border-b-0">
+                        <span>${p.date} - ${p.description || 'Paiement'}</span>
+                        <span class="font-semibold text-green-700">${p.montant} GNF</span>
+                    </div>
+                `).join('');
+      } else {
+        scolariteHtml += '<p class="text-gray-500">Aucun paiement enregistré.</p>';
+      }
+      scolariteHtml += '</div>';
+
+
+      // Génération dynamique du HTML pour la fiche
+      ficheContenu.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded shadow-inner mb-4 flex flex-col md:flex-row items-start md:items-center">
+                    ${e.photo ? `<img src="${e.photo}" alt="Photo de l'élève" class="w-24 h-24 object-cover rounded-full mr-4 mb-4 md:mb-0 border-2 border-primary-blue" />` : `<div class="w-24 h-24 rounded-full mr-4 mb-4 md:mb-0 border-2 border-gray-300 bg-gray-200 flex items-center justify-center text-gray-500 text-3xl">👤</div>`}
+                    <div>
+                        <h4 class="font-semibold mb-3 text-primary-blue">📌 Infos générales</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                            <div><strong>Nom :</strong> ${e.nom}</div>
+                            <div><strong>Sexe :</strong> ${e.sexe === 'M' ? 'Masculin' : 'Féminin'}</div>
+                            <div><strong>Naissance :</strong> ${e.dateNaissance}</div>
+                            <div><strong>Filiation :</strong> ${e.filiation}</div>
+                            <div><strong>Matricule :</strong> ${e.matricule}</div>
+                            <div><strong>Classe :</strong> ${e.classe}</div>
+                            <div><strong>Statut :</strong> <span class="px-2 py-1 rounded-full text-xs font-semibold ${e.statut === 'present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${e.statut === 'present' ? 'Présent' : 'Absent'}</span></div>
+                             <div><strong>Date d'inscription :</strong> ${e.dateInscription || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded shadow-inner mb-4">
+                    <h4 class="font-semibold mb-3 text-primary-blue">📞 Coordonnées</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                        <div><strong>Adresse :</strong> ${e.adresse || 'N/A'}</div>
+                        <div><strong>Téléphone :</strong> ${e.telephone || 'N/A'}</div>
+                        <div><strong>Email :</strong> ${e.email || 'N/A'}</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded shadow-inner mb-4">
+                    <h4 class="font-semibold mb-3 text-primary-blue">✅ Présences</h4>
+                    ${historiquePresenceHtml}
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded shadow-inner mb-4">
+                    <h4 class="font-semibold mb-3 text-primary-blue">📚 Devoirs</h4>
+                    ${historiqueDevoirsHtml}
+                    <button onclick="remplirFormDevoir('${e.matricule}')" class="mt-4 bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md">📝 Ajouter un devoir</button>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded shadow-inner mb-4">
+                    <h4 class="font-semibold mb-3 text-primary-blue">💸 Scolarité</h4>
+                    ${scolariteHtml}
+                    <button onclick="remplirFormScolarite('${e.matricule}')" class="mt-4 bg-accent-orange hover:bg-accent-orange-dark text-white px-4 py-2 rounded shadow-md">💳 Gérer les paiements</button>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded shadow-inner">
+                    <h4 class="font-semibold mb-3 text-primary-blue">📘 Historique des Notes</h4>
+                    <div class="space-y-4">
+                        ${historiqueNotesHtml}
+                    </div>
+                    <button onclick="remplirFormNotes('${e.matricule}')" class="mt-4 bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md">✏️ Ajouter une nouvelle évaluation</button>
+                </div>
+            `;
+      ficheEl.classList.remove("hidden");
+      ficheEl.scrollIntoView({ behavior: "smooth" });
     };
 
-    const deleteEleve = index => {
+    // Préremplir le formulaire de notes (pour AJOUTER une nouvelle évaluation)
+    window.remplirFormNotes = matricule => {
+      const e = getEleves().find(e => e.matricule === matricule);
+      if (!e) return show("Élève introuvable", "red");
+      document.getElementById("note-matricule").value = matricule;
+      document.getElementById("periode-evaluation").value = "";
+      document.getElementById("date-evaluation").value = "";
+
+      generateNoteInputs();
+
+      const matieres = getMatieres();
+      matieres.forEach(matiere => {
+        const inputId = `note-${normalize(matiere)}`;
+        const noteInput = document.getElementById(inputId);
+        if (noteInput) {
+          noteInput.value = "";
+        }
+      });
+
+      notesFormEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      formEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      notesFormEl.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // Fonction pour générer les champs d'entrée de notes dynamiquement
+    function generateNoteInputs() {
+      const matieres = getMatieres();
+      champsNotesDynamiques.innerHTML = '';
+      if (matieres.length === 0) {
+        champsNotesDynamiques.innerHTML = '<p class="col-span-full text-red-600">Aucune matière configurée. Veuillez ajouter des matières pour saisir des notes.</p>';
+        notesForm.querySelector('button[type="submit"]').disabled = true;
+      } else {
+        notesForm.querySelector('button[type="submit"]').disabled = false;
+        matieres.forEach(matiere => {
+          const inputId = `note-${normalize(matiere)}`;
+          champsNotesDynamiques.innerHTML += `
+                        <input type="number" id="${inputId}" placeholder="Note en ${matiere}" min="0" max="20"
+                            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                    `;
+        });
+      }
+    }
+
+    // NOUVEAU: Fonction pour populer le select des matières
+    function populateMatieresSelect(selectElement) {
+      const matieres = getMatieres();
+      selectElement.innerHTML = '<option value="">Sélectionner la matière</option>';
+      matieres.forEach(m => {
+        const option = document.createElement("option");
+        option.value = m;
+        option.textContent = m;
+        selectElement.appendChild(option);
+      });
+    }
+
+
+    // Modifier / supprimer
+    window.edit = i => {
+      const e = getEleves()[i];
+      document.getElementById("nom").value = e.nom;
+      document.getElementById("sexe").value = e.sexe;
+      document.getElementById("naissance").value = e.dateNaissance;
+      document.getElementById("filiation").value = e.filiation;
+      document.getElementById("matricule").value = e.matricule;
+      document.getElementById("classe").value = e.classe;
+      document.getElementById("statut").value = e.statut;
+
+      document.getElementById("dateInscription").value = e.dateInscription || '';
+      document.getElementById("adresse").value = e.adresse || '';
+      document.getElementById("telephone").value = e.telephone || '';
+      document.getElementById("email").value = e.email || '';
+
+      if (e.photo) {
+        previewPhoto.src = e.photo;
+        previewPhoto.classList.remove('hidden');
+      } else {
+        previewPhoto.src = '';
+        previewPhoto.classList.add('hidden');
+      }
+
+      editIndex = i;
+      document.getElementById("form-titre").textContent = "Modifier un élève";
+      formEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      formEl.scrollIntoView({ behavior: "smooth" });
+    };
+
+    window.supprimer = i => {
       const data = getEleves();
-      if (confirm(`Supprimer ${data[index].nom} ?`)) {
-        data.splice(index, 1);
+      if (confirm(`Supprimer l'élève ${data[i].nom} (${data[i].matricule}) ? Cette action est irréversible.`)) {
+        data.splice(i, 1);
         setEleves(data);
-        renderEleves();
-        showMessage("Élève supprimé", "bg-green-100 text-green-700");
+        render();
+        show("Élève supprimé avec succès", "green");
+        ficheEl.classList.add("hidden");
       }
     };
 
-    btnAjouter.addEventListener("click", () => {
+    // Listeners pour les boutons Ajouter/Annuler
+    document.getElementById("btn-ajouter").addEventListener("click", () => {
       form.reset();
+      photoInput.value = '';
+      previewPhoto.classList.add('hidden');
+      document.getElementById("form-titre").textContent = "Ajouter ou modifier un élève";
+      formEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
       editIndex = null;
-      formTitre.textContent = "Ajouter un élève";
-      formulaire.classList.remove("hidden");
+      formEl.scrollIntoView({ behavior: "smooth" });
     });
 
-    btnAnnuler.addEventListener("click", () => {
-      formulaire.classList.add("hidden");
+    document.getElementById("btn-annuler").addEventListener("click", () => {
+      formEl.classList.add("hidden");
       form.reset();
+      photoInput.value = '';
+      previewPhoto.classList.add('hidden');
+      editIndex = null;
     });
 
-    document.getElementById("search-eleves").addEventListener("input", renderEleves);
-    document.getElementById("filter-classe").addEventListener("change", renderEleves);
-    document.getElementById("filter-statut").addEventListener("change", renderEleves);
+    document.getElementById("btn-ajouter-notes").addEventListener("click", () => {
+      notesForm.reset();
+      generateNoteInputs();
+      document.getElementById("note-matricule").value = "";
+      document.getElementById("periode-evaluation").value = "";
+      document.getElementById("date-evaluation").value = "";
+      notesFormEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      formEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      notesFormEl.scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("btn-annuler-notes").addEventListener("click", () => {
+      notesFormEl.classList.add("hidden");
+      notesForm.reset();
+    });
+
+    // Listeners pour le formulaire de présence
+    document.getElementById("btn-enregistrer-presences").addEventListener("click", () => {
+      presencesForm.reset();
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("date-presence").value = today;
+      populateAttendanceFormElements();
+      presencesFormEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      formEl.classList.add("hidden");
+      notesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      presencesFormEl.scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("btn-annuler-presences").addEventListener("click", () => {
+      presencesFormEl.classList.add("hidden");
+      presencesForm.reset();
+    });
+
+    // NOUVEAU: Listeners pour le formulaire de devoirs
+    document.getElementById("btn-suivre-devoirs").addEventListener("click", () => {
+      devoirsForm.reset();
+      populateMatieresSelect(devoirMatiereSelect); // Charger les matières
+      document.getElementById("devoir-matricule").value = ""; // Vider le matricule
+      devoirsFormEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      formEl.classList.add("hidden");
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      scolariteFormEl.classList.add("hidden");
+      devoirsFormEl.scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("btn-annuler-devoirs").addEventListener("click", () => {
+      devoirsFormEl.classList.add("hidden");
+      devoirsForm.reset();
+    });
+
+    // NOUVEAU: Listeners pour le formulaire de scolarité
+    document.getElementById("btn-gerer-scolarite").addEventListener("click", () => {
+      scolariteForm.reset();
+      document.getElementById("scolarite-matricule").value = ""; // Vider le matricule
+      document.getElementById("scolarite-total-du").value = ""; // Vider le montant total dû
+      scolariteFormEl.classList.remove("hidden");
+      // Cacher les autres formulaires
+      formEl.classList.add("hidden");
+      notesFormEl.classList.add("hidden");
+      presencesFormEl.classList.add("hidden");
+      devoirsFormEl.classList.add("hidden");
+      scolariteFormEl.scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("btn-annuler-scolarite").addEventListener("click", () => {
+      scolariteFormEl.classList.add("hidden");
+      scolariteForm.reset();
+    });
+
+
+    document.getElementById("btn-fermer-fiche").addEventListener("click", () => {
+      ficheEl.classList.add("hidden");
+    });
+
+
+    // Initialisation du sélecteur de classe
+    function populateClassesSelect() {
+      const classes = getClasses();
+      const selectClasse = document.getElementById("classe");
+      const filterClasse = document.getElementById("filter-classe");
+      const filterClassePresence = document.getElementById("filter-classe-presence");
+
+      selectClasse.innerHTML = '<option value="">Sélectionner une classe</option>';
+      filterClasse.innerHTML = '<option value="">Toutes les classes</option>';
+      filterClassePresence.innerHTML = '<option value="">Toutes les classes</option>';
+
+      classes.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.nom;
+        option.textContent = c.nom;
+        selectClasse.appendChild(option);
+
+        const filterOption = option.cloneNode(true);
+        filterClasse.appendChild(filterOption);
+
+        const filterPresenceOption = option.cloneNode(true);
+        filterClassePresence.appendChild(filterPresenceOption);
+      });
+    }
+
+
+    // Filtres et recherche
+    document.getElementById("search-eleves").addEventListener("input", render);
+    document.getElementById("filter-classe").addEventListener("change", render);
+    document.getElementById("filter-statut").addEventListener("change", render);
+    document.getElementById("filter-sexe").addEventListener("change", render);
+
     document.getElementById("btn-reset-filtres").addEventListener("click", () => {
       document.getElementById("search-eleves").value = "";
       document.getElementById("filter-classe").value = "";
       document.getElementById("filter-statut").value = "";
-      renderEleves();
+      document.getElementById("filter-sexe").value = "";
+      render();
+    });
+
+    // Toggle sidebar et dropdown user
+    menuToggle.addEventListener("click", () => {
+      mainSidebar.classList.toggle("-translate-x-full");
+      sidebarOverlay.classList.toggle("hidden");
+      sidebarOverlay.classList.toggle("opacity-0");
+      setTimeout(() => sidebarOverlay.classList.toggle("opacity-50"), 10);
+    });
+
+    sidebarOverlay.addEventListener("click", () => {
+      mainSidebar.classList.add("-translate-x-full");
+      sidebarOverlay.classList.add("opacity-0");
+      setTimeout(() => sidebarOverlay.classList.add("hidden"), 300);
+    });
+
+    userToggle.addEventListener("click", () => {
+      userDropdown.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!userToggle.contains(event.target) && !userDropdown.contains(event.target)) {
+        userDropdown.classList.add("hidden");
+      }
+    });
+
+    // Effet de défilement du header
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        mainHeader.classList.add('scrolled-header');
+      } else {
+        mainHeader.classList.remove('scrolled-header');
+      }
     });
 
 
-    renderEleves();
+    // Initialisation
+    document.addEventListener("DOMContentLoaded", () => {
+      populateClassesSelect();
+      generateNoteInputs(); // For notes form
+      populateMatieresSelect(devoirMatiereSelect); // For homework form
+      render();
+    });
   </script>
 </body>
 

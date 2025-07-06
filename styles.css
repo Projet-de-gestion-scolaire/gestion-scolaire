@@ -1,262 +1,372 @@
-/* --- Couleurs personnalisées --- */
+/* --- Couleurs personnalisées (définies comme dans le Code 2, mais avec les valeurs du Code 1) --- */
 :root {
-  --orange: #f39c12;
-  --vert: #27ae60;
-  --blanc: #ffffff;
-  --gris-fond: #f4f8fb;
-  --gris-texte: #2c3e50;
+    --primary-blue: #0F172A;
+    --accent-blue: #2563EB;
+    --accent-blue-dark: #1D4ED8;
+    --accent-green: #10B981;
+    --accent-green-dark: #059669;
+    --accent-yellow: #FBBF24;
+    --accent-yellow-dark: #F59E0B;
+    --accent-red: #EF4444;
+    --accent-red-dark: #DC2626;
+    --accent-cyan: #06B6D4;
+    --accent-cyan-dark: #0891B2;
+    --accent-purple: #8B5CF6;
+    --accent-purple-dark: #7C3AED;
+    --accent-orange: #F97316;
+    --accent-orange-dark: #EA580C;
+
+    --blanc: #ffffff;
+    --gris-fond: #f4f8fb; /* Correspond à bg-gray-100 */
+    --gris-texte: #2c3e50; /* Utilisé pour le texte général, ou text-gray-800 */
 }
 
 /* --- Global --- */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: var(--gris-fond);
-  color: var(--gris-texte);
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--gris-fond);
+    color: var(--gris-texte); /* Couleur par défaut si non écrasée par Tailwind */
 }
 
-/* --- Header --- */
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--blanc);
-  padding: 1em 2em;
-  border-bottom: 1px solid #ddd;
-  flex-wrap: wrap;
+/* Définitions des couleurs personnalisées en CSS pur pour correspondre aux classes Tailwind que vous utilisez */
+/* Ces règles peuvent ne pas être strictement nécessaires si Tailwind est configuré pour ces couleurs,
+   mais elles sont incluses pour s'assurer que les couleurs sont bien définies en CSS pur également. */
+.bg-primary-blue { background-color: var(--primary-blue); }
+.text-primary-blue { color: var(--primary-blue); }
+.bg-accent-blue { background-color: var(--accent-blue); }
+.hover\:bg-accent-blue:hover { background-color: var(--accent-blue); }
+.bg-accent-blue-dark { background-color: var(--accent-blue-dark); }
+.hover\:bg-accent-blue-dark:hover { background-color: var(--accent-blue-dark); }
+
+.bg-accent-green { background-color: var(--accent-green); }
+.hover\:bg-accent-green-dark:hover { background-color: var(--accent-green-dark); }
+
+.bg-accent-yellow { background-color: var(--accent-yellow); }
+.hover\:bg-accent-yellow-dark:hover { background-color: var(--accent-yellow-dark); }
+
+.bg-accent-red { background-color: var(--accent-red); }
+.hover\:bg-accent-red-dark:hover { background-color: var(--accent-red-dark); }
+
+.bg-accent-cyan { background-color: var(--accent-cyan); }
+.hover\:text-accent-cyan:hover { color: var(--accent-cyan); } /* Ajouté pour les icônes de header */
+.hover\:bg-accent-cyan-dark:hover { background-color: var(--accent-cyan-dark); }
+
+.bg-accent-purple { background-color: var(--accent-purple); }
+.hover\:bg-accent-purple-dark:hover { background-color: var(--accent-purple-dark); }
+
+.bg-accent-orange { background-color: var(--accent-orange); }
+.hover\:bg-accent-orange-dark:hover { background-color: var(--accent-orange-dark); }
+
+
+/* --- Header (styles du Code 2, complétés par le Code 1) --- */
+/* La classe .dashboard-header est un vestige du code initial,
+   les styles sont désormais directement appliqués à l'id #main-header via Tailwind
+   et complétés par scrolled-header. */
+
+#main-header { /* Utilise l'ID de l'élément réel pour plus de spécificité */
+    /* Ces propriétés sont déjà définies par les classes Tailwind dans le HTML
+       mais sont rappelées ici pour clarté ou si vous retirez Tailwind. */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--blanc);
+    padding: 0.5rem 1rem; /* Environ 1em 2em */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Shadow */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.logo-placeholder img {
-  width: 50px;
-  height: 50px;
+
+.scrolled-header {
+    background-color: var(--primary-blue); /* #0F172A */
+    color: var(--blanc);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 1.5em;
+.scrolled-header .text-primary-blue,
+.scrolled-header .text-gray-600,
+.scrolled-header .text-gray-700 {
+    color: var(--blanc) !important; /* Force le texte des icônes et titre à blanc */
 }
 
-.header-icons a {
-  color: var(--gris-texte);
-  font-size: 1.3em;
-  text-decoration: none;
+/* Ajustements des hovers pour le header scrollé */
+.scrolled-header .hover\:text-accent-blue:hover { color: #DBEAFE !important; }
+.scrolled-header .hover\:text-accent-cyan:hover { color: #67E8F9 !important; }
+.scrolled-header .hover\:text-accent-green:hover { color: #86EFAC !important; }
+/* IMPORTANT: L'utilisation de !important est souvent un anti-pattern, mais ici elle est conservée pour respecter le comportement du code original
+   et assurer la prééminence des styles de survol quand le header est scrollé.
+   Dans un projet réel, on chercherait à éviter cela en réorganisant les classes Tailwind ou en gérant les couleurs via JS. */
+
+
+.logo-placeholder img { /* Cette règle semble obsolète si vous utilisez img directement dans le HTML */
+    width: 50px;
+    height: 50px;
 }
 
-.header-icons a:hover {
-  color: var(--vert);
+.header-icons { /* Cette règle semble obsolète si vous utilisez des classes Tailwind directement */
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.header-icons a { /* Cette règle semble obsolète si vous utilisez des classes Tailwind directement */
+    color: var(--gris-texte); /* Couleurs par défaut pour les icônes */
+    font-size: 1.3em;
+    text-decoration: none;
+}
+
+.header-icons a:hover { /* Cette règle semble obsolète si vous utilisez des classes Tailwind directement */
+    color: var(--accent-cyan); /* Couleur de survol pour les icônes dans le header */
 }
 
 /* Notification */
-.notif-icon {
-  position: relative;
+.notif-icon { /* Cette classe n'est pas utilisée directement dans le HTML fourni, c'est l'a.relative */
+    position: relative;
 }
 
-.notif-count {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-  background: #e74c3c;
-  color: white;
-  font-size: 0.7em;
-  padding: 0 6px;
-  border-radius: 12px;
-  font-weight: bold;
+.notif-count { /* Correspond au span avec w-5 h-5 etc. */
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: var(--accent-red);
+    color: white;
+    font-size: 0.7em;
+    padding: 0 6px;
+    border-radius: 12px;
+    font-weight: bold;
 }
 
 /* Utilisateur */
-.user-menu-wrapper {
-  position: relative;
+.user-menu-wrapper { /* Cette classe n'est pas utilisée directement, c'est le div.relative */
+    position: relative;
 }
 
-.user-icon {
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-  color: var(--gris-texte);
-  font-size: 1.2em;
-  cursor: pointer;
+.user-icon { /* La classe est appliquée à un bouton dans le HTML, ajusté ici */
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--gris-texte);
+    font-size: 1.2em;
+    cursor: pointer;
 }
 
-#user-name {
-  font-weight: 600;
-  font-size: 0.95em;
-  white-space: nowrap;
+#user-name { /* Le span dans le bouton user-toggle */
+    font-weight: 600;
+    font-size: 0.95em;
+    white-space: nowrap;
 }
 
 .user-icon i.fa-caret-down {
-  font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 .user-dropdown {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background: var(--blanc);
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  border-radius: 6px;
-  min-width: 140px;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: var(--blanc);
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
 }
 
 .user-dropdown a {
-  padding: 0.7em 1em;
-  color: var(--gris-texte);
-  text-decoration: none;
-  font-weight: 500;
+    padding: 0.7em 1em;
+    color: var(--gris-texte);
+    text-decoration: none;
+    font-weight: 500;
 }
 
 .user-dropdown a:hover {
-  background: var(--vert);
-  color: white;
+    background: var(--accent-green);
+    color: white;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 /* --- Layout Principal --- */
 .main-layout {
-  display: flex;
-  gap: 2em;
-  padding: 2em;
-  max-width: 1200px;
-  margin: 0 auto;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 2em;
+    padding: 2em;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
 }
 
-/* --- Menu latéral --- */
-.menu-box {
-  flex: 0 0 220px;
-  background-color: var(--blanc);
-  padding: 1.5em;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  height: fit-content;
+/* --- Menu latéral (SIDEBAR) --- */
+#main-sidebar {
+    /* Styles pour la barre latérale sur mobile */
+    transform: translateX(-100%); /* Masquée par défaut sur mobile */
+    position: fixed; /* Important pour qu'elle puisse se déplacer hors de l'écran */
+    top: 0;
+    left: 0;
+    height: 100%; /* Prend toute la hauteur de la fenêtre */
+    z-index: 40; /* Pour qu'elle soit au-dessus du contenu */
+    background-color: var(--blanc); /* Assurez-vous d'avoir une couleur de fond */
+    padding: 1.5em; /* Reprendre le padding du .menu-box */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* Reprendre l'ombre du .menu-box */
+    transition: transform 0.3s ease-in-out; /* La transition pour le mouvement */
+
+    /* Styles de la version desktop du Code 2, fusionnés ici pour l'ID */
+    flex: 0 0 220px; /* Sur desktop, elle aura une largeur fixe */
+    /* width: 64; min-h-screen sont déjà définis par Tailwind sur l'élément */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    height: fit-content; /* Pour le desktop, si le contenu est court */
 }
 
-.menu-box nav a {
-  display: block;
-  margin: 0.6em 0;
-  color: var(--gris-texte);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5em;
-  border-radius: 6px;
-  transition: background 0.2s;
+/* Ces classes sont gérées par votre JavaScript pour ouvrir/fermer la sidebar */
+#main-sidebar.active {
+    transform: translateX(0); /* Quand la sidebar est active/ouverte */
+}
+#sidebar-overlay.active {
+    opacity: 0.5;
+    display: block;
 }
 
-.menu-box nav a:hover {
-  background-color: var(--orange);
-  color: white;
+/* Styles pour les éléments du menu latéral (SIDEBAR) */
+#main-sidebar nav a:not(.bg-accent-blue) {
+    color: #4B5563; /* text-gray-700 */
+    font-weight: 600; /* font-semibold */
 }
+
+/* Styles de survol pour les liens du menu (pour le texte et les icônes) */
+#main-sidebar nav a.group:hover span.group-hover\:text-white {
+    color: white !important;
+}
+
+#main-sidebar nav a.group:hover span.text-gray-600 {
+    color: white !important;
+}
+
+#main-sidebar nav a {
+    display: flex; /* Utilisé flex pour aligner icône et texte */
+    align-items: center; /* Centrer verticalement */
+    margin: 0.6em 0;
+    color: var(--gris-texte);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5em;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+#main-sidebar nav a:hover {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
 
 /* --- Zone de contenu --- */
 .content-area {
-  flex: 1;
-  min-width: 300px;
+    flex: 1;
+    min-width: 300px;
 }
 
 /* --- Cartes Statistiques --- */
 #dashboard-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5em;
 }
 
 .card {
-  background: var(--orange);
-  color: white;
-  padding: 1.2em 1.5em;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+    /* Les couleurs de fond sont maintenant des classes Tailwind dans le HTML pour chaque carte */
+    color: white;
+    padding: 1.2em 1.5em;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
+    transform: translateY(-4px);
 }
 
 .card h3 {
-  margin: 0 0 0.5em 0;
-  font-size: 1.1em;
+    margin: 0 0 0.5em 0;
+    font-size: 1.1em;
 }
 
 .card p {
-  font-size: 1.8em;
-  font-weight: bold;
+    font-size: 1.8em;
+    font-weight: bold;
 }
 
 /* --- Footer --- */
 .dashboard-footer {
-  background-color: var(--gris-texte);
-  color: var(--blanc);
-  text-align: center;
-  padding: 1.5em 1em;
-  font-size: 0.9em;
-  border-top: 3px solid var(--vert);
-  margin-top: 2em;
+    background-color: var(--primary-blue);
+    color: var(--blanc);
+    text-align: center;
+    padding: 1.5em 1em;
+    font-size: 0.9em;
+    border-top: 3px solid var(--accent-green);
+    margin-top: 2em;
 }
 
 .dashboard-footer .footer-content {
-  max-width: 900px;
-  margin: 0 auto;
-  line-height: 1.6;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
 }
 
 .dashboard-footer strong {
-  color: var(--orange);
+    color: var(--accent-orange);
 }
 
 /* --- Bouton Remonter --- */
 #btn-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: var(--orange);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 1.5em;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  display: none;
-  z-index: 1000;
-  transition: background 0.3s;
-}
-
-#btn-top:hover {
-  background-color: #e67e22;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* Masqué par défaut, affiché par JS */
+    z-index: 1000;
+    transition: background 0.3s;
 }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-  .main-layout {
-    flex-direction: column;
-    padding: 1em;
-  }
+    .main-layout {
+        flex-direction: column;
+        padding: 1em;
+    }
 
-  .menu-box {
-    width: 100%;
-    flex: none;
-  }
+    /* Le .menu-box ne doit pas redéfinir la largeur à 100% sur mobile s'il est déjà géré par #main-sidebar */
+    /* .menu-box {
+        width: 100%;
+        flex: none;
+    } */
 
-  .dashboard-header h1 {
-    font-size: 1.3em;
-  }
+    .dashboard-header h1 {
+        font-size: 1.3em;
+    }
 
-  #dashboard-cards {
-    grid-template-columns: 1fr;
-  }
+    #dashboard-cards {
+        grid-template-columns: 1fr;
+    }
 
-  .dashboard-footer p {
-    font-size: 0.85em;
-    line-height: 1.4;
-  }
+    .dashboard-footer p {
+        font-size: 0.85em;
+        line-height: 1.4;
+    }
 }

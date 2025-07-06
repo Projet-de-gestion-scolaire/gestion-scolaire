@@ -1,40 +1,1042 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Paramètres de l'établissement</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paramètres de l'Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Définitions des couleurs personnalisées en CSS pur */
+        /* Celles-ci doivent correspondre aux classes Tailwind que vous utilisez */
+        .bg-primary-blue {
+            background-color: #0F172A;
+        }
+
+        .text-primary-blue {
+            color: #0F172A;
+        }
+
+        .bg-accent-blue {
+            background-color: #2563EB;
+        }
+
+        .hover\:bg-accent-blue:hover {
+            background-color: #2563EB;
+        }
+
+        /* Assure la couleur de survol */
+        .bg-accent-blue-dark {
+            background-color: #1D4ED8;
+        }
+
+        /* Pour les états 'dark' des boutons par exemple */
+        .hover\:bg-accent-blue-dark:hover {
+            background-color: #1D4ED8;
+        }
+
+        .bg-accent-green {
+            background-color: #10B981;
+        }
+
+        .hover\:bg-accent-green-dark:hover {
+            background-color: #059669;
+        }
+
+        .bg-accent-yellow {
+            background-color: #FBBF24;
+        }
+
+        .hover\:bg-accent-yellow-dark:hover {
+            background-color: #F59E0B;
+        }
+
+        .bg-accent-red {
+            background-color: #EF4444;
+        }
+
+        .hover\:bg-accent-red-dark:hover {
+            background-color: #DC2626;
+        }
+
+        .bg-accent-cyan {
+            background-color: #06B6D4;
+        }
+
+        .hover\:bg-accent-cyan-dark:hover {
+            background-color: #0891B2;
+        }
+
+        /* NOUVELLES COULEURS (ajustées par rapport à l'autre fichier) */
+        .bg-accent-purple {
+            background-color: #8B5CF6;
+        }
+
+        .hover\:bg-accent-purple-dark:hover {
+            background-color: #7C3AED;
+        }
+
+        .bg-accent-orange {
+            background-color: #F97316;
+        }
+
+        .hover\:bg-accent-orange-dark:hover {
+            background-color: #EA580C;
+        }
+
+
+        /* Styles pour les éléments du menu latéral (SIDEBAR) */
+        #main-sidebar nav a:not(.bg-accent-blue) {
+            color: #4B5563;
+            font-weight: 600;
+        }
+
+        #main-sidebar nav a.group:hover span.group-hover\:text-white {
+            color: white !important;
+        }
+
+        #main-sidebar nav a.group:hover span.text-gray-600 {
+            color: white !important;
+        }
+
+        /* Styles pour le header au défilement */
+        .scrolled-header {
+            background-color: #0F172A;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scrolled-header .text-primary-blue {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-600 {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-700 {
+            color: white;
+        }
+
+        .scrolled-header .hover\:text-accent-blue:hover {
+            color: #DBEAFE;
+        }
+
+        .scrolled-header .hover\:text-accent-cyan:hover {
+            color: #67E8F9;
+        }
+
+        .scrolled-header .hover\:text-accent-green:hover {
+            color: #86EFAC;
+        }
+
+        /* Styles pour la barre latérale sur mobile */
+        #main-sidebar.active {
+            transform: translateX(0);
+        }
+
+        #sidebar-overlay.active {
+            opacity: 0.5;
+            display: block;
+        }
+
+        /* Styles pour les notifications dans le header */
+        #unread-notification-count {
+            display: flex; /* Assure le centrage du texte */
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>Paramètres</h1>
-    <nav>
-      <a href="index.html">Accueil</a>
-      <a href="eleves.html">Élèves</a>
-      <a href="emploi-du-temps.html">Emploi du temps</a>
-      <a href="portail-parents.html">Portail parents</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notifications.html">Notifications</a>
-      <a href="parametres.html">Paramètres</a>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Informations de l'établissement</h2>
-      <form id="form-param">
-        <input type="text" id="nom-etab" placeholder="Nom de l'établissement" required>
-        <input type="text" id="adresse-etab" placeholder="Adresse" required>
-        <input type="tel" id="tel-etab" placeholder="Téléphone" required>
-        <button type="submit">Enregistrer</button>
-      </form>
-    </section>
-    <section>
-      <h2>Résumé</h2>
-      <div id="resume-param">
-        <!-- Résumé affiché dynamiquement -->
-      </div>
-    </section>
-  </main>
-  <script src="script.js"></script>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <header id="main-header"
+        class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
+                    class="fas fa-bell text-xl"></i>
+                <span id="unread-notification-count"
+                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5">0</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
+                        class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i
+                    class="fas fa-cog text-xl"></i></a>
+        </div>
+    </header>
+
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar"
+            class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+                </a>
+
+                <a href="eleve.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+
+                <a href="classes.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+                </a>
+
+                <a href="emploi.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du
+                        temps</span>
+                </a>
+
+                <a href="professeur.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+                </a>
+
+                <a href="notification.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                </a>
+
+                <a href="parametres.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                    <span class="text-xl mr-3 text-white">⚙</span>
+                    <span class="hidden md:inline text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <h2 class="text-2xl font-bold mb-6 text-primary-blue">Paramètres</h2>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Accès au Portail Élève / Parent</h3>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <p class="text-sm text-gray-600 mb-3">
+                        Les parents et les élèves peuvent consulter la fiche détaillée d'un élève (notes, absences, etc.) en saisissant son matricule.
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="eleve-matricule-search" placeholder="Saisir le matricule de l'élève"
+                            class="border border-gray-300 rounded px-3 py-1 flex-grow focus:outline-none focus:ring-1 focus:ring-accent-blue" />
+                        <button id="go-to-eleve-fiche" class="bg-accent-orange hover:bg-accent-orange-dark text-white px-4 py-2 rounded shadow-md text-sm">
+                            Voir la Fiche
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Utilisateurs</h3>
+                <form id="form-user" class="flex flex-col gap-4 mb-6">
+                    <div>
+                        <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Nom d'utilisateur:</label>
+                        <input type="text" id="user-name" placeholder="Nom complet ou pseudo" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                    </div>
+                    <div>
+                        <label for="user-role" class="block text-sm font-medium text-gray-700 mb-1">Rôle:</label>
+                        <select id="user-role" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="">Sélectionner un rôle</option>
+                            <option value="admin">Administrateur</option>
+                            <option value="professor">Professeur</option>
+                            <option value="student">Élève</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="user-password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe (si nouveau/modifié):</label>
+                        <input type="password" id="user-password" placeholder="Laisser vide pour ne pas changer"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" id="btn-submit-user"
+                            class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter Utilisateur</button>
+                        <button type="button" id="btn-cancel-user"
+                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                    </div>
+                </form>
+
+                <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Utilisateurs</h4>
+                <div class="overflow-auto shadow-sm rounded-lg border border-gray-200">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-accent-blue text-white">
+                            <tr>
+                                <th class="py-2 px-3 text-left">Nom</th>
+                                <th class="py-2 px-3 text-left">Rôle</th>
+                                <th class="py-2 px-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-users" class="text-gray-700">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Tâches (Quotidiennes, Hebdomadaires, etc.)</h3>
+                <form id="form-task" class="flex flex-col gap-4 mb-6">
+                    <div>
+                        <label for="task-description" class="block text-sm font-medium text-gray-700 mb-1">Description de la tâche:</label>
+                        <input type="text" id="task-description" placeholder="Ex: Vérifier les absences du jour" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                    </div>
+                    <div>
+                        <label for="task-frequency" class="block text-sm font-medium text-gray-700 mb-1">Fréquence:</label>
+                        <select id="task-frequency" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="daily">Journalière</option>
+                            <option value="weekly">Hebdomadaire</option>
+                            <option value="monthly">Mensuelle</option>
+                            <option value="quarterly">Trimestrielle</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" id="btn-submit-task"
+                            class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter Tâche</button>
+                        <button type="button" id="btn-cancel-task"
+                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                    </div>
+                </form>
+
+                <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Tâches</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="tasks-container">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">Journalières</h5>
+                        <ul id="task-daily-list" class="space-y-2 text-sm text-gray-700"></ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">Hebdomadaires</h5>
+                        <ul id="task-weekly-list" class="space-y-2 text-sm text-gray-700"></ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">Mensuelles</h5>
+                        <ul id="task-monthly-list" class="space-y-2 text-sm text-gray-700"></ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h5 class="font-semibold text-gray-800 mb-2">Trimestrielles</h5>
+                        <ul id="task-quarterly-list" class="space-y-2 text-sm text-gray-700"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Activités Récentes</h3>
+                <div id="recent-activities-list" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>
+                </div>
+                <button id="clear-activities-btn" class="mt-4 bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full">
+                    Effacer les activités
+                </button>
+            </div>
+
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Informations Générales de l'École</h3>
+                <form id="form-general-settings" class="space-y-4">
+                    <div>
+                        <label for="school-name" class="block text-sm font-medium text-gray-700 mb-1">Nom de l'École:</label>
+                        <input type="text" id="school-name"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            placeholder="Nom de votre établissement" />
+                    </div>
+                    <div>
+                        <label for="school-address" class="block text-sm font-medium text-gray-700 mb-1">Adresse:</label>
+                        <input type="text" id="school-address"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            placeholder="Adresse complète" />
+                    </div>
+                    <div>
+                        <label for="school-phone" class="block text-sm font-medium text-gray-700 mb-1">Téléphone:</label>
+                        <input type="tel" id="school-phone"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            placeholder="+224 6XX XX XX XX" />
+                    </div>
+                    <div>
+                        <label for="school-email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+                        <input type="email" id="school-email"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            placeholder="contact@ecole.com" />
+                    </div>
+                    <button type="submit" class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">
+                        Enregistrer les informations
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Préférences d'Affichage</h3>
+                <form id="form-display-settings" class="space-y-4">
+                    <div>
+                        <label for="theme-select" class="block text-sm font-medium text-gray-700 mb-1">Thème de l'application:</label>
+                        <select id="theme-select"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="light">Clair</option>
+                            <option value="dark">Sombre (Non implémenté)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="font-size" class="block text-sm font-medium text-gray-700 mb-1">Taille de police (body):</label>
+                        <select id="font-size"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="small">Petite</option>
+                            <option value="normal">Normale</option>
+                            <option value="large">Grande</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md w-full">
+                        Appliquer les préférences
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Données</h3>
+                <div class="space-y-4">
+                    <p class="text-gray-700">Exporter toutes les données de l'application (classes, élèves, etc.) au format JSON.</p>
+                    <button id="export-data-btn" class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">
+                        Exporter les données
+                    </button>
+                    <hr class="border-gray-200">
+                    <p class="text-gray-700">
+                        <span class="font-bold text-red-600">Attention:</span> Cette action supprimera TOUTES les données stockées localement (élèves, classes, matières, notifications, etc.). Cette action est irréversible.
+                    </p>
+                    <button id="reset-data-btn" class="bg-accent-red hover:bg-accent-red-dark text-white px-4 py-2 rounded shadow-md w-full">
+                        Réinitialiser toutes les données
+                    </button>
+                </div>
+            </div>
+
+            <div id="message-box" class="hidden mt-6 px-4 py-3 rounded text-sm font-medium"></div>
+
+        </main>
+    </div>
+
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Références aux éléments du DOM pour les paramètres généraux
+        const formGeneralSettings = document.getElementById("form-general-settings");
+        const inputSchoolName = document.getElementById("school-name");
+        const inputSchoolAddress = document.getElementById("school-address");
+        const inputSchoolPhone = document.getElementById("school-phone");
+        const inputSchoolEmail = document.getElementById("school-email");
+
+        // Références aux éléments du DOM pour les préférences d'affichage
+        const formDisplaySettings = document.getElementById("form-display-settings");
+        const selectTheme = document.getElementById("theme-select");
+        const selectFontSize = document.getElementById("font-size");
+
+        // Références aux éléments du DOM pour la gestion des données
+        const exportDataBtn = document.getElementById("export-data-btn");
+        const resetDataBtn = document.getElementById("reset-data-btn");
+
+        // NOUVEAU (MAJ): Références aux éléments du DOM pour le Portail Élève / Parent
+        const inputEleveMatriculeSearch = document.getElementById("eleve-matricule-search");
+        const goToEleveFicheBtn = document.getElementById("go-to-eleve-fiche");
+
+        // NOUVEAU: Références aux éléments du DOM pour la Gestion des Utilisateurs
+        const formUser = document.getElementById("form-user");
+        const inputUserName = document.getElementById("user-name");
+        const selectUserRole = document.getElementById("user-role");
+        const inputUserPassword = document.getElementById("user-password");
+        const btnSubmitUser = document.getElementById("btn-submit-user");
+        const btnCancelUser = document.getElementById("btn-cancel-user");
+        const tableUsers = document.getElementById("table-users");
+
+        // NOUVEAU: Références aux éléments du DOM pour la Gestion des Tâches
+        const formTask = document.getElementById("form-task");
+        const inputTaskDescription = document.getElementById("task-description");
+        const selectTaskFrequency = document.getElementById("task-frequency");
+        const btnSubmitTask = document.getElementById("btn-submit-task");
+        const btnCancelTask = document.getElementById("btn-cancel-task");
+        const taskDailyList = document.getElementById("task-daily-list");
+        const taskWeeklyList = document.getElementById("task-weekly-list");
+        const taskMonthlyList = document.getElementById("task-monthly-list");
+        const taskQuarterlyList = document.getElementById("task-quarterly-list");
+
+        // NOUVEAU: Références aux éléments du DOM pour les Activités Récentes
+        const recentActivitiesList = document.getElementById("recent-activities-list");
+        const clearActivitiesBtn = document.getElementById("clear-activities-btn");
+
+        const messageBox = document.getElementById("message-box");
+        const unreadNotificationCount = document.getElementById("unread-notification-count"); // Pour le header
+
+        // Éléments DOM pour la responsivité (récupérés des autres pages)
+        const menuToggle = document.getElementById("menu-toggle");
+        const mainSidebar = document.getElementById("main-sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const userToggle = document.getElementById("user-toggle");
+        const userDropdown = document.getElementById("user-dropdown");
+        const mainHeader = document.getElementById("main-header");
+
+
+        let editUserId = null;
+        let editTaskId = null;
+
+
+        // Helpers stockage
+        const getAppSettings = () => JSON.parse(localStorage.getItem("appSettings") || "{}");
+        const setAppSettings = data => {
+            localStorage.setItem("appSettings", JSON.stringify(data));
+            applyDisplaySettings();
+            logActivity("Paramètres mis à jour.");
+        };
+
+        const getNotifications = () => JSON.parse(localStorage.getItem("notifications") || "[]"); // Pour le compteur du header
+        const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]"); // Pour le lien vers la fiche élève
+
+        // NOUVEAU: Helpers pour les utilisateurs
+        const getUsers = () => JSON.parse(localStorage.getItem("users") || '[]');
+        const setUsers = data => {
+            localStorage.setItem("users", JSON.stringify(data));
+            logActivity("Liste des utilisateurs mise à jour.");
+        };
+
+        // NOUVEAU: Helpers pour les tâches
+        const getTasks = () => JSON.parse(localStorage.getItem("tasks") || '[]');
+        const setTasks = data => {
+            localStorage.setItem("tasks", JSON.stringify(data));
+            logActivity("Liste des tâches mise à jour.");
+        };
+
+        // NOUVEAU: Helpers pour les activités récentes
+        const getRecentActivities = () => JSON.parse(localStorage.getItem("recentActivities") || '[]');
+        const setRecentActivities = data => localStorage.setItem("recentActivities", JSON.stringify(data));
+
+        // Fonction pour logger une activité
+        function logActivity(description) {
+            let activities = getRecentActivities();
+            const newActivity = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString('fr-FR', {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                }),
+                description: description
+            };
+            activities.unshift(newActivity); // Ajout au début
+            // Limiter le nombre d'activités pour éviter un localStorage trop gros
+            if (activities.length > 20) {
+                activities = activities.slice(0, 20);
+            }
+            setRecentActivities(activities);
+            renderRecentActivities(); // Re-render la liste des activités
+        }
+
+
+        const showMessage = (txt, color = "green") => {
+            messageBox.textContent = txt;
+            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${
+                color === 'green' ? 'bg-green-100 text-green-700' :
+                color === 'red' ? 'bg-red-100 text-red-700' :
+                color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                'bg-gray-100 text-gray-700'
+                }`;
+            messageBox.classList.remove("hidden");
+            setTimeout(() => messageBox.classList.add("hidden"), 3000);
+        };
+
+        // --- Gestion des Paramètres Généraux de l'École ---
+        formGeneralSettings.addEventListener("submit", e => {
+            e.preventDefault();
+            let settings = getAppSettings();
+            settings.school = {
+                name: inputSchoolName.value.trim(),
+                address: inputSchoolAddress.value.trim(),
+                phone: inputSchoolPhone.value.trim(),
+                email: inputSchoolEmail.value.trim()
+            };
+            setAppSettings(settings);
+            showMessage("Informations générales de l'école enregistrées avec succès.", "green");
+        });
+
+        function loadGeneralSettings() {
+            const settings = getAppSettings();
+            if (settings.school) {
+                inputSchoolName.value = settings.school.name || '';
+                inputSchoolAddress.value = settings.school.address || '';
+                inputSchoolPhone.value = settings.school.phone || '';
+                inputSchoolEmail.value = settings.school.email || '';
+            }
+        }
+
+        // --- Gestion des Préférences d'Affichage ---
+        formDisplaySettings.addEventListener("submit", e => {
+            e.preventDefault();
+            let settings = getAppSettings();
+            settings.display = {
+                theme: selectTheme.value,
+                fontSize: selectFontSize.value
+            };
+            setAppSettings(settings);
+            showMessage("Préférences d'affichage appliquées.", "green");
+            applyDisplaySettings();
+        });
+
+        function loadDisplaySettings() {
+            const settings = getAppSettings();
+            if (settings.display) {
+                selectTheme.value = settings.display.theme || 'light';
+                selectFontSize.value = settings.display.fontSize || 'normal';
+            }
+            applyDisplaySettings();
+        }
+
+        function applyDisplaySettings() {
+            const settings = getAppSettings();
+            const body = document.body;
+
+            body.classList.remove('text-sm', 'text-base', 'text-lg');
+            if (settings.display && settings.display.fontSize === 'small') {
+                body.classList.add('text-sm');
+            } else if (settings.display && settings.display.fontSize === 'large') {
+                body.classList.add('text-lg');
+            } else {
+                body.classList.add('text-base');
+            }
+            // Pour le thème, vous devrez ajouter une logique CSS/JS plus complexe
+            // Par exemple, body.classList.toggle('dark-theme', settings.display.theme === 'dark');
+        }
+
+       // --- MAJ: Gestion du Portail Élève / Parent ---
+        goToEleveFicheBtn.addEventListener('click', () => {
+            const matricule = inputEleveMatriculeSearch.value.trim();
+            if (!matricule) {
+                return showMessage("Veuillez entrer un matricule d'élève pour voir la fiche.", "red");
+            }
+            const eleves = getEleves();
+            const eleve = eleves.find(el => el.matricule === matricule);
+
+            if (eleve) {
+                // REDIRECTION VERS LA PAGE FICHE-ELEVE.HTML
+                window.location.href = `fiche-eleve.html?matricule=${matricule}`;
+                logActivity(`Consultation fiche élève: ${eleve.nom} (${eleve.matricule})`);
+            } else {
+                showMessage(`Aucun élève trouvé avec le matricule: ${matricule}. Veuillez vérifier le matricule.`, "red");
+            }
+        });
+
+        // --- NOUVEAU: Gestion des Utilisateurs ---
+        formUser.addEventListener("submit", e => {
+            e.preventDefault();
+            const userName = inputUserName.value.trim();
+            const userRole = selectUserRole.value;
+            const userPassword = inputUserPassword.value;
+
+            if (!userName || !userRole) {
+                return showMessage("Le nom d'utilisateur et le rôle sont requis.", "red");
+            }
+
+            let users = getUsers();
+
+            if (editUserId !== null) {
+                const index = users.findIndex(u => u.id === editUserId);
+                if (index > -1) {
+                    users[index].name = userName;
+                    users[index].role = userRole;
+                    if (userPassword) {
+                        users[index].password = userPassword;
+                    }
+                    showMessage("Utilisateur modifié avec succès.", "green");
+                    logActivity(`Modification utilisateur: ${userName} (ID: ${editUserId})`);
+                }
+            } else {
+                if (users.some(u => u.name.toLowerCase() === userName.toLowerCase())) {
+                    return showMessage("Un utilisateur avec ce nom existe déjà.", "red");
+                }
+                const newUser = {
+                    id: Date.now(),
+                    name: userName,
+                    role: userRole,
+                    password: userPassword || 'password123'
+                };
+                users.push(newUser);
+                showMessage("Utilisateur ajouté avec succès.", "green");
+                logActivity(`Ajout nouvel utilisateur: ${userName}`);
+            }
+
+            setUsers(users);
+            formUser.reset();
+            editUserId = null;
+            btnSubmitUser.textContent = "Ajouter Utilisateur";
+            btnCancelUser.classList.add("hidden");
+            renderUsers();
+        });
+
+        btnCancelUser.addEventListener("click", () => {
+            formUser.reset();
+            editUserId = null;
+            btnSubmitUser.textContent = "Ajouter Utilisateur";
+            btnCancelUser.classList.add("hidden");
+            inputUserPassword.setAttribute('placeholder', 'Laisser vide pour ne pas changer');
+        });
+
+        function renderUsers() {
+            const users = getUsers();
+            tableUsers.innerHTML = users.length === 0 ? `<tr><td colspan="3" class="text-center py-4 text-gray-500">Aucun utilisateur enregistré.</td></tr>` :
+                users.map(user => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-3">${user.name}</td>
+                        <td class="py-2 px-3">${user.role}</td>
+                        <td class="py-2 px-3 flex space-x-2">
+                            <button onclick="editUser(${user.id})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="deleteUser(${user.id})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+        }
+
+        window.editUser = id => {
+            const users = getUsers();
+            const userToEdit = users.find(u => u.id === id);
+            if (userToEdit) {
+                inputUserName.value = userToEdit.name;
+                selectUserRole.value = userToEdit.role;
+                inputUserPassword.value = '';
+                inputUserPassword.setAttribute('placeholder', 'Entrer un nouveau mot de passe');
+                editUserId = id;
+                btnSubmitUser.textContent = "Modifier Utilisateur";
+                btnCancelUser.classList.remove("hidden");
+                inputUserName.focus();
+                showMessage(`Modification de l'utilisateur: ${userToEdit.name}`, "blue");
+            }
+        };
+
+        window.deleteUser = id => {
+            let users = getUsers();
+            const index = users.findIndex(u => u.id === id);
+            if (index > -1) {
+                const userName = users[index].name;
+                if (confirm(`Supprimer l'utilisateur "${userName}" ?`)) {
+                    users.splice(index, 1);
+                    setUsers(users);
+                    showMessage("Utilisateur supprimé avec succès.", "green");
+                    logActivity(`Suppression utilisateur: ${userName}`);
+                    renderUsers();
+                    if (editUserId === id) {
+                        formUser.reset();
+                        editUserId = null;
+                        btnSubmitUser.textContent = "Ajouter Utilisateur";
+                        btnCancelUser.classList.add("hidden");
+                        inputUserPassword.setAttribute('placeholder', 'Laisser vide pour ne pas changer');
+                    }
+                }
+            }
+        };
+
+        // --- NOUVEAU: Gestion des Tâches ---
+        formTask.addEventListener("submit", e => {
+            e.preventDefault();
+            const description = inputTaskDescription.value.trim();
+            const frequency = selectTaskFrequency.value;
+
+            if (!description) {
+                return showMessage("La description de la tâche ne peut pas être vide.", "red");
+            }
+
+            let tasks = getTasks();
+
+            if (editTaskId !== null) {
+                const index = tasks.findIndex(t => t.id === editTaskId);
+                if (index > -1) {
+                    tasks[index].description = description;
+                    tasks[index].frequency = frequency;
+                    showMessage("Tâche modifiée avec succès.", "green");
+                    logActivity(`Modification tâche: "${description}" (ID: ${editTaskId})`);
+                }
+            } else {
+                const newTask = {
+                    id: Date.now(),
+                    description,
+                    frequency,
+                    completed: false
+                };
+                tasks.push(newTask);
+                showMessage("Tâche ajoutée avec succès.", "green");
+                logActivity(`Ajout nouvelle tâche: "${description}"`);
+            }
+
+            setTasks(tasks);
+            formTask.reset();
+            editTaskId = null;
+            btnSubmitTask.textContent = "Ajouter Tâche";
+            btnCancelTask.classList.add("hidden");
+            renderTasks();
+        });
+
+        btnCancelTask.addEventListener("click", () => {
+            formTask.reset();
+            editTaskId = null;
+            btnSubmitTask.textContent = "Ajouter Tâche";
+            btnCancelTask.classList.add("hidden");
+        });
+
+        function renderTasks() {
+            const tasks = getTasks();
+            taskDailyList.innerHTML = '';
+            taskWeeklyList.innerHTML = '';
+            taskMonthlyList.innerHTML = '';
+            taskQuarterlyList.innerHTML = '';
+
+            const noTaskMessage = '<li>Aucune tâche pour cette catégorie.</li>';
+
+            const dailyTasks = tasks.filter(t => t.frequency === 'daily');
+            const weeklyTasks = tasks.filter(t => t.frequency === 'weekly');
+            const monthlyTasks = tasks.filter(t => t.frequency === 'monthly');
+            const quarterlyTasks = tasks.filter(t => t.frequency === 'quarterly');
+
+            taskDailyList.innerHTML = dailyTasks.length === 0 ? noTaskMessage : dailyTasks.map(createTaskListItem).join('');
+            taskWeeklyList.innerHTML = weeklyTasks.length === 0 ? noTaskMessage : weeklyTasks.map(createTaskListItem).join('');
+            taskMonthlyList.innerHTML = monthlyTasks.length === 0 ? noTaskMessage : monthlyTasks.map(createTaskListItem).join('');
+            taskQuarterlyList.innerHTML = quarterlyTasks.length === 0 ? noTaskMessage : quarterlyTasks.map(createTaskListItem).join('');
+
+            function createTaskListItem(task) {
+                const completedClass = task.completed ? 'line-through text-gray-500' : '';
+                return `
+                    <li class="flex items-center justify-between p-2 rounded-md ${task.completed ? 'bg-gray-100' : 'bg-white'} border border-gray-200">
+                        <span class="${completedClass} flex-grow">${task.description}</span>
+                        <div class="flex space-x-2 flex-shrink-0 ml-2">
+                            <button onclick="toggleTaskCompletion(${task.id})" class="text-xs ${task.completed ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'} text-white px-2 py-1 rounded shadow-sm">
+                                ${task.completed ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-check"></i>'}
+                            </button>
+                            <button onclick="editTask(${task.id})" class="text-xs bg-accent-blue hover:bg-accent-blue-dark text-white px-2 py-1 rounded shadow-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteTask(${task.id})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                `;
+            }
+        }
+
+        window.editTask = id => {
+            const tasks = getTasks();
+            const taskToEdit = tasks.find(t => t.id === id);
+            if (taskToEdit) {
+                inputTaskDescription.value = taskToEdit.description;
+                selectTaskFrequency.value = taskToEdit.frequency;
+                editTaskId = id;
+                btnSubmitTask.textContent = "Modifier Tâche";
+                btnCancelTask.classList.remove("hidden");
+                inputTaskDescription.focus();
+                showMessage(`Modification de la tâche: "${taskToEdit.description}"`, "blue");
+            }
+        };
+
+        window.deleteTask = id => {
+            let tasks = getTasks();
+            const index = tasks.findIndex(t => t.id === id);
+            if (index > -1) {
+                const taskDescription = tasks[index].description;
+                if (confirm(`Supprimer la tâche "${taskDescription}" ?`)) {
+                    tasks.splice(index, 1);
+                    setTasks(tasks);
+                    showMessage("Tâche supprimée avec succès.", "green");
+                    logActivity(`Suppression tâche: "${taskDescription}"`);
+                    renderTasks();
+                    if (editTaskId === id) {
+                        formTask.reset();
+                        editTaskId = null;
+                        btnSubmitTask.textContent = "Ajouter Tâche";
+                        btnCancelTask.classList.add("hidden");
+                    }
+                }
+            }
+        };
+
+        window.toggleTaskCompletion = id => {
+            let tasks = getTasks();
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                setTasks(tasks);
+                renderTasks();
+                showMessage(`Tâche "${task.description}" marquée comme ${task.completed ? 'terminée' : 'non terminée'}.`, "green");
+                logActivity(`Tâche "${task.description}" marquée comme ${task.completed ? 'terminée' : 'non terminée'}.`);
+            }
+        };
+
+
+        // --- NOUVEAU: Activités Récentes ---
+        function renderRecentActivities() {
+            const activities = getRecentActivities();
+            if (activities.length === 0) {
+                recentActivitiesList.innerHTML = '<p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>';
+                clearActivitiesBtn.classList.add('hidden');
+            } else {
+                clearActivitiesBtn.classList.remove('hidden');
+                recentActivitiesList.innerHTML = activities.map(activity => `
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm flex justify-between items-center">
+                        <span class="text-gray-800">${activity.description}</span>
+                        <span class="text-gray-500 text-xs">${activity.timestamp}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        clearActivitiesBtn.addEventListener('click', () => {
+            if (confirm("Voulez-vous vraiment effacer toutes les activités récentes ?")) {
+                localStorage.removeItem("recentActivities");
+                showMessage("Activités récentes effacées.", "green");
+                renderRecentActivities();
+            }
+        });
+
+
+        // --- Gestion des Données (Fonctions existantes) ---
+        exportDataBtn.addEventListener('click', () => {
+            const allData = {};
+            const keysToExport = ["eleves", "classes", "matieres", "examResults", "notifications", "appSettings", "professeurs", "emplois", "users", "tasks", "recentActivities"]; // MISES À JOUR AVEC LES NOUVELLES CLÉS
+
+            keysToExport.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    try {
+                        allData[key] = JSON.parse(data);
+                    } catch (e) {
+                        allData[key] = data;
+                    }
+                }
+            });
+
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "gestion_ecole_data.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessage("Données exportées avec succès !", "green");
+            logActivity("Données de l'application exportées.");
+        });
+
+        resetDataBtn.addEventListener('click', () => {
+            if (confirm("Êtes-vous SÛR de vouloir réinitialiser toutes les données ? Cette action est irréversible et supprimera tous les élèves, classes, matières, notifications, utilisateurs, tâches, etc.")) {
+                if (confirm("CONFIRMATION FINALE : Toutes les données seront effacées. Êtes-vous ABSOLUMENT CERTAIN ?")) {
+                    localStorage.clear();
+                    showMessage("Toutes les données ont été réinitialisées.", "green");
+                    logActivity("Toutes les données ont été réinitialisées."); // Cette activité ne sera pas sauvegardée si le localStorage est effacé
+                    setTimeout(() => window.location.reload(), 1000);
+                }
+            }
+        });
+
+        // --- Mise à jour du compteur de notifications non lues dans le header ---
+        function updateUnreadCount() {
+            const notifications = getNotifications();
+            const unreadCount = notifications.filter(n => !n.read).length;
+            unreadNotificationCount.textContent = unreadCount;
+            if (unreadCount > 0) {
+                unreadNotificationCount.classList.remove('hidden');
+            } else {
+                unreadNotificationCount.classList.add('hidden');
+            }
+        }
+
+        // --- Fonctions de Responsivité et d'Interaction UI (récupérées des autres pages) ---
+        menuToggle.addEventListener("click", () => {
+            mainSidebar.classList.toggle("active");
+            sidebarOverlay.classList.toggle("active");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            mainSidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("active");
+        });
+
+        userToggle.addEventListener("click", () => {
+            userDropdown.classList.toggle("hidden");
+        });
+
+        // Fermer le dropdown si on clique en dehors
+        window.addEventListener("click", e => {
+            if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+
+        // Sticky header on scroll
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 0) {
+                mainHeader.classList.add("scrolled-header");
+            } else {
+                mainHeader.classList.remove("scrolled-header");
+            }
+        });
+
+        // Initialisation au chargement de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            loadGeneralSettings();
+            loadDisplaySettings();
+            renderUsers();
+            renderTasks();
+            renderRecentActivities();
+            updateUnreadCount();
+        });
+
+        // Écouter les changements dans le localStorage pour les compteurs et re-render
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'notifications') {
+                updateUnreadCount();
+            }
+            if (event.key === 'appSettings') {
+                loadGeneralSettings();
+                loadDisplaySettings();
+            }
+            if (event.key === 'users') {
+                renderUsers();
+            }
+            if (event.key === 'tasks') {
+                renderTasks();
+            }
+            if (event.key === 'recentActivities') {
+                renderRecentActivities();
+            }
+        });
+    </script>
 </body>
+
 </html>

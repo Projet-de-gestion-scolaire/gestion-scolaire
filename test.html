@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <title>Tableau de Bord - Gestion Scolaire</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .dashboard-header {
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em 0.7em 1em;
+      min-height: 60px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .logo-placeholder img {
+      height: 38px;
+      vertical-align: middle;
+    }
+
+    .dashboard-header h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.2em;
+    }
+
+    .notif-icon,
+    .settings-icon,
+    .user-icon {
+      font-size: 1.3em;
+      color: var(--header-color, #fff);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .notif-count {
+      position: absolute;
+      top: -7px;
+      right: -10px;
+      background: #e74c3c;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8em;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+
+    .user-menu-wrapper {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      background: var(--header-bg, #2c3e50);
+      color: var(--header-color, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+      min-width: 120px;
+      display: none;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .user-dropdown a {
+      color: var(--header-color, #fff);
+      padding: 0.7em 1.2em;
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.2s;
+    }
+
+    .user-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .user-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .user-menu-wrapper:hover .user-dropdown,
+    .user-menu-wrapper:focus-within .user-dropdown {
+      display: flex;
+    }
+
+    .logout-header-btn {
+      background: var(--btn-suppr-bg, #e74c3c);
+      color: #fff;
+      border-radius: 5px;
+      padding: 7px 18px;
+      font-size: 1em;
+      font-weight: 500;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .logout-header-btn:hover {
+      background: #c0392b !important;
+      color: #fff !important;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="logo-placeholder">
+      <a href="index.html"><img src="icone-ecole.png" alt="Logo école" class="h-10" /></a>
+    </div>
+    <h1>Tableau de Bord</h1>
+    <div class="header-icons flex items-center gap-5">
+      <a href="notification.html" title="Notifications" class="notif-icon relative">
+        <i class="fas fa-bell"></i>
+        <span class="notif-count absolute -top-2 -right-2">3</span>
+      </a>
+      <div class="user-menu-wrapper relative">
+        <a href="#" id="user-toggle" title="Utilisateur" class="user-icon flex items-center gap-1">
+          <i class="fas fa-user-circle"></i>
+          <span id="user-name">Mme Diallo</span>
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <div id="user-dropdown" class="user-dropdown hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Profil</a>
+        </div>
+      </div>
+      <a href="#" id="logout-btn-header" class="logout-header-btn flex items-center gap-2"
+        style="background: var(--btn-suppr-bg, #e74c3c); color: #fff; border-radius: 5px; padding: 7px 18px; font-size: 1em; font-weight: 500; margin-left: 10px; text-decoration: none; transition: background 0.2s;">
+        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+      </a>
+      <a href="parametres.html" title="Paramètres" class="settings-icon">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="flex max-w-7xl mx-auto mt-6 gap-6 px-4 pt-24">
+
+
+    <!-- Menu latéral -->
+    <aside class="bg-white w-64 min-h-screen p-4 shadow-md">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">📊 Tableau de bord</h2>
+      <nav class="space-y-2 font-medium text-gray-700">
+        <a href="index.html" class="block py-2 px-4 rounded bg-blue-100 text-blue-800 font-semibold">🏠 Accueil</a>
+        <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘
+          Élèves</a>
+        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅
+          Emploi du temps</a>
+        <a href="professeur.html"
+          class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
+        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔
+          Notifications</a>
+        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙
+          Paramètres</a>
+      </nav>
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="flex-1 space-y-6">
+      <!-- Message de bienvenue -->
+      <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
+        <i class="fas fa-calendar-alt text-blue-700 text-xl"></i>
+        <p class="font-medium">Bienvenue Mme Diallo – 2 juillet 2025</p>
+      </div>
+      <!-- Bienvenue et performance -->
+      <div class="mb-6">
+        <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de la
+          performance scolaire :</p>
+        <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
+          <canvas id="performanceChart" class="mx-auto"></canvas>
+        </div>
+      </div>
+
+
+      <!-- Cartes statistiques -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-blue-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">📘 Total élèves</h3>
+          <p id="card-eleves" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="bg-green-600 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">👨‍🏫 Enseignants</h3>
+          <p id="card-profs" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="bg-blue-500 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">⏳ Inscriptions</h3>
+          <p id="card-inscriptions" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="bg-blue-400 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">🔔 Notifications</h3>
+          <p id="card-notifs" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="bg-gray-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">📅 Événements</h3>
+          <p id="card-avenir" class="text-3xl font-bold">2</p>
+        </div>
+        <div class="bg-green-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+          <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
+          <p id="card-a-faire" class="text-3xl font-bold">5</p>
+        </div>
+      </section>
+
+      <!-- Liens rapides -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        <a href="eleve.html"
+          class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-user-plus text-blue-600 text-xl"></i>
+          <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
+        </a>
+        <a href="professeur.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
+          <span class="font-medium text-gray-800">👨‍🏫 Ajouter un prof</span>
+        </a>
+        <a href="emploi.html"
+          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-calendar text-green-600 text-xl"></i>
+          <span class="font-medium text-gray-800">📅 Emploi du temps</span>
+        </a>
+        <a href="parametres.html"
+          class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
+          <i class="fas fa-cog text-gray-700 text-xl"></i>
+          <span class="font-medium text-gray-800">⚙ Paramètres</span>
+        </a>
+      </section>
+
+      <!-- Activité récente -->
+      <section class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">📋 Activité récente</h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li>✔ Élève ajouté : Aissatou Bah</li>
+          <li>✔ Emploi du temps mis à jour</li>
+        </ul>
+      </section>
+
+      <!-- Événements à venir -->
+      <section class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">📅 À venir</h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li>Réunion pédagogique – 3 juillet 2025</li>
+          <li>Devoir de mathématiques – 5 juillet 2025</li>
+          <li>Evaluation mensuelle – 5-12 juillet 2025</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10 bg-gray-800 text-white text-center py-3 text-sm">
+    <p>&copy; 2025 École X - Tous droits réservés</p>
+    <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
+    <p>Version 1.0 - Développé par l'équipe pédagogique</p>
+  </footer>
+
+  <!-- Script dropdown utilisateur -->
+  <script>
+    const toggle = document.getElementById('user-toggle');
+    const dropdown = document.getElementById('user-dropdown');
+    toggle.addEventListener('click', () => {
+      dropdown.classList.toggle('hidden');
+    });
+    document.addEventListener('click', e => {
+      if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+    
+  </script>
+
+  <!-- Script statistiques -->
+  <script>
+    // Statistiques présences/absences + courbe
+    function updatePresenceStats() {
+      const eleves = JSON.parse(localStorage.getItem('eleves') || '[]');
+      const total = eleves.length;
+      const absents = eleves.filter(e => e.statut === 'absent').length;
+      const presents = total - absents;
+      const pctPresence = total ? Math.round((presents / total) * 100) : 0;
+      const pctAbsence = total ? Math.round((absents / total) * 100) : 0;
+      document.getElementById('stat-presence').textContent = `Présents : ${pctPresence}%`;
+      document.getElementById('stat-absence').textContent = `Absents : ${pctAbsence}%`;
+      // Génération de la courbe (données fictives sur 7 jours)
+      const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      let dataPresence = [];
+      let dataAbsence = [];
+      // Générer des données fictives réalistes à partir du total actuel
+      for(let i=0;i<7;i++){
+        let pres = total ? Math.max(0, Math.round(presents + (Math.random()-0.5)*total*0.1)) : 0;
+        let abs = total - pres;
+        dataPresence.push(pres);
+        dataAbsence.push(abs);
+      }
+      if(window.presenceChart) window.presenceChart.destroy();
+      const ctx = document.getElementById('presenceChart').getContext('2d');
+      window.presenceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: days,
+          datasets: [
+            {
+              label: 'Présents',
+              data: dataPresence,
+              borderColor: '#059669',
+              backgroundColor: 'rgba(16,185,129,0.1)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Absents',
+              data: dataAbsence,
+              borderColor: '#f59e42',
+              backgroundColor: 'rgba(251,191,36,0.1)',
+              tension: 0.3,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true, position: 'top' }
+          },
+          scales: {
+            y: { beginAtZero: true, max: total || 10 }
+          }
+        }
+      });
+    }
+    updatePresenceStats();
+    window.addEventListener('storage', updatePresenceStats);
+  </script>
+
+</body>
+</html>

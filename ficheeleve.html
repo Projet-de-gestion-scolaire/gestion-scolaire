@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche Élève</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .bg-primary-blue { background-color: #0F172A; }
+        .text-primary-blue { color: #0F172A; }
+        .bg-accent-blue { background-color: #2563EB; }
+        .hover\:bg-accent-blue:hover { background-color: #2563EB; }
+        .bg-accent-blue-dark { background-color: #1D4ED8; }
+        .hover\:bg-accent-blue-dark:hover { background-color: #1D4ED8; }
+        .bg-accent-green { background-color: #10B981; }
+        .hover\:bg-accent-green-dark:hover { background-color: #059669; }
+        .bg-accent-red { background-color: #EF4444; }
+        .hover\:bg-accent-red-dark:hover { background-color: #DC2626; }
+        .bg-accent-orange { background-color: #F97316; }
+        .hover\:bg-accent-orange-dark:hover { background-color: #EA580C; }
+
+        /* Styles pour le header au défilement */
+        .scrolled-header {
+            background-color: #0F172A;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scrolled-header .text-primary-blue {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-600 {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-700 {
+            color: white;
+        }
+
+        .scrolled-header .hover\:text-accent-blue:hover {
+            color: #DBEAFE;
+        }
+
+        .scrolled-header .hover\:text-accent-cyan:hover {
+            color: #67E8F9;
+        }
+
+        .scrolled-header .hover\:text-accent-green:hover {
+            color: #86EFAC;
+        }
+
+        #unread-notification-count {
+            display: flex; /* Assure le centrage du texte */
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <header id="main-header"
+        class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
+                    class="fas fa-bell text-xl"></i>
+                <span id="unread-notification-count"
+                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5">0</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
+                        class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i
+                    class="fas fa-cog text-xl"></i></a>
+        </div>
+    </header>
+
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar"
+            class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+                </a>
+
+                <a href="eleve.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+
+                <a href="classes.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+                </a>
+
+                <a href="emploi.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du
+                        temps</span>
+                </a>
+
+                <a href="professeur.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+                </a>
+
+                <a href="notification.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                </a>
+
+                <a href="parametres.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <h2 class="text-2xl font-bold mb-6 text-primary-blue">Fiche de l'Élève</h2>
+
+            <div id="eleve-details-card" class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <p class="text-gray-500 text-center py-4">Chargement des informations de l'élève...</p>
+            </div>
+
+            <div id="message-box" class="hidden mt-6 px-4 py-3 rounded text-sm font-medium"></div>
+
+        </main>
+    </div>
+
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]");
+        const getNotifications = () => JSON.parse(localStorage.getItem("notifications") || "[]");
+        const unreadNotificationCount = document.getElementById("unread-notification-count");
+        const eleveDetailsCard = document.getElementById("eleve-details-card");
+        const messageBox = document.getElementById("message-box");
+
+        // UI elements (copied from other pages)
+        const menuToggle = document.getElementById("menu-toggle");
+        const mainSidebar = document.getElementById("main-sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const userToggle = document.getElementById("user-toggle");
+        const userDropdown = document.getElementById("user-dropdown");
+        const mainHeader = document.getElementById("main-header");
+
+
+        const showMessage = (txt, color = "green") => {
+            messageBox.textContent = txt;
+            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${
+                color === 'green' ? 'bg-green-100 text-green-700' :
+                color === 'red' ? 'bg-red-100 text-red-700' :
+                color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                'bg-gray-100 text-gray-700'
+                }`;
+            messageBox.classList.remove("hidden");
+            setTimeout(() => messageBox.classList.add("hidden"), 3000);
+        };
+
+        function displayEleveFiche() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const matricule = urlParams.get('matricule');
+
+            if (!matricule) {
+                eleveDetailsCard.innerHTML = `
+                    <p class="text-red-500 text-center py-4">Matricule de l'élève non fourni dans l'URL.</p>
+                    <a href="parametres.html" class="block text-center mt-4 text-accent-blue hover:underline">Retour aux Paramètres</a>
+                `;
+                return;
+            }
+
+            const eleves = getEleves();
+            const eleve = eleves.find(el => el.matricule === matricule);
+
+            if (eleve) {
+                eleveDetailsCard.innerHTML = `
+                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations Générales</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <p><strong>Nom:</strong> ${eleve.nom}</p>
+                        <p><strong>Prénom:</strong> ${eleve.prenom}</p>
+                        <p><strong>Matricule:</strong> ${eleve.matricule}</p>
+                        <p><strong>Date de Naissance:</strong> ${eleve.dateNaissance}</p>
+                        <p><strong>Genre:</strong> ${eleve.genre}</p>
+                        <p><strong>Adresse:</strong> ${eleve.adresse}</p>
+                        <p><strong>Téléphone:</strong> ${eleve.telephone}</p>
+                        <p><strong>Email:</strong> ${eleve.email}</p>
+                        <p><strong>Classe Actuelle:</strong> ${eleve.classe}</p>
+                    </div>
+
+                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations du Tuteur</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <p><strong>Nom du Tuteur:</strong> ${eleve.nomTuteur}</p>
+                        <p><strong>Téléphone Tuteur:</strong> ${eleve.telephoneTuteur}</p>
+                    </div>
+
+                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Notes et Moyennes (Exemple)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="py-2 px-3 text-left border-b">Matière</th>
+                                    <th class="py-2 px-3 text-left border-b">Note</th>
+                                    <th class="py-2 px-3 text-left border-b">Moyenne Classe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${eleve.notes && eleve.notes.length > 0 ?
+                                    eleve.notes.map(note => `
+                                        <tr>
+                                            <td class="py-2 px-3 border-b">${note.matiere}</td>
+                                            <td class="py-2 px-3 border-b">${note.valeur}</td>
+                                            <td class="py-2 px-3 border-b">${note.moyenneClasse || 'N/A'}</td>
+                                        </tr>
+                                    `).join('')
+                                : `<tr><td colspan="3" class="py-4 text-center text-gray-500">Aucune note enregistrée.</td></tr>`}
+                                <tr>
+                                    <td class="py-2 px-3 font-semibold">Moyenne Générale:</td>
+                                    <td class="py-2 px-3 font-semibold" colspan="2">${eleve.moyenne || 'N/A'}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <h4 class="text-xl font-semibold my-4 text-primary-blue">Historique des Absences (Exemple)</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="py-2 px-3 text-left border-b">Date</th>
+                                    <th class="py-2 px-3 text-left border-b">Matière</th>
+                                    <th class="py-2 px-3 text-left border-b">Justifiée</th>
+                                    <th class="py-2 px-3 text-left border-b">Motif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${eleve.absences && eleve.absences.length > 0 ?
+                                    eleve.absences.map(absence => `
+                                        <tr>
+                                            <td class="py-2 px-3 border-b">${absence.date}</td>
+                                            <td class="py-2 px-3 border-b">${absence.matiere || 'N/A'}</td>
+                                            <td class="py-2 px-3 border-b">${absence.justifiee ? 'Oui' : 'Non'}</td>
+                                            <td class="py-2 px-3 border-b">${absence.motif || 'N/A'}</td>
+                                        </tr>
+                                    `).join('')
+                                : `<tr><td colspan="4" class="py-4 text-center text-gray-500">Aucune absence enregistrée.</td></tr>`}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <a href="parametres.html" class="inline-block bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-md">Retour aux Paramètres</a>
+                    </div>
+                `;
+            } else {
+                eleveDetailsCard.innerHTML = `
+                    <p class="text-red-500 text-center py-4">Aucun élève trouvé avec le matricule "${matricule}".</p>
+                    <a href="parametres.html" class="block text-center mt-4 text-accent-blue hover:underline">Retour aux Paramètres</a>
+                `;
+            }
+        }
+
+        // --- Mise à jour du compteur de notifications non lues dans le header ---
+        function updateUnreadCount() {
+            const notifications = getNotifications();
+            const unreadCount = notifications.filter(n => !n.read).length;
+            unreadNotificationCount.textContent = unreadCount;
+            if (unreadCount > 0) {
+                unreadNotificationCount.classList.remove('hidden');
+            } else {
+                unreadNotificationCount.classList.add('hidden');
+            }
+        }
+
+        // --- Fonctions de Responsivité et d'Interaction UI (copiées des autres pages) ---
+        menuToggle.addEventListener("click", () => {
+            mainSidebar.classList.toggle("active");
+            sidebarOverlay.classList.toggle("active");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            mainSidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("active");
+        });
+
+        userToggle.addEventListener("click", () => {
+            userDropdown.classList.toggle("hidden");
+        });
+
+        // Fermer le dropdown si on clique en dehors
+        window.addEventListener("click", e => {
+            if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+
+        // Sticky header on scroll
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 0) {
+                mainHeader.classList.add("scrolled-header");
+            } else {
+                mainHeader.classList.remove("scrolled-header");
+            }
+        });
+
+        // Initialisation au chargement de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            displayEleveFiche();
+            updateUnreadCount();
+        });
+
+        // Écouter les changements dans le localStorage pour les compteurs et re-render
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'notifications') {
+                updateUnreadCount();
+            }
+            // If the eleves data changes, might need to re-render the fiche if it's currently displayed
+            if (event.key === 'eleves') {
+                displayEleveFiche();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,210 +2,585 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <title>Tableau de Bord - Gestion Scolaire</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <title>Tableau de Bord - Gestion Scolaire</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Définitions des couleurs personnalisées en CSS pur */
+        /* Celles-ci doivent correspondre aux classes Tailwind que vous utilisez */
+        .bg-primary-blue {
+            background-color: #0F172A;
+        }
+
+        .text-primary-blue {
+            color: #0F172A;
+        }
+
+        .bg-accent-blue {
+            background-color: #2563EB;
+        }
+
+        .hover\:bg-accent-blue:hover {
+            background-color: #2563EB;
+        }
+
+        .bg-accent-blue-dark {
+            background-color: #1D4ED8;
+        }
+
+        .hover\:bg-accent-blue-dark:hover {
+            background-color: #1D4ED8;
+        }
+
+        .bg-accent-green {
+            background-color: #10B981;
+        }
+
+        .hover\:bg-accent-green-dark:hover {
+            background-color: #059669;
+        }
+
+        .bg-accent-yellow {
+            background-color: #FBBF24;
+        }
+
+        .hover\:bg-accent-yellow-dark:hover {
+            background-color: #F59E0B;
+        }
+
+        .bg-accent-red {
+            background-color: #EF4444;
+        }
+
+        .hover\:bg-accent-red-dark:hover {
+            background-color: #DC2626;
+        }
+
+        .bg-accent-cyan {
+            background-color: #06B6D4;
+        }
+
+        .hover\:bg-accent-cyan-dark:hover {
+            background-color: #0891B2;
+        }
+
+        /* NOUVELLES COULEURS (ajustées par rapport à l'autre fichier) */
+        .bg-accent-purple {
+            background-color: #8B5CF6;
+        }
+
+        .hover\:bg-accent-purple-dark:hover {
+            background-color: #7C3AED;
+        }
+
+        .bg-accent-orange {
+            background-color: #F97316;
+        }
+
+        .hover\:bg-accent-orange-dark:hover {
+            background-color: #EA580C;
+        }
+
+
+        /* Styles pour les éléments du menu latéral (SIDEBAR) */
+        /* Cible les liens du menu non actifs */
+        #main-sidebar nav a:not(.bg-accent-blue) {
+            /* Styles par défaut pour les liens non survolés et non actifs */
+            color: #4B5563;
+            /* text-gray-700 */
+            font-weight: 600;
+            /* font-semibold */
+        }
+
+        /* Styles de survol pour les liens du menu (pour le texte et les icônes) */
+        #main-sidebar nav a.group:hover span.group-hover\:text-white {
+            color: white !important;
+            /* Force le texte à devenir blanc au survol */
+        }
+
+        /* Et pour les icônes (text-gray-600 par défaut) */
+        #main-sidebar nav a.group:hover span.text-gray-600 {
+            color: white !important;
+            /* Force les icônes à devenir blanches au survol */
+        }
+
+        /* Styles pour le header au défilement */
+        .scrolled-header {
+            background-color: #0F172A;
+            /* Couleur du header quand on scroll */
+            color: white;
+            /* Texte en blanc quand le header est foncé */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* Ombre plus prononcée */
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scrolled-header .text-primary-blue {
+            color: white;
+            /* S'assure que le titre change aussi de couleur */
+        }
+
+        .scrolled-header .text-gray-600 {
+            color: white;
+            /* For the icons in the navbar */
+        }
+
+        .scrolled-header .text-gray-700 {
+            color: white;
+            /* For the icons in the navbar */
+        }
+
+        .scrolled-header .hover\:text-accent-blue:hover {
+            color: #DBEAFE;
+            /* A lighter blue for icon hover on dark background */
+        }
+
+        .scrolled-header .hover\:text-accent-cyan:hover {
+            color: #67E8F9;
+            /* A lighter cyan for icon hover on dark background */
+        }
+
+        .scrolled-header .hover\:text-accent-green:hover {
+            color: #86EFAC;
+            /* A lighter green for icon hover on dark background */
+        }
+
+        /* Styles pour la barre latérale sur mobile */
+        #main-sidebar.active {
+            transform: translateX(0);
+        }
+
+        #sidebar-overlay.active {
+            opacity: 0.5;
+            display: block;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-  <!-- Header -->
-  <header
-    class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition duration-300 hover:bg-gray-50">
+    <header id="main-header"
+        class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
 
-    <div class="flex items-center space-x-4">
-      <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
-      <h1 class="text-xl font-bold text-blue-900">Gestion Administrative</h1>
-    </div>
-    <div class="flex items-center space-x-4">
-      <a href="#" title="Notifications" class="relative text-gray-600 hover:text-blue-600">
-        <i class="fas fa-bell text-xl"></i>
-        <span
-          class="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
-      </a>
-      <div class="relative">
-        <button id="user-toggle"
-          class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
-          <i class="fas fa-user-circle text-2xl"></i>
-          <span>Mme Diallo</span>
-          <i class="fas fa-caret-down text-sm"></i>
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
         </button>
-        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Profil</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100">Déconnexion</a>
+
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
+                    class="fas fa-bell text-xl"></i>
+                <span
+                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
+                        class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i class="fas fa-cog text-xl"></i></a>
         </div>
-      </div>
-      <a href="parametres.html" title="Paramètres" class="text-gray-600 hover:text-blue-600">
-        <i class="fas fa-cog text-xl"></i>
-      </a>
+    </header>
+
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6"> <aside id="main-sidebar"
+            class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                    <span class="text-xl mr-3 text-white">🏠</span>
+                    <span class="hidden md:inline text-white">Accueil</span>
+                </a>
+
+                <a href="eleve.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+
+                <a href="classes.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes &
+                        Matières</span>
+                </a>
+
+                <a href="emploi.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du
+                        temps</span>
+                </a>
+
+                <a href="professeur.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+                </a>
+
+                <a href="notification.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                </a>
+
+                <a href="parametres.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
+                <i class="fas fa-calendar-alt text-accent-blue text-xl"></i> <p class="font-medium">Bienvenue Nènè Diallo – 2 juillet 2025</p>
+            </div>
+            <div class="mb-6">
+                <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de
+                    la
+                    performance scolaire :</p>
+                <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
+                    <canvas id="performanceChart" class="mx-auto"></canvas>
+                </div>
+            </div>
+
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-accent-blue text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">📘 Total élèves</h3>
+                    <p id="card-eleves" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-accent-green text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">👨‍🏫 Enseignants</h3>
+                    <p id="card-profs" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-accent-cyan text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">⏳ Inscriptions</h3>
+                    <p id="card-inscriptions" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-accent-yellow text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">🔔 Notifications</h3>
+                    <p id="card-notifs" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-primary-blue text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">📅 Événements</h3>
+                    <p id="card-avenir" class="text-3xl font-bold">2</p>
+                </div>
+                <div class="bg-accent-purple text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
+                    <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
+                    <p id="card-a-faire" class="text-3xl font-bold">5</p>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                <a href="eleve.html"
+                    class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
+                    <i class="fas fa-user-plus text-accent-blue text-xl"></i>
+                    <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
+                </a>
+                <a href="professeur.html"
+                    class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+                    <i class="fas fa-chalkboard-teacher text-accent-green text-xl"></i>
+                    <span class="font-medium text-gray-800">👨‍🏫 Ajouter un prof</span>
+                </a>
+                <a href="emploi.html"
+                    class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
+                    <i class="fas fa-calendar text-accent-green text-xl"></i>
+                    <span class="font-medium text-gray-800">📅 Emploi du temps</span>
+                </a>
+                <a href="parametres.html"
+                    class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
+                    <i class="fas fa-cog text-gray-700 text-xl"></i>
+                    <span class="font-medium text-gray-800">⚙ Paramètres</span>
+                </a>
+            </section>
+
+            <section class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold text-primary-blue mb-2">📋 Activité récente</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>✔ Élève ajouté : Aissatou Bah</li>
+                    <li>✔ Emploi du temps mis à jour</li>
+                </ul>
+            </section>
+
+            <section class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold text-primary-blue mb-2">📅 À venir</h3>
+                <ul class="list-disc pl-5 text-gray-700">
+                    <li>Réunion pédagogique – 3 juillet 2025</li>
+                    <li>Devoir de mathématiques – 5 juillet 2025</li>
+                    <li>Evaluation mensuelle – 5-12 juillet 2025</li>
+                </ul>
+            </section>
+        </main>
     </div>
-  </header>
 
-  <!-- Main Layout -->
-  <div class="flex max-w-7xl mx-auto mt-6 gap-6 px-4 pt-24">
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
 
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
 
-    <!-- Menu latéral -->
-    <aside class="bg-white w-64 min-h-screen p-4 shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">📊 Tableau de bord</h2>
-      <nav class="space-y-2 font-medium text-gray-700">
-        <a href="index.html" class="block py-2 px-4 rounded bg-blue-100 text-blue-800 font-semibold">🏠 Accueil</a>
-        <a href="eleve.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">📘
-          Élèves</a>
-        <a href="emploi.html" class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">📅
-          Emploi du temps</a>
-        <a href="professeur.html"
-          class="block py-2 px-4 rounded hover:bg-green-100 hover:text-green-700 transition">👨‍🏫 Professeurs</a>
-        <a href="notification.html" class="block py-2 px-4 rounded hover:bg-blue-100 hover:text-blue-800 transition">🔔
-          Notifications</a>
-        <a href="parametres.html" class="block py-2 px-4 rounded hover:bg-gray-200 hover:text-gray-800 transition">⚙
-          Paramètres</a>
-      </nav>
-    </aside>
+    <script>
+      
+        // Références aux éléments du DOM pour la responsivité
+        const menuToggle = document.getElementById("menu-toggle");
+        const mainSidebar = document.getElementById("main-sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const userToggle = document.getElementById("user-toggle");
+        const userDropdown = document.getElementById("user-dropdown");
+        const mainHeader = document.getElementById("main-header"); // Référence au header pour l'effet de scroll
 
-    <!-- Contenu principal -->
-    <main class="flex-1 space-y-6">
-
-      <!-- Message de bienvenue -->
-      <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
-        <i class="fas fa-calendar-alt text-blue-700 text-xl"></i>
-        <p class="font-medium">Bienvenue Mme Diallo – 2 juillet 2025</p>
-      </div>
-      <!-- Bienvenue et performance -->
-      <div class="mb-6">
-        <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de la
-          performance scolaire :</p>
-        <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
-          <canvas id="performanceChart" class="mx-auto"></canvas>
-        </div>
-      </div>
-
-
-      <!-- Cartes statistiques -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-blue-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">📘 Total élèves</h3>
-          <p id="card-eleves" class="text-3xl font-bold">0</p>
-        </div>
-        <div class="bg-green-600 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">👨‍🏫 Enseignants</h3>
-          <p id="card-profs" class="text-3xl font-bold">0</p>
-        </div>
-        <div class="bg-blue-500 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">⏳ Inscriptions</h3>
-          <p id="card-inscriptions" class="text-3xl font-bold">0</p>
-        </div>
-        <div class="bg-blue-400 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">🔔 Notifications</h3>
-          <p id="card-notifs" class="text-3xl font-bold">0</p>
-        </div>
-        <div class="bg-gray-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">📅 Événements</h3>
-          <p id="card-avenir" class="text-3xl font-bold">2</p>
-        </div>
-        <div class="bg-green-700 text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-          <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
-          <p id="card-a-faire" class="text-3xl font-bold">5</p>
-        </div>
-      </section>
-
-      <!-- Liens rapides -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-        <a href="eleve.html"
-          class="bg-white border border-gray-200 hover:bg-blue-50 p-4 rounded shadow flex items-center space-x-2">
-          <i class="fas fa-user-plus text-blue-600 text-xl"></i>
-          <span class="font-medium text-gray-800">➕ Ajouter un élève</span>
-        </a>
-        <a href="professeur.html"
-          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
-          <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
-          <span class="font-medium text-gray-800">👨‍🏫 Ajouter un prof</span>
-        </a>
-        <a href="emploi.html"
-          class="bg-white border border-gray-200 hover:bg-green-50 p-4 rounded shadow flex items-center space-x-2">
-          <i class="fas fa-calendar text-green-600 text-xl"></i>
-          <span class="font-medium text-gray-800">📅 Emploi du temps</span>
-        </a>
-        <a href="parametres.html"
-          class="bg-white border border-gray-200 hover:bg-gray-100 p-4 rounded shadow flex items-center space-x-2">
-          <i class="fas fa-cog text-gray-700 text-xl"></i>
-          <span class="font-medium text-gray-800">⚙ Paramètres</span>
-        </a>
-      </section>
-
-      <!-- Activité récente -->
-      <section class="bg-white p-4 rounded shadow">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">📋 Activité récente</h3>
-        <ul class="list-disc pl-5 text-gray-700">
-          <li>✔ Élève ajouté : Aissatou Bah</li>
-          <li>✔ Emploi du temps mis à jour</li>
-        </ul>
-      </section>
-
-      <!-- Événements à venir -->
-      <section class="bg-white p-4 rounded shadow">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">📅 À venir</h3>
-        <ul class="list-disc pl-5 text-gray-700">
-          <li>Réunion pédagogique – 3 juillet 2025</li>
-          <li>Devoir de mathématiques – 5 juillet 2025</li>
-          <li>Evaluation mensuelle – 5-12 juillet 2025</li>
-        </ul>
-      </section>
-    </main>
-  </div>
-
-  <!-- Footer -->
-  <footer class="mt-10 bg-gray-800 text-white text-center py-3 text-sm">
-    <p>&copy; 2025 École X - Tous droits réservés</p>
-    <p><strong>Contact :</strong> 622 56 10 90 | <strong>Email :</strong> contact@ecolex.edu.gn</p>
-    <p>Version 1.0 - Développé par l'équipe pédagogique</p>
-  </footer>
-
-  <!-- Script dropdown utilisateur -->
-  <script>
-    const toggle = document.getElementById('user-toggle');
-    const dropdown = document.getElementById('user-dropdown');
-    toggle.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
-    });
-    document.addEventListener('click', e => {
-      if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
-    // Graphique de performance scolaire
-    const ctx = document.getElementById('performanceChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Réussite', 'Échec'],
-        datasets: [{
-          label: 'Performance',
-          data: [75, 25], // Change les valeurs ici si besoin
-          backgroundColor: ['#27ae60', '#e74c3c'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: {
-                size: 14
-              }
-            }
-          }
+        // Fonctions pour le menu latéral
+        function openSidebar() {
+            mainSidebar.classList.remove("-translate-x-full");
+            sidebarOverlay.classList.remove("hidden");
+            setTimeout(() => {
+                sidebarOverlay.classList.add("opacity-50");
+            }, 10);
         }
-      }
-    });
 
-  </script>
+        function closeSidebar() {
+            mainSidebar.classList.add("-translate-x-full");
+            sidebarOverlay.classList.remove("opacity-50");
+            setTimeout(() => {
+                sidebarOverlay.classList.add("hidden");
+            }, 300);
+        }
+
+        menuToggle.addEventListener("click", () => {
+            if (mainSidebar.classList.contains("-translate-x-full")) {
+                openSidebar();
+            } else {
+                closeSidebar();
+            }
+        });
+
+        sidebarOverlay.addEventListener("click", closeSidebar);
+
+        const navLinks = mainSidebar.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) { // Si sur un écran mobile
+                    closeSidebar();
+                }
+            });
+        });
+
+
+        // Script Dropdown utilisateur (déplacé et adapté)
+        userToggle.addEventListener("click", () => {
+            userDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!userToggle.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+
+        // Initialisation au chargement de la page et lors du redimensionnement pour la sidebar
+        function setInitialSidebarState() {
+            if (window.innerWidth < 768) {
+                mainSidebar.classList.add("-translate-x-full");
+                sidebarOverlay.classList.add("hidden");
+            } else {
+                mainSidebar.classList.remove("-translate-x-full");
+                sidebarOverlay.classList.add("hidden");
+            }
+        }
+
+        setInitialSidebarState();
+        window.addEventListener('resize', setInitialSidebarState);
+
+
+        // Effet de défilement du Header (identique aux autres pages)
+        // Références aux éléments qui changent de couleur
+        const h1Title = mainHeader.querySelector('h1');
+        const bellIcon = mainHeader.querySelector('.fa-bell');
+        const userIcon = mainHeader.querySelector('.fa-user-circle');
+        const settingsIcon = mainHeader.querySelector('.fa-cog');
+        const userToggleBtn = document.getElementById('user-toggle');
+        const menuToggleBtn = document.getElementById('menu-toggle');
+
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) { // Si on a scrollé de plus de 50px
+                mainHeader.classList.add('scrolled-header');
+                // Changer les couleurs des icônes et texte pour le contraste
+                h1Title.classList.add('text-white');
+                h1Title.classList.remove('text-primary-blue');
+
+                bellIcon.classList.add('text-white');
+                bellIcon.classList.remove('text-gray-600');
+                userIcon.classList.add('text-white');
+                userIcon.classList.remove('text-gray-700');
+                settingsIcon.classList.add('text-white');
+                settingsIcon.classList.remove('text-gray-600');
+                userToggleBtn.classList.add('text-white');
+                userToggleBtn.classList.remove('text-gray-700');
+                menuToggleBtn.classList.add('text-white');
+                menuToggleBtn.classList.remove('text-gray-600');
+
+            } else {
+                mainHeader.classList.remove('scrolled-header');
+                // Revenir aux couleurs originales
+                h1Title.classList.remove('text-white');
+                h1Title.classList.add('text-primary-blue');
+
+                bellIcon.classList.remove('text-white');
+                bellIcon.classList.add('text-gray-600');
+                userIcon.classList.remove('text-white');
+                userIcon.classList.add('text-gray-700');
+                settingsIcon.classList.remove('text-white');
+                settingsIcon.classList.add('text-gray-600');
+                userToggleBtn.classList.remove('text-white');
+                userToggleBtn.classList.add('text-gray-700');
+                menuToggleBtn.classList.remove('text-white');
+                menuToggleBtn.classList.add('text-gray-600');
+            }
+        });
+
+
+        // Script pour les statistiques et le graphique de performance (MIS À JOUR pour utiliser localStorage)
+        // Fonction pour récupérer les résultats d'examen depuis localStorage
+        const getExamResults = () => JSON.parse(localStorage.getItem("examResults") || "[]");
+
+
+        function updatePerformanceChart() {
+            // Ces données nécessiteraient d'être récupérées depuis localStorage ou une API
+            const eleves = JSON.parse(localStorage.getItem('eleves') || '[]');
+            const professeurs = JSON.parse(localStorage.getItem('professeurs') || '[]');
+            const examResults = getExamResults(); // Récupérer les données réelles des examens
+
+            document.getElementById('card-eleves').textContent = eleves.length;
+            document.getElementById('card-profs').textContent = professeurs.length;
+            document.getElementById('card-inscriptions').textContent = Math.floor(Math.random() * 50) + 10; // Donnée fictive
+            document.getElementById('card-notifs').textContent = 3; // Hardcoded comme dans votre header
+            document.getElementById('card-avenir').textContent = 2; // Hardcoded
+            document.getElementById('card-a-faire').textContent = 5; // Hardcoded
+
+            // --- Données pour le Diagramme à barres groupées ---
+            // Utilisation des données réelles si disponibles, sinon des valeurs par défaut
+            const examLabels = ['Examen', 'Brevet', 'Baccalauréat'];
+            const dataSuccess = [];
+            const dataFailure = [];
+
+            examLabels.forEach(label => {
+                const result = examResults.find(e => e.type === label);
+                if (result) {
+                    dataSuccess.push(result.success);
+                    dataFailure.push(result.failure);
+                } else {
+                    // Si aucune donnée n'est trouvée pour cet examen, utiliser une valeur par défaut ou 0
+                    dataSuccess.push(0); // Ou une valeur par défaut si vous voulez qu'elle apparaisse
+                    dataFailure.push(0); // Ou une valeur par défaut
+                }
+            });
+
+            // Si le graphique existe déjà, le détruire pour éviter les superpositions
+            if (window.performanceChartInstance) {
+                window.performanceChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            window.performanceChartInstance = new Chart(ctx, {
+                type: 'bar', // Type de graphique à barres
+                data: {
+                    labels: examLabels, // Les types d'examen sur l'axe X
+                    datasets: [
+                        {
+                            label: 'Taux de Réussite (%)',
+                            data: dataSuccess,
+                            backgroundColor: '#10B981', // accent-green
+                            borderColor: '#059669',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Taux d\'Échec (%)',
+                            data: dataFailure,
+                            backgroundColor: '#EF4444', // accent-red
+                            borderColor: '#DC2626',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top', // Position de la légende en haut
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Taux de Réussite et d\'Échec par Examen', // Titre pour le diagramme à barres
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: { // Améliorer l'affichage des pourcentages dans les tooltips
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Examen'
+                            },
+                            grid: {
+                                display: false // Masquer les lignes de grille verticales pour un aspect plus propre
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100, // Les pourcentages vont jusqu'à 100
+                            title: {
+                                display: true,
+                                text: 'Pourcentage (%)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        updatePerformanceChart();
+        // Écouter l'événement 'storage' pour mettre à jour le graphique si les données changent dans une autre fenêtre
+        window.addEventListener('storage', updatePerformanceChart);
+    </script>
 
 </body>
+
 </html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des Classes et Matières</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Définitions des couleurs personnalisées en CSS pur */
+        /* Celles-ci doivent correspondre aux classes Tailwind que vous utilisez */
+        .bg-primary-blue {
+            background-color: #0F172A;
+        }
+
+        .text-primary-blue {
+            color: #0F172A;
+        }
+
+        .bg-accent-blue {
+            background-color: #2563EB;
+        }
+
+        .hover\:bg-accent-blue:hover {
+            background-color: #2563EB;
+        }
+
+        /* Assure la couleur de survol */
+        .bg-accent-blue-dark {
+            background-color: #1D4ED8;
+        }
+
+        /* Pour les états 'dark' des boutons par exemple */
+        .hover\:bg-accent-blue-dark:hover {
+            background-color: #1D4ED8;
+        }
+
+        .bg-accent-green {
+            background-color: #10B981;
+        }
+
+        .hover\:bg-accent-green-dark:hover {
+            background-color: #059669;
+        }
+
+        .bg-accent-yellow {
+            background-color: #FBBF24;
+        }
+
+        .hover\:bg-accent-yellow-dark:hover {
+            background-color: #F59E0B;
+        }
+
+        .bg-accent-red {
+            background-color: #EF4444;
+        }
+
+        .hover\:bg-accent-red-dark:hover {
+            background-color: #DC2626;
+        }
+
+        .bg-accent-cyan {
+            background-color: #06B6D4;
+        }
+
+        .hover\:bg-accent-cyan-dark:hover {
+            background-color: #0891B2;
+        }
+
+        /* NOUVELLES COULEURS (ajustées par rapport à l'autre fichier) */
+        .bg-accent-purple {
+            background-color: #8B5CF6;
+        }
+
+        .hover\:bg-accent-purple-dark:hover {
+            background-color: #7C3AED;
+        }
+
+        .bg-accent-orange {
+            background-color: #F97316;
+        }
+
+        .hover\:bg-accent-orange-dark:hover {
+            background-color: #EA580C;
+        }
+
+
+        /* Styles pour les éléments du menu latéral (SIDEBAR) */
+        #main-sidebar nav a:not(.bg-accent-blue) {
+            color: #4B5563;
+            font-weight: 600;
+        }
+
+        #main-sidebar nav a.group:hover span.group-hover\:text-white {
+            color: white !important;
+        }
+
+        #main-sidebar nav a.group:hover span.text-gray-600 {
+            color: white !important;
+        }
+
+        /* Styles pour le header au défilement */
+        .scrolled-header {
+            background-color: #0F172A;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .scrolled-header .text-primary-blue {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-600 {
+            color: white;
+        }
+
+        .scrolled-header .text-gray-700 {
+            color: white;
+        }
+
+        .scrolled-header .hover\:text-accent-blue:hover {
+            color: #DBEAFE;
+        }
+
+        .scrolled-header .hover\:text-accent-cyan:hover {
+            color: #67E8F9;
+        }
+
+        .scrolled-header .hover\:text-accent-green:hover {
+            color: #86EFAC;
+        }
+
+        /* Styles pour la barre latérale sur mobile */
+        #main-sidebar.active {
+            transform: translateX(0);
+        }
+
+        #sidebar-overlay.active {
+            opacity: 0.5;
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <header id="main-header"
+        class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
+
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
+                    class="fas fa-bell text-xl"></i>
+                <span
+                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
+                        class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i
+                    class="fas fa-cog text-xl"></i></a>
+        </div>
+    </header>
+
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar"
+            class="bg-white w-64 min-h-screen p-4 shadow-md
+                    fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
+                    transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+                </a>
+
+                <a href="eleve.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+
+                <a href="classes.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                    <span class="text-xl mr-3 text-white">📚</span>
+                    <span class="hidden md:inline text-white">Classes & Matières</span>
+                </a>
+
+                <a href="emploi.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du
+                        temps</span>
+                </a>
+
+                <a href="professeur.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🏫</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Professeurs</span>
+                </a>
+
+                <a href="notification.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                </a>
+
+                <a href="parametres.html"
+                    class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 space-y-6">
+            <h2 class="text-2xl font-bold mb-6 text-primary-blue">Gestion des Classes et Matières</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                    <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gérer les Classes</h3>
+
+                    <form id="form-classe" class="flex flex-col gap-4 mb-6">
+                        <input type="text" id="nom-classe" placeholder="Nom de la nouvelle classe (ex: 6ème A)" required
+                            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                        <div class="flex gap-2">
+                            <button type="submit" id="btn-submit-classe"
+                                class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter
+                                Classe</button>
+                            <button type="button" id="btn-cancel-classe"
+                                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                        </div>
+                    </form>
+
+                    <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Classes</h4>
+                    <div class="overflow-auto shadow-sm rounded-lg border border-gray-200">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-accent-blue text-white">
+                                <tr>
+                                    <th class="py-2 px-3 text-left">Nom de la Classe</th>
+                                    <th class="py-2 px-3 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-classes" class="text-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                    <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gérer les Matières</h3>
+
+                    <form id="form-matiere" class="flex flex-col gap-4 mb-6">
+                        <input type="text" id="nom-matiere" placeholder="Nom de la nouvelle matière (ex: Histoire)" required
+                            class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                        <div class="flex gap-2">
+                            <button type="submit" id="btn-submit-matiere"
+                                class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter
+                                Matière</button>
+                            <button type="button" id="btn-cancel-matiere"
+                                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                        </div>
+                    </form>
+
+                    <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Matières</h4>
+                    <div class="overflow-auto shadow-sm rounded-lg border border-gray-200">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-accent-blue text-white">
+                                <tr>
+                                    <th class="py-2 px-3 text-left">Nom de la Matière</th>
+                                    <th class="py-2 px-3 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-matieres" class="text-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200 mt-6">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Saisir les Résultats des Examens</h3>
+                <form id="form-exam-results" class="space-y-4">
+                    <div>
+                        <label for="exam-type" class="block text-sm font-medium text-gray-700 mb-1">Type
+                            d'Examen:</label>
+                        <select id="exam-type" name="examType"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            required>
+                            <option value="">Sélectionner un examen</option>
+                            <option value="Examen Général">Examen Général</option>
+                            <option value="Brevet">Brevet</option>
+                            <option value="Baccalauréat">Baccalauréat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="success-rate" class="block text-sm font-medium text-gray-700 mb-1">Taux de Réussite
+                            (%):</label>
+                        <input type="number" id="success-rate" name="successRate" min="0" max="100" step="0.1"
+                            placeholder="Ex: 85.5"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-green"
+                            required />
+                    </div>
+                    <div>
+                        <label for="failure-rate" class="block text-sm font-medium text-gray-700 mb-1">Taux d'Échec
+                            (%):</label>
+                        <input type="number" id="failure-rate" name="failureRate" min="0" max="100" step="0.1"
+                            placeholder="Ex: 14.5"
+                            class="border border-gray-300 rounded px-4 py-2 w-full bg-gray-100 cursor-not-allowed"
+                            readonly />
+                    </div>
+                    <button type="submit"
+                        class="bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md w-full">Enregistrer
+                        Résultats</button>
+                </form>
+
+                <h4 class="text-md font-semibold mb-3 mt-6 text-primary-blue">Résultats des Examens Enregistrés</h4>
+                <div class="overflow-auto shadow-sm rounded-lg border border-gray-200">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-accent-blue text-white">
+                            <tr>
+                                <th class="py-2 px-3 text-left">Examen</th>
+                                <th class="py-2 px-3 text-left">Réussite (%)</th>
+                                <th class="py-2 px-3 text-left">Échec (%)</th>
+                                <th class="py-2 px-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-exam-results" class="text-gray-700">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200 mt-6">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gérer les Moyennes des Élèves</h3>
+
+                <form id="form-eleve" class="flex flex-col gap-4 mb-6">
+                    <div>
+                        <label for="eleve-select" class="block text-sm font-medium text-gray-700 mb-1">Sélectionner un Élève:</label>
+                        <select id="eleve-select"
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                            required>
+                            <option value="">-- Choisir un élève --</option>
+                            </select>
+                    </div>
+                    <div>
+                        <label for="eleve-classe" class="block text-sm font-medium text-gray-700 mb-1">Classe:</label>
+                        <select id="eleve-classe" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                            <option value="">Sélectionner une classe</option>
+                            </select>
+                    </div>
+                    <div>
+                        <label for="eleve-moyenne" class="block text-sm font-medium text-gray-700 mb-1">Moyenne (0-20):</label>
+                        <input type="number" id="eleve-moyenne" placeholder="Moyenne (0-20)" min="0" max="20" step="0.1" required
+                            class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" id="btn-submit-eleve"
+                            class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">Enregistrer Moyenne</button>
+                        <button type="button" id="btn-cancel-eleve"
+                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
+                    </div>
+                </form>
+
+                <h4 class="text-md font-semibold mb-3 text-primary-blue">Liste des Élèves et leurs Moyennes</h4>
+                <div class="overflow-auto shadow-sm rounded-lg border border-gray-200">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-accent-blue text-white">
+                            <tr>
+                                <th class="py-2 px-3 text-left">Nom de l'Élève</th>
+                                <th class="py-2 px-3 text-left">Matricule</th>
+                                <th class="py-2 px-3 text-left">Classe</th>
+                                <th class="py-2 px-3 text-left">Moyenne</th>
+                                <th class="py-2 px-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-eleves" class="text-gray-700">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="message-box" class="hidden mt-6 px-4 py-3 rounded text-sm font-medium"></div>
+
+        </main>
+    </div>
+
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Références aux éléments du DOM pour les classes
+        const formClasse = document.getElementById("form-classe");
+        const inputNomClasse = document.getElementById("nom-classe");
+        const btnSubmitClasse = document.getElementById("btn-submit-classe");
+        const btnCancelClasse = document.getElementById("btn-cancel-classe");
+        const tableClasses = document.getElementById("table-classes");
+
+        // Références aux éléments du DOM pour les matières
+        const formMatiere = document.getElementById("form-matiere");
+        const inputNomMatiere = document.getElementById("nom-matiere");
+        const btnSubmitMatiere = document.getElementById("btn-submit-matiere");
+        const btnCancelMatiere = document.getElementById("btn-cancel-matiere");
+        const tableMatieres = document.getElementById("table-matieres");
+
+        // Références aux éléments du DOM pour les résultats d'examen
+        const formExamResults = document.getElementById("form-exam-results");
+        const selectExamType = document.getElementById("exam-type");
+        const inputSuccessRate = document.getElementById("success-rate");
+        const inputFailureRate = document.getElementById("failure-rate");
+        const tableExamResults = document.getElementById("table-exam-results");
+
+        // Références aux éléments du DOM pour les élèves (MISES À JOUR)
+        const formEleve = document.getElementById("form-eleve");
+        const selectEleve = document.getElementById("eleve-select"); // Nouveau select pour choisir l'élève
+        const selectEleveClasse = document.getElementById("eleve-classe");
+        const inputEleveMoyenne = document.getElementById("eleve-moyenne");
+        const btnSubmitEleve = document.getElementById("btn-submit-eleve");
+        const btnCancelEleve = document.getElementById("btn-cancel-eleve");
+        const tableEleves = document.getElementById("table-eleves");
+
+        const messageBox = document.getElementById("message-box");
+
+        // Éléments DOM pour la responsivité
+        const menuToggle = document.getElementById("menu-toggle");
+        const mainSidebar = document.getElementById("main-sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const userToggle = document.getElementById("user-toggle");
+        const userDropdown = document.getElementById("user-dropdown");
+        const mainHeader = document.getElementById("main-header");
+
+
+        let editIndexClasse = null;
+        let editIndexMatiere = null;
+        let editIndexExamResult = null;
+        let editMatriculeEleve = null; // Nous allons éditer par matricule plutôt que par index pour les élèves
+
+
+        // Helpers stockage
+        const getClasses = () => JSON.parse(localStorage.getItem("classes") || "[]");
+        const setClasses = data => {
+            localStorage.setItem("classes", JSON.stringify(data));
+            populateClassSelect(); // Mettre à jour les options de classe dans le formulaire élève après modification/ajout/suppression
+        };
+
+        const getMatieres = () => JSON.parse(localStorage.getItem("matieres") || '["Français", "Mathématiques", "Physique"]');
+        const setMatieres = data => localStorage.setItem("matieres", JSON.stringify(data));
+
+        const getExamResults = () => JSON.parse(localStorage.getItem("examResults") || "[]");
+        const setExamResults = data => {
+            localStorage.setItem("examResults", JSON.stringify(data));
+            window.dispatchEvent(new Event('storage')); // Pour la communication inter-onglets/fenêtres
+        };
+
+        // Fonction pour récupérer et stocker les élèves (maintenant unifiée)
+        // Les élèves DOIVENT avoir { nom, matricule, classe, moyenne }
+        const getEleves = () => JSON.parse(localStorage.getItem("eleves") || "[]");
+        const setEleves = data => {
+            localStorage.setItem("eleves", JSON.stringify(data));
+            // Mettre à jour le sélecteur d'élèves si des changements surviennent
+            populateEleveSelect();
+        };
+
+        const normalize = str => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+        // Fonctions d'affichage des messages
+        const show = (txt, color = "green") => {
+            messageBox.textContent = txt;
+            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${
+                color === 'green' ? 'bg-green-100 text-green-700' :
+                color === 'red' ? 'bg-red-100 text-red-700' :
+                'bg-gray-100 text-gray-700'
+                }`;
+            messageBox.classList.remove("hidden");
+            setTimeout(() => messageBox.classList.add("hidden"), 3000);
+        };
+
+        // --- Gestion des Classes ---
+        formClasse.addEventListener("submit", e => {
+            e.preventDefault();
+            const nomClasse = inputNomClasse.value.trim();
+            let classes = getClasses();
+
+            if (!nomClasse) {
+                return show("Le nom de la classe ne peut pas être vide.", "red");
+            }
+
+            const normalizedNomClasse = normalize(nomClasse);
+
+            if (editIndexClasse !== null) {
+                const oldNormalizedClasse = normalize(classes[editIndexClasse]);
+                if (normalizedNomClasse !== oldNormalizedClasse && classes.some((c, i) => normalize(c) === normalizedNomClasse && i !== editIndexClasse)) {
+                    return show("Cette classe existe déjà.", "red");
+                }
+                classes[editIndexClasse] = nomClasse;
+                show("Classe modifiée avec succès.", "green");
+            } else {
+                if (classes.some(c => normalize(c) === normalizedNomClasse)) {
+                    return show("Cette classe existe déjà.", "red");
+                }
+                classes.push(nomClasse);
+                show("Classe ajoutée avec succès.", "green");
+            }
+
+            setClasses(classes);
+            inputNomClasse.value = "";
+            editIndexClasse = null;
+            btnSubmitClasse.textContent = "Ajouter Classe";
+            btnCancelClasse.classList.add("hidden");
+            renderClasses();
+        });
+
+        btnCancelClasse.addEventListener("click", () => {
+            inputNomClasse.value = "";
+            editIndexClasse = null;
+            btnSubmitClasse.textContent = "Ajouter Classe";
+            btnCancelClasse.classList.add("hidden");
+        });
+
+        function renderClasses() {
+            const classes = getClasses();
+            tableClasses.innerHTML = classes.length === 0 ? `<tr><td colspan="2" class="text-center py-4 text-gray-500">Aucune classe enregistrée.</td></tr>` :
+                classes.map((classe, i) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-3">${classe}</td>
+                        <td class="py-2 px-3 flex space-x-2">
+                            <button onclick="editClasse(${i})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="deleteClasse(${i})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+            populateClassSelect(); // Mettre à jour le select des classes pour les élèves
+        }
+
+        window.editClasse = i => {
+            const classes = getClasses();
+            inputNomClasse.value = classes[i];
+            editIndexClasse = i;
+            btnSubmitClasse.textContent = "Modifier Classe";
+            btnCancelClasse.classList.remove("hidden");
+            inputNomClasse.focus();
+        };
+
+        window.deleteClasse = i => {
+            let classes = getClasses();
+            const nomClasse = classes[i];
+            const eleves = getEleves(); // Récupère la liste commune des élèves
+            const elevesInClass = eleves.filter(eleve => eleve.classe === nomClasse);
+
+            if (elevesInClass.length > 0) {
+                return show(`Impossible de supprimer la classe "${nomClasse}" car ${elevesInClass.length} élève(s) y sont affecté(s). Veuillez d'abord déplacer ou supprimer ces élèves.`, "red");
+            }
+
+            if (confirm(`Supprimer la classe "${nomClasse}" ?`)) {
+                classes.splice(i, 1);
+                setClasses(classes);
+                show("Classe supprimée avec succès.", "green");
+                renderClasses();
+                renderEleves(); // Mettre à jour la liste des élèves après suppression d'une classe
+            }
+        };
+
+        // --- Gestion des Matières ---
+        formMatiere.addEventListener("submit", e => {
+            e.preventDefault();
+            const nomMatiere = inputNomMatiere.value.trim();
+            let matieres = getMatieres();
+
+            if (!nomMatiere) {
+                return show("Le nom de la matière ne peut pas être vide.", "red");
+            }
+
+            const normalizedNomMatiere = normalize(nomMatiere);
+
+            if (editIndexMatiere !== null) {
+                const oldNormalizedMatiere = normalize(matieres[editIndexMatiere]);
+                if (normalizedNomMatiere !== oldNormalizedMatiere && matieres.some((m, i) => normalize(m) === normalizedNomMatiere && i !== editIndexMatiere)) {
+                    return show("Cette matière existe déjà.", "red");
+                }
+                matieres[editIndexMatiere] = nomMatiere;
+                show("Matière modifiée avec succès.", "green");
+            } else {
+                if (matieres.some(m => normalize(m) === normalizedNomMatiere)) {
+                    return show("Cette matière existe déjà.", "red");
+                }
+                matieres.push(nomMatiere);
+                show("Matière ajoutée avec succès.", "green");
+            }
+
+            setMatieres(matieres);
+            inputNomMatiere.value = "";
+            editIndexMatiere = null;
+            btnSubmitMatiere.textContent = "Ajouter Matière";
+            btnCancelMatiere.classList.add("hidden");
+            renderMatieres();
+        });
+
+        btnCancelMatiere.addEventListener("click", () => {
+            inputNomMatiere.value = "";
+            editIndexMatiere = null;
+            btnSubmitMatiere.textContent = "Ajouter Matière";
+            btnCancelMatiere.classList.add("hidden");
+        });
+
+        function renderMatieres() {
+            const matieres = getMatieres();
+            tableMatieres.innerHTML = matieres.length === 0 ? `<tr><td colspan="2" class="text-center py-4 text-gray-500">Aucune matière enregistrée.</td></tr>` :
+                matieres.map((matiere, i) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-3">${matiere}</td>
+                        <td class="py-2 px-3 flex space-x-2">
+                            <button onclick="editMatiere(${i})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="deleteMatiere(${i})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+        }
+
+        window.editMatiere = i => {
+            const matieres = getMatieres();
+            inputNomMatiere.value = matieres[i];
+            editIndexMatiere = i;
+            btnSubmitMatiere.textContent = "Modifier Matière";
+            btnCancelMatiere.classList.remove("hidden");
+            inputNomMatiere.focus();
+        };
+
+        window.deleteMatiere = i => {
+            let matieres = getMatieres();
+            const nomMatiere = matieres[i];
+            if (confirm(`Supprimer la matière "${nomMatiere}" ?`)) {
+                matieres.splice(i, 1);
+                setMatieres(matieres);
+                show("Matière supprimée avec succès.", "green");
+                renderMatieres();
+            }
+        };
+
+        // --- Gestion des Résultats d'Examen ---
+        inputSuccessRate.addEventListener('input', () => {
+            let success = parseFloat(inputSuccessRate.value);
+            if (!isNaN(success) && success >= 0 && success <= 100) {
+                inputFailureRate.value = (100 - success).toFixed(1);
+            } else {
+                inputFailureRate.value = '';
+            }
+        });
+
+        formExamResults.addEventListener("submit", e => {
+            e.preventDefault();
+            const examType = selectExamType.value;
+            const successRate = parseFloat(inputSuccessRate.value);
+            const failureRate = parseFloat(inputFailureRate.value);
+
+            if (!examType || isNaN(successRate) || successRate < 0 || successRate > 100) {
+                return show("Veuillez saisir des taux valides (entre 0 et 100) et sélectionner un type d'examen.", "red");
+            }
+
+            let examResults = getExamResults();
+
+            if (editIndexExamResult !== null) {
+                const oldType = examResults[editIndexExamResult].type;
+                if (examType !== oldType && examResults.some((r, i) => r.type === examType && i !== editIndexExamResult)) {
+                    return show(`Les résultats pour l'examen "${examType}" existent déjà.`, "red");
+                }
+                examResults[editIndexExamResult] = { type: examType, success: successRate, failure: failureRate };
+                show(`Résultats de l'examen "${examType}" mis à jour.`, "green");
+            } else {
+                if (examResults.some(result => result.type === examType)) {
+                    return show(`Les résultats pour l'examen "${examType}" existent déjà. Veuillez les modifier.`, "red");
+                }
+                examResults.push({ type: examType, success: successRate, failure: failureRate });
+                show(`Résultats de l'examen "${examType}" enregistrés.`, "green");
+            }
+
+            setExamResults(examResults);
+            formExamResults.reset();
+            inputFailureRate.value = '';
+            editIndexExamResult = null;
+            selectExamType.disabled = false;
+            renderExamResults();
+        });
+
+        function renderExamResults() {
+            const examResults = getExamResults();
+            tableExamResults.innerHTML = examResults.length === 0 ? `<tr><td colspan="4" class="text-center py-4 text-gray-500">Aucun résultat d'examen enregistré.</td></tr>` :
+                examResults.map((result, i) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-3">${result.type}</td>
+                        <td class="py-2 px-3">${result.success.toFixed(1)}%</td>
+                        <td class="py-2 px-3">${result.failure.toFixed(1)}%</td>
+                        <td class="py-2 px-3 flex space-x-2">
+                            <button onclick="editExamResult(${i})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="deleteExamResult(${i})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+        }
+
+        window.editExamResult = i => {
+            const examResults = getExamResults();
+            const resultToEdit = examResults[i];
+            selectExamType.value = resultToEdit.type;
+            inputSuccessRate.value = resultToEdit.success.toFixed(1);
+            inputFailureRate.value = resultToEdit.failure.toFixed(1);
+            editIndexExamResult = i;
+
+            selectExamType.disabled = true;
+            show(`Vous modifiez les résultats pour "${resultToEdit.type}".`, "blue");
+            inputSuccessRate.focus();
+        };
+
+        window.deleteExamResult = i => {
+            let examResults = getExamResults();
+            const examType = examResults[i].type;
+            if (confirm(`Supprimer les résultats de l'examen "${examType}" ?`)) {
+                examResults.splice(i, 1);
+                setExamResults(examResults);
+                show(`Résultats de l'examen "${examType}" supprimés.`, "green");
+                renderExamResults();
+                if (editIndexExamResult === i) {
+                    formExamResults.reset();
+                    inputFailureRate.value = '';
+                    editIndexExamResult = null;
+                    selectExamType.disabled = false;
+                }
+            }
+        };
+
+        // --- NOUVEAU: Gestion des Élèves et de leurs Moyennes (MISES À JOUR POUR LA LIAISON) ---
+
+        // Fonction pour peupler le sélecteur de classe
+        function populateClassSelect() {
+            const classes = getClasses();
+            selectEleveClasse.innerHTML = '<option value="">Sélectionner une classe</option>';
+            classes.forEach(classe => {
+                const option = document.createElement('option');
+                option.value = classe;
+                option.textContent = classe;
+                selectEleveClasse.appendChild(option);
+            });
+            // Si un élève est en cours d'édition, assurez-vous que sa classe est sélectionnée
+            if (editMatriculeEleve) {
+                const eleves = getEleves();
+                const currentEleve = eleves.find(el => el.matricule === editMatriculeEleve);
+                if (currentEleve) {
+                    selectEleveClasse.value = currentEleve.classe;
+                }
+            }
+        }
+
+        // Nouvelle fonction pour peupler le sélecteur d'élèves
+        function populateEleveSelect() {
+            const eleves = getEleves();
+            selectEleve.innerHTML = '<option value="">-- Choisir un élève --</option>';
+            eleves.forEach(eleve => {
+                const option = document.createElement('option');
+                option.value = eleve.matricule; // La valeur de l'option sera le matricule
+                option.textContent = `${eleve.nom} (${eleve.matricule})`;
+                selectEleve.appendChild(option);
+            });
+            // Si un élève est en cours d'édition, le sélectionner
+            if (editMatriculeEleve) {
+                selectEleve.value = editMatriculeEleve;
+                // Déclencher le changement pour pré-remplir les champs si l'édition est en cours
+                // (utile après un re-renderEleves ou populateEleveSelect)
+                const event = new Event('change');
+                selectEleve.dispatchEvent(event);
+            }
+        }
+
+        // Écouteur de changement sur le sélecteur d'élèves pour pré-remplir
+        selectEleve.addEventListener('change', () => {
+            const selectedMatricule = selectEleve.value;
+            const eleves = getEleves();
+            const selectedEleve = eleves.find(el => el.matricule === selectedMatricule);
+
+            if (selectedEleve) {
+                // Pré-remplir la classe et la moyenne de l'élève sélectionné
+                selectEleveClasse.value = selectedEleve.classe || '';
+                inputEleveMoyenne.value = selectedEleve.moyenne !== undefined ? selectedEleve.moyenne.toFixed(2) : '';
+                
+                editMatriculeEleve = selectedMatricule; // Set l'élève en édition
+                btnSubmitEleve.textContent = "Modifier Moyenne";
+                btnCancelEleve.classList.remove("hidden");
+            } else {
+                // Si aucune sélection ou '-- Choisir un élève --'
+                selectEleveClasse.value = '';
+                inputEleveMoyenne.value = '';
+                editMatriculeEleve = null;
+                btnSubmitEleve.textContent = "Enregistrer Moyenne";
+                btnCancelEleve.classList.add("hidden");
+            }
+        });
+
+
+        formEleve.addEventListener("submit", e => {
+            e.preventDefault();
+            const selectedMatricule = selectEleve.value;
+            const classe = selectEleveClasse.value;
+            const moyenne = parseFloat(inputEleveMoyenne.value);
+
+            if (!selectedMatricule) {
+                return show("Veuillez sélectionner un élève.", "red");
+            }
+
+            if (!classe) {
+                return show("Veuillez sélectionner une classe.", "red");
+            }
+
+            if (isNaN(moyenne) || moyenne < 0 || moyenne > 20) {
+                return show("Veuillez saisir une moyenne valide (entre 0 et 20).", "red");
+            }
+
+            let eleves = getEleves();
+            const eleveIndex = eleves.findIndex(el => el.matricule === selectedMatricule);
+
+            if (eleveIndex > -1) {
+                // Élève trouvé, on met à jour ses informations
+                eleves[eleveIndex].classe = classe;
+                eleves[eleveIndex].moyenne = moyenne;
+                setEleves(eleves);
+                show(`Moyenne de ${eleves[eleveIndex].nom} mise à jour avec succès.`, "green");
+            } else {
+                // Ce cas ne devrait normalement pas arriver avec le select, mais une sécurité
+                return show("Erreur : Élève sélectionné non trouvé dans la liste.", "red");
+            }
+
+            formEleve.reset();
+            editMatriculeEleve = null; // Réinitialiser l'édition
+            btnSubmitEleve.textContent = "Enregistrer Moyenne";
+            btnCancelEleve.classList.add("hidden");
+            populateEleveSelect(); // Re-peupler le select pour s'assurer qu'il est à jour
+            renderEleves();
+        });
+
+        btnCancelEleve.addEventListener("click", () => {
+            formEleve.reset();
+            editMatriculeEleve = null;
+            btnSubmitEleve.textContent = "Enregistrer Moyenne";
+            btnCancelEleve.classList.add("hidden");
+            selectEleve.disabled = false; // Réactiver la sélection de l'élève
+        });
+
+        function renderEleves() {
+            const eleves = getEleves();
+            tableEleves.innerHTML = eleves.length === 0 ? `<tr><td colspan="5" class="text-center py-4 text-gray-500">Aucun élève enregistré.</td></tr>` :
+                eleves.map((eleve, i) => `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-2 px-3">${eleve.nom || 'N/A'}</td>
+                        <td class="py-2 px-3">${eleve.matricule || 'N/A'}</td>
+                        <td class="py-2 px-3">${eleve.classe || 'Non affectée'}</td>
+                        <td class="py-2 px-3">${eleve.moyenne !== undefined ? eleve.moyenne.toFixed(2) : 'N/A'}</td>
+                        <td class="py-2 px-3 flex space-x-2">
+                            <button onclick="editEleve('${eleve.matricule}')" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
+                            <button onclick="deleteEleve('${eleve.matricule}')" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
+                        </td>
+                    </tr>
+                `).join("");
+        }
+
+        window.editEleve = matricule => {
+            const eleves = getEleves();
+            const eleveToEdit = eleves.find(el => el.matricule === matricule);
+
+            if (eleveToEdit) {
+                selectEleve.value = matricule; // Sélectionne l'élève dans le dropdown
+                selectEleveClasse.value = eleveToEdit.classe || '';
+                inputEleveMoyenne.value = eleveToEdit.moyenne !== undefined ? eleveToEdit.moyenne.toFixed(2) : '';
+                editMatriculeEleve = matricule;
+                btnSubmitEleve.textContent = "Modifier Moyenne";
+                btnCancelEleve.classList.remove("hidden");
+                selectEleve.disabled = true; // Désactiver le select pour éviter de changer d'élève en cours d'édition
+                inputEleveMoyenne.focus();
+            }
+        };
+
+        window.deleteEleve = matricule => {
+            let eleves = getEleves();
+            const eleveIndex = eleves.findIndex(el => el.matricule === matricule);
+
+            if (eleveIndex > -1) {
+                const nomEleve = eleves[eleveIndex].nom;
+                if (confirm(`Supprimer l'élève "${nomEleve} (Matricule: ${matricule})" ?`)) {
+                    eleves.splice(eleveIndex, 1);
+                    setEleves(eleves);
+                    show(`Élève "${nomEleve}" supprimé avec succès.`, "green");
+                    renderEleves();
+                    if (editMatriculeEleve === matricule) { // Si l'élément supprimé était en cours d'édition
+                        formEleve.reset();
+                        editMatriculeEleve = null;
+                        btnSubmitEleve.textContent = "Enregistrer Moyenne";
+                        btnCancelEleve.classList.add("hidden");
+                        selectEleve.disabled = false;
+                    }
+                }
+            } else {
+                show("Erreur : Élève non trouvé pour suppression.", "red");
+            }
+        };
+
+        // --- Fonctions de Responsivité et d'Interaction UI ---
+        menuToggle.addEventListener("click", () => {
+            mainSidebar.classList.toggle("active");
+            sidebarOverlay.classList.toggle("active");
+        });
+
+        sidebarOverlay.addEventListener("click", () => {
+            mainSidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("active");
+        });
+
+        userToggle.addEventListener("click", () => {
+            userDropdown.classList.toggle("hidden");
+        });
+
+        // Fermer le dropdown si on clique en dehors
+        window.addEventListener("click", e => {
+            if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+
+        // Sticky header on scroll
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 0) {
+                mainHeader.classList.add("scrolled-header");
+            } else {
+                mainHeader.classList.remove("scrolled-header");
+            }
+        });
+
+        // Initialisation au chargement de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            renderClasses();
+            renderMatieres();
+            renderExamResults();
+            populateEleveSelect(); // Peupler le select des élèves au démarrage
+            renderEleves(); // Charger les élèves au démarrage
+        });
+
+        // Écouter les changements dans le localStorage pour tenir à jour la liste des élèves
+        // C'est important si la page 'eleve.html' modifie la liste des élèves.
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'eleves') {
+                populateEleveSelect();
+                renderEleves();
+            }
+            if (event.key === 'classes') {
+                populateClassSelect();
+                renderClasses(); // Assurez-vous que la liste des classes est aussi à jour
+            }
+        });
+    </script>
+</body>
+
+</html>
