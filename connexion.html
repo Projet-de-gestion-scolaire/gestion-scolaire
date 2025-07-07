@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(120deg, #18bc9c 0%, #3498db 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .login-container {
+      background: #fff;
+      padding: 38px 32px 28px 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.13);
+      min-width: 320px;
+      max-width: 95vw;
+      text-align: center;
+      position: relative;
+    }
+    .login-container h2 {
+      margin-bottom: 1.2em;
+      color: #18bc9c;
+      font-weight: 700;
+      font-size: 1.6em;
+      letter-spacing: 1px;
+    }
+    .login-container input {
+      display: block;
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 1em;
+      background: #f8fafc;
+      transition: border 0.2s;
+    }
+    .login-container input:focus {
+      border: 1.5px solid #18bc9c;
+      outline: none;
+    }
+    .login-container button[type="submit"] {
+      background: #18bc9c;
+      color: #fff;
+      border: none;
+      padding: 12px 0;
+      border-radius: 6px;
+      font-size: 1.1em;
+      font-weight: 600;
+      width: 100%;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    }
+    .login-container button[type="submit"]:hover {
+      background: #149174;
+    }
+    .login-container .switch-link {
+      display: block;
+      margin-top: 10px;
+      color: #3498db;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.98em;
+      transition: color 0.2s;
+    }
+    .login-container .switch-link:hover {
+      color: #217dbb;
+    }
+    .login-container .error {
+      color: #e74c3c;
+      margin-bottom: 10px;
+      font-size: 0.98em;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <form id="loginForm">
+      <h2>Connexion</h2>
+      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+      <input type="password" id="password" placeholder="Mot de passe" required>
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  // Identifiants admin (à améliorer plus tard)
+  const adminUser = "admin";
+  const adminPass = "admin123";
+
+  if (username === adminUser && password === adminPass) {
+    // Stocker une session locale (pas sécurisé mais utile pour apprentissage)
+    localStorage.setItem("isAdmin", "true");
+
+    // Rediriger vers le dashboard
+    window.location.href = "index.html";
+  } else {
+    alert("Nom d'utilisateur ou mot de passe incorrect !");
+  }
+});
+
+  </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
     <title>Tableau de Bord - Gestion Scolaire</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -252,14 +252,7 @@
                 <i class="fas fa-calendar-alt text-accent-blue text-xl"></i>
                 <p class="font-medium">Bienvenue Nènè Diallo – 2 juillet 2025</p>
             </div>
-            <div class="mb-6">
-                <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de
-                    la
-                    performance scolaire :</p>
-                <div class="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto">
-                    <canvas id="performanceChart" class="mx-auto"></canvas>
-                </div>
-            </div>
+            
 
 
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -468,7 +461,7 @@
         // Fonction pour récupérer les résultats d'examen depuis localStorage
         const getEleves = () => JSON.parse(localStorage.getItem('eleves') || '[]');
         const getProfesseurs = () => JSON.parse(localStorage.getItem('professeurs') || '[]');
-        const getExamResults = () => JSON.parse(localStorage.getItem("examResults") || "[]");
+        
 
         // Fonctions pour les notifications
         const getNotifications = () => JSON.parse(localStorage.getItem('notifications') || '[]');
@@ -563,119 +556,7 @@
 
 
 
-        function updatePerformanceChart() {
-            const eleves = getEleves();
-            const professeurs = getProfesseurs();
-            const examResults = getExamResults();
-
-            document.getElementById('card-eleves').textContent = eleves.length;
-            document.getElementById('card-profs').textContent = professeurs.length;
-    
-            // Mise à jour du nombre de notifications via la fonction dédiée
-            updateNotificationCounts();
-            // Mise à jour des comptes de tâches
-            updateTaskCounts();
-
-
-            // --- Données pour le Diagramme à barres groupées ---
-            const examLabels = ['Examen', 'Brevet', 'Baccalauréat'];
-            const dataSuccess = [];
-            const dataFailure = [];
-
-            examLabels.forEach(label => {
-                const result = examResults.find(e => e.type === label);
-                if (result) {
-                    dataSuccess.push(result.success);
-                    dataFailure.push(result.failure);
-                } else {
-                    dataSuccess.push(0);
-                    dataFailure.push(0);
-                }
-            });
-
-            if (window.performanceChartInstance) {
-                window.performanceChartInstance.destroy();
-            }
-
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            window.performanceChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: examLabels,
-                    datasets: [
-                        {
-                            label: 'Taux de Réussite (%)',
-                            data: dataSuccess,
-                            backgroundColor: '#10B981', // accent-green
-                            borderColor: '#059669',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Taux d\'Échec (%)',
-                            data: dataFailure,
-                            backgroundColor: '#EF4444', // accent-red
-                            borderColor: '#DC2626',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Taux de Réussite et d\'Échec par Examen',
-                            font: {
-                                size: 16
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y + '%';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Examen'
-                            },
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Pourcentage (%)'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
+        
         // Initialisation des données pour les tests (à supprimer en production)
         function initializeDummyData() {
             // Notifications (exemple, si vous n'en avez pas encore)
@@ -701,15 +582,7 @@
                 ]));
             }
 
-            // Exam Results
-            if (getExamResults().length === 0) {
-                localStorage.setItem('examResults', JSON.stringify([
-                    { type: "Examen", success: 85, failure: 15 },
-                    { type: "Brevet", success: 70, failure: 30 },
-                    { type: "Baccalauréat", success: 92, failure: 8 }
-                ]));
-            }
-
+           
             // Tâches (nouvel ajout)
             if (getTasks().length === 0) {
                 addTask("Préparer la réunion pédagogique", "2025-07-08"); // Demain
@@ -728,11 +601,7 @@
 
         initializeDummyData(); // Appelez ceci au début pour initialiser les données de test
 
-        // Appeler la mise à jour des statistiques et du graphique au chargement de la page
-        updatePerformanceChart();
-        // Écouter l'événement 'storage' pour mettre à jour le graphique et les compteurs si les données changent dans une autre fenêtre
-        window.addEventListener('storage', updatePerformanceChart); // Utilise la même fonction car elle gère tout
-
+       
     </script>
 
 </body>

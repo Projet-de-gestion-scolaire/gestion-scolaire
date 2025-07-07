@@ -180,7 +180,8 @@
                     <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i
                         class="fas fa-caret-down text-sm"></i>
                 </button>
-                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                <div id="user-dropdown"
+                    class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
                     <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
                     <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
                 </div>
@@ -191,8 +192,7 @@
     </header>
 
     <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
-        <aside id="main-sidebar"
-            class="bg-white w-64 min-h-screen p-4 shadow-md
+        <aside id="main-sidebar" class="bg-white w-64 min-h-screen p-4 shadow-md
                     fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
                     transition-transform duration-300 ease-in-out z-40">
             <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
@@ -212,7 +212,8 @@
                 <a href="classes.html"
                     class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
                     <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
-                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes &
+                        Matières</span>
                 </a>
 
                 <a href="emploi.html"
@@ -231,10 +232,12 @@
                 <a href="notification.html"
                     class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
                     <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
-                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                    <span
+                        class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
                 </a>
 
-                <a href="parametres.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                <a href="parametres.html"
+                    class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
                     <span class="text-xl mr-3 text-white">⚙</span>
                     <span class="hidden md:inline text-white">Paramètres</span>
                 </a>
@@ -248,12 +251,14 @@
                 <h3 class="text-lg font-semibold mb-4 text-primary-blue">Accès au Portail Élève / Parent</h3>
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <p class="text-sm text-gray-600 mb-3">
-                        Les parents et les élèves peuvent consulter la fiche détaillée d'un élève (notes, absences, etc.) en saisissant son matricule.
+                        Les parents et les élèves peuvent consulter la fiche détaillée d'un élève (notes, absences,
+                        etc.) en saisissant son matricule.
                     </p>
                     <div class="flex items-center gap-2">
                         <input type="text" id="eleve-matricule-search" placeholder="Saisir le matricule de l'élève"
                             class="border border-gray-300 rounded px-3 py-1 flex-grow focus:outline-none focus:ring-1 focus:ring-accent-blue" />
-                        <button id="go-to-eleve-fiche" class="bg-accent-orange hover:bg-accent-orange-dark text-white px-4 py-2 rounded shadow-md text-sm">
+                        <button id="go-to-eleve-fiche"
+                            class="bg-accent-orange hover:bg-accent-orange-dark text-white px-4 py-2 rounded shadow-md text-sm">
                             Voir la Fiche
                         </button>
                     </div>
@@ -264,7 +269,8 @@
                 <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Utilisateurs</h3>
                 <form id="form-user" class="flex flex-col gap-4 mb-6">
                     <div>
-                        <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Nom d'utilisateur:</label>
+                        <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Nom
+                            d'utilisateur:</label>
                         <input type="text" id="user-name" placeholder="Nom complet ou pseudo" required
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
                     </div>
@@ -280,13 +286,15 @@
                         </select>
                     </div>
                     <div>
-                        <label for="user-password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe (si nouveau/modifié):</label>
+                        <label for="user-password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe (si
+                            nouveau/modifié):</label>
                         <input type="password" id="user-password" placeholder="Laisser vide pour ne pas changer"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
                     </div>
                     <div class="flex gap-2">
                         <button type="submit" id="btn-submit-user"
-                            class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter Utilisateur</button>
+                            class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter
+                            Utilisateur</button>
                         <button type="button" id="btn-cancel-user"
                             class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
                     </div>
@@ -297,27 +305,32 @@
                     <table class="min-w-full bg-white">
                         <thead class="bg-accent-blue text-white">
                             <tr>
+                                <th class="py-2 px-3 text-left">N°</th>
                                 <th class="py-2 px-3 text-left">Nom</th>
                                 <th class="py-2 px-3 text-left">Rôle</th>
                                 <th class="py-2 px-3 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="table-users" class="text-gray-700">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
             <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Tâches (Quotidiennes, Hebdomadaires, etc.)</h3>
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Tâches (Quotidiennes,
+                    Hebdomadaires, etc.)</h3>
                 <form id="form-task" class="flex flex-col gap-4 mb-6">
                     <div>
-                        <label for="task-description" class="block text-sm font-medium text-gray-700 mb-1">Description de la tâche:</label>
-                        <input type="text" id="task-description" placeholder="Ex: Vérifier les absences du jour" required
+                        <label for="task-description" class="block text-sm font-medium text-gray-700 mb-1">Description
+                            de la tâche:</label>
+                        <input type="text" id="task-description" placeholder="Ex: Vérifier les absences du jour"
+                            required
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue" />
                     </div>
                     <div>
-                        <label for="task-frequency" class="block text-sm font-medium text-gray-700 mb-1">Fréquence:</label>
+                        <label for="task-frequency"
+                            class="block text-sm font-medium text-gray-700 mb-1">Fréquence:</label>
                         <select id="task-frequency" required
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
                             <option value="daily">Journalière</option>
@@ -328,7 +341,8 @@
                     </div>
                     <div class="flex gap-2">
                         <button type="submit" id="btn-submit-task"
-                            class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter Tâche</button>
+                            class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">Ajouter
+                            Tâche</button>
                         <button type="button" id="btn-cancel-task"
                             class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full hidden">Annuler</button>
                     </div>
@@ -360,7 +374,8 @@
                 <div id="recent-activities-list" class="space-y-3">
                     <p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>
                 </div>
-                <button id="clear-activities-btn" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full">
+                <button id="clear-activities-btn"
+                    class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full">
                     Effacer les activités
                 </button>
             </div>
@@ -370,19 +385,22 @@
                 <h3 class="text-lg font-semibold mb-4 text-primary-blue">Informations Générales de l'École</h3>
                 <form id="form-general-settings" class="space-y-4">
                     <div>
-                        <label for="school-name" class="block text-sm font-medium text-gray-700 mb-1">Nom de l'École:</label>
+                        <label for="school-name" class="block text-sm font-medium text-gray-700 mb-1">Nom de
+                            l'École:</label>
                         <input type="text" id="school-name"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
                             placeholder="Nom de votre établissement" />
                     </div>
                     <div>
-                        <label for="school-address" class="block text-sm font-medium text-gray-700 mb-1">Adresse:</label>
+                        <label for="school-address"
+                            class="block text-sm font-medium text-gray-700 mb-1">Adresse:</label>
                         <input type="text" id="school-address"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
                             placeholder="Adresse complète" />
                     </div>
                     <div>
-                        <label for="school-phone" class="block text-sm font-medium text-gray-700 mb-1">Téléphone:</label>
+                        <label for="school-phone"
+                            class="block text-sm font-medium text-gray-700 mb-1">Téléphone:</label>
                         <input type="tel" id="school-phone"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
                             placeholder="+224 6XX XX XX XX" />
@@ -393,7 +411,8 @@
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue"
                             placeholder="contact@ecole.com" />
                     </div>
-                    <button type="submit" class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">
+                    <button type="submit"
+                        class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full">
                         Enregistrer les informations
                     </button>
                 </form>
@@ -403,7 +422,8 @@
                 <h3 class="text-lg font-semibold mb-4 text-primary-blue">Préférences d'Affichage</h3>
                 <form id="form-display-settings" class="space-y-4">
                     <div>
-                        <label for="theme-select" class="block text-sm font-medium text-gray-700 mb-1">Thème de l'application:</label>
+                        <label for="theme-select" class="block text-sm font-medium text-gray-700 mb-1">Thème de
+                            l'application:</label>
                         <select id="theme-select"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
                             <option value="light">Clair</option>
@@ -411,7 +431,8 @@
                         </select>
                     </div>
                     <div>
-                        <label for="font-size" class="block text-sm font-medium text-gray-700 mb-1">Taille de police (body):</label>
+                        <label for="font-size" class="block text-sm font-medium text-gray-700 mb-1">Taille de police
+                            (body):</label>
                         <select id="font-size"
                             class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-accent-blue">
                             <option value="small">Petite</option>
@@ -419,7 +440,8 @@
                             <option value="large">Grande</option>
                         </select>
                     </div>
-                    <button type="submit" class="bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md w-full">
+                    <button type="submit"
+                        class="bg-accent-blue hover:bg-accent-blue-dark text-white px-4 py-2 rounded shadow-md w-full">
                         Appliquer les préférences
                     </button>
                 </form>
@@ -428,21 +450,42 @@
             <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
                 <h3 class="text-lg font-semibold mb-4 text-primary-blue">Gestion des Données</h3>
                 <div class="space-y-4">
-                    <p class="text-gray-700">Exporter toutes les données de l'application (classes, élèves, etc.) au format JSON.</p>
-                    <button id="export-data-btn" class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">
+                    <p class="text-gray-700">Exporter toutes les données de l'application (classes, élèves, etc.) au
+                        format JSON.</p>
+                    <button id="export-data-btn"
+                        class="bg-accent-purple hover:bg-accent-purple-dark text-white px-4 py-2 rounded shadow-md w-full">
                         Exporter les données
                     </button>
                     <hr class="border-gray-200">
                     <p class="text-gray-700">
-                        <span class="font-bold text-red-600">Attention:</span> Cette action supprimera TOUTES les données stockées localement (élèves, classes, matières, notifications, etc.). Cette action est irréversible.
+                        <span class="font-bold text-red-600">Attention:</span> Cette action supprimera TOUTES les
+                        données stockées localement (élèves, classes, matières, notifications, etc.). Cette action est
+                        irréversible.
                     </p>
-                    <button id="reset-data-btn" class="bg-accent-red hover:bg-accent-red-dark text-white px-4 py-2 rounded shadow-md w-full">
+                    <button id="reset-data-btn"
+                        class="bg-accent-red hover:bg-accent-red-dark text-white px-4 py-2 rounded shadow-md w-full">
                         Réinitialiser toutes les données
                     </button>
                 </div>
             </div>
 
             <div id="message-box" class="hidden mt-6 px-4 py-3 rounded text-sm font-medium"></div>
+            <div class="my-6">
+                <h2 class="text-lg font-semibold mb-2">Générer un rapport</h2>
+                <div class="flex gap-4 items-center">
+                    <select id="reportType" class="border px-4 py-2 rounded shadow-sm">
+                        <option value="daily">Journalier</option>
+                        <option value="weekly">Hebdomadaire</option>
+                        <option value="monthly">Mensuel</option>
+                        <option value="quarterly">Trimestriel</option>
+                    </select>
+                    <button id="generateReportBtn"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+                        Générer le rapport
+                    </button>
+                </div>
+            </div>
+
 
         </main>
     </div>
@@ -571,11 +614,10 @@
 
         const showMessage = (txt, color = "green") => {
             messageBox.textContent = txt;
-            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${
-                color === 'green' ? 'bg-green-100 text-green-700' :
-                color === 'red' ? 'bg-red-100 text-red-700' :
-                color === 'blue' ? 'bg-blue-100 text-blue-700' :
-                'bg-gray-100 text-gray-700'
+            messageBox.className = `mt-6 px-4 py-3 rounded text-sm font-medium ${color === 'green' ? 'bg-green-100 text-green-700' :
+                    color === 'red' ? 'bg-red-100 text-red-700' :
+                        color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                            'bg-gray-100 text-gray-700'
                 }`;
             messageBox.classList.remove("hidden");
             setTimeout(() => messageBox.classList.add("hidden"), 3000);
@@ -777,24 +819,26 @@
             const users = getUsers();
             tableUsers.innerHTML = ''; // Vide le tableau
             if (users.length === 0) {
-                tableUsers.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-gray-500">Aucun utilisateur enregistré.</td></tr>';
+                tableUsers.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-gray-500">Aucun utilisateur enregistré.</td></tr>';
                 return;
             }
 
-            users.forEach(user => {
+            users.forEach((user, index) => {
                 const row = document.createElement("tr");
                 row.className = "border-b border-gray-200 last:border-b-0";
                 row.innerHTML = `
-                    <td class="py-2 px-3">${user.name}</td>
-                    <td class="py-2 px-3 capitalize">${user.role}</td>
-                    <td class="py-2 px-3 flex gap-2">
-                        <button onclick="editUser(${user.id})" class="bg-accent-yellow hover:bg-accent-yellow-dark text-white text-xs px-3 py-1 rounded shadow-sm">Modifier</button>
-                        <button onclick="deleteUser(${user.id})" class="bg-accent-red hover:bg-accent-red-dark text-white text-xs px-3 py-1 rounded shadow-sm">Supprimer</button>
-                    </td>
-                `;
+            <td class="py-2 px-3 font-semibold">${index + 1}</td>
+            <td class="py-2 px-3">${user.name}</td>
+            <td class="py-2 px-3 capitalize">${user.role}</td>
+            <td class="py-2 px-3 flex gap-2">
+                <button onclick="editUser(${user.id})" class="bg-accent-yellow hover:bg-accent-yellow-dark text-white text-xs px-3 py-1 rounded shadow-sm">Modifier</button>
+                <button onclick="deleteUser(${user.id})" class="bg-accent-red hover:bg-accent-red-dark text-white text-xs px-3 py-1 rounded shadow-sm">Supprimer</button>
+            </td>
+        `;
                 tableUsers.appendChild(row);
             });
         }
+
 
         window.editUser = (id) => {
             const users = getUsers();
@@ -1024,6 +1068,68 @@
                 mainHeader.classList.remove('scrolled-header');
             }
         });
+
+ document.getElementById("generateReportBtn").addEventListener("click", () => {
+    const type = document.getElementById("reportType").value;
+    const now = new Date();
+    const label = {
+        daily: "journalier",
+        weekly: "hebdomadaire",
+        monthly: "mensuel",
+        quarterly: "trimestriel"
+    };
+
+    const jours = {
+        daily: 1,
+        weekly: 7,
+        monthly: 30,
+        quarterly: 90
+    };
+
+    const fromDate = new Date(now.getTime() - jours[type] * 24 * 60 * 60 * 1000);
+
+    // --- Mot-clés scolaires ---
+    const motsClesScolaires = [
+        "élève",
+        "enseignant",
+        "classe",
+        "matière",
+        "note",
+        "bulletin",
+        "présence",
+        "inscription"
+    ];
+
+    // --- Activités récentes liées à la gestion scolaire ---
+    const toutesActivites = getRecentActivities();
+    const activitesScolaires = toutesActivites.filter(a => {
+        const dateActivite = new Date(a.timestamp);
+        const estRecente = dateActivite >= fromDate;
+        const estScolaire = motsClesScolaires.some(mot => a.description.toLowerCase().includes(mot));
+        return estRecente && estScolaire;
+    });
+
+    // --- Rapport final ---
+    const rapport = {
+        type: type,
+        date: now.toLocaleDateString(),
+        periode: `Derniers ${jours[type]} jour(s)`,
+        activitesScolaires: activitesScolaires
+    };
+
+    const blob = new Blob([JSON.stringify(rapport, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `rapport_scolaire_${type}_${now.toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showMessage(`Rapport ${label[type]} généré avec succès.`, "green");
+    logActivity(`Génération du rapport ${label[type]} sur la gestion scolaire.`);
+});
 
         // Initialisation de la page
         document.addEventListener("DOMContentLoaded", () => {
