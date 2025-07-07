@@ -175,10 +175,10 @@
         </button>
 
         <div class="flex items-center space-x-4">
-            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i
-                    class="fas fa-bell text-xl"></i>
-                <span
-                    class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan">
+                <i class="fas fa-bell text-xl"></i>
+                <span id="notification-count" class="text-xs bg-red-500 text-white rounded-full px-1 absolute top-0 right-0 hidden">0</span>
+
             </a>
             <div class="relative">
                 <button id="user-toggle"
@@ -195,7 +195,8 @@
         </div>
     </header>
 
-    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6"> <aside id="main-sidebar"
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar"
             class="bg-white w-64 min-h-screen p-4 shadow-md
                     fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block
                     transition-transform duration-300 ease-in-out z-40">
@@ -248,7 +249,8 @@
 
         <main class="flex-1 space-y-6">
             <div class="bg-white p-4 rounded shadow text-gray-700 flex items-center space-x-2">
-                <i class="fas fa-calendar-alt text-accent-blue text-xl"></i> <p class="font-medium">Bienvenue Nènè Diallo – 2 juillet 2025</p>
+                <i class="fas fa-calendar-alt text-accent-blue text-xl"></i>
+                <p class="font-medium">Bienvenue Nènè Diallo – 2 juillet 2025</p>
             </div>
             <div class="mb-6">
                 <p class="text-lg text-gray-700 mb-4">Bienvenue dans l'espace de gestion des élèves. Voici un aperçu de
@@ -269,21 +271,18 @@
                     <h3 class="text-lg font-semibold mb-1">👨‍🏫 Enseignants</h3>
                     <p id="card-profs" class="text-3xl font-bold">0</p>
                 </div>
-                <div class="bg-accent-cyan text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
-                    <h3 class="text-lg font-semibold mb-1">⏳ Inscriptions</h3>
-                    <p id="card-inscriptions" class="text-3xl font-bold">0</p>
-                </div>
+                
                 <div class="bg-accent-yellow text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
                     <h3 class="text-lg font-semibold mb-1">🔔 Notifications</h3>
                     <p id="card-notifs" class="text-3xl font-bold">0</p>
                 </div>
                 <div class="bg-primary-blue text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
                     <h3 class="text-lg font-semibold mb-1">📅 Événements</h3>
-                    <p id="card-avenir" class="text-3xl font-bold">2</p>
+                    <p id="card-avenir" class="text-3xl font-bold">0</p>
                 </div>
                 <div class="bg-accent-purple text-white p-6 rounded-xl shadow hover:scale-105 transform transition">
                     <h3 class="text-lg font-semibold mb-1">✅ Tâches</h3>
-                    <p id="card-a-faire" class="text-3xl font-bold">5</p>
+                    <p id="card-a-faire" class="text-3xl font-bold">0</p>
                 </div>
             </section>
 
@@ -320,10 +319,8 @@
 
             <section class="bg-white p-4 rounded shadow">
                 <h3 class="text-lg font-semibold text-primary-blue mb-2">📅 À venir</h3>
-                <ul class="list-disc pl-5 text-gray-700">
-                    <li>Réunion pédagogique – 3 juillet 2025</li>
-                    <li>Devoir de mathématiques – 5 juillet 2025</li>
-                    <li>Evaluation mensuelle – 5-12 juillet 2025</li>
+                <ul id="upcoming-tasks-list" class="list-disc pl-5 text-gray-700">
+                    <li>Aucune tâche à venir.</li>
                 </ul>
             </section>
         </main>
@@ -337,7 +334,6 @@
     </footer>
 
     <script>
-      
         // Références aux éléments du DOM pour la responsivité
         const menuToggle = document.getElementById("menu-toggle");
         const mainSidebar = document.getElementById("main-sidebar");
@@ -345,6 +341,17 @@
         const userToggle = document.getElementById("user-toggle");
         const userDropdown = document.getElementById("user-dropdown");
         const mainHeader = document.getElementById("main-header"); // Référence au header pour l'effet de scroll
+
+
+
+        // Références pour les notifications
+        const notificationCountSpan = document.getElementById("notification-count");
+        const cardNotifsElement = document.getElementById("card-notifs");
+
+        // Références pour les tâches
+        const taskCountElement = document.getElementById("card-a-faire");
+        const upcomingTasksList = document.getElementById("upcoming-tasks-list");
+
 
         // Fonctions pour le menu latéral
         function openSidebar() {
@@ -459,24 +466,118 @@
 
         // Script pour les statistiques et le graphique de performance (MIS À JOUR pour utiliser localStorage)
         // Fonction pour récupérer les résultats d'examen depuis localStorage
+        const getEleves = () => JSON.parse(localStorage.getItem('eleves') || '[]');
+        const getProfesseurs = () => JSON.parse(localStorage.getItem('professeurs') || '[]');
         const getExamResults = () => JSON.parse(localStorage.getItem("examResults") || "[]");
+
+        // Fonctions pour les notifications
+        const getNotifications = () => JSON.parse(localStorage.getItem('notifications') || '[]');
+        const setNotifications = (notifications) => localStorage.setItem('notifications', JSON.stringify(notifications));
+
+        // Fonctions pour les tâches
+        const getTasks = () => JSON.parse(localStorage.getItem('tasks') || '[]');
+        const setTasks = (tasks) => localStorage.setItem('tasks', JSON.stringify(tasks));
+
+
+        // Fonction pour ajouter une notification (pour les tests)
+        function addNotification(message) {
+            const notifications = getNotifications();
+            const newNotification = {
+                id: Date.now(), // ID unique
+                message: message,
+                date: new Date().toLocaleDateString('fr-FR'),
+                time: new Date().toLocaleTimeString('fr-FR'),
+                read: false // Par défaut, non lue
+            };
+            notifications.push(newNotification);
+            setNotifications(notifications);
+            updateNotificationCounts(); // Mettre à jour l'affichage après ajout
+        }
+
+        // Fonction pour compter les notifications non lues et mettre à jour l'affichage
+        function updateNotificationCounts() {
+            const notifications = getNotifications();
+            const unreadCount = notifications.filter(notif => !notif.read).length;
+
+            notificationCountSpan.textContent = unreadCount;
+            cardNotifsElement.textContent = unreadCount;
+
+            // Afficher/cacher le badge si nécessaire
+            if (unreadCount > 0) {
+                notificationCountSpan.classList.remove('hidden');
+            } else {
+                notificationCountSpan.classList.add('hidden');
+            }
+        }
+
+        // Fonction pour ajouter une tâche (sera utilisée par la page des paramètres)
+        function addTask(description, dueDate) {
+            const tasks = getTasks();
+            const newTask = {
+                id: Date.now(),
+                description: description,
+                dueDate: dueDate, // Format "YYYY-MM-DD"
+                completed: false
+            };
+            tasks.push(newTask);
+            setTasks(tasks);
+            updateTaskCounts(); // Met à jour l'affichage des tâches
+        }
+
+  function updateTaskCounts() {
+    const tasks = getTasks();
+    const incompleteTasksCount = tasks.filter(task => !task.completed).length;
+
+    // Mise à jour de la carte "Tâches"
+    if (taskCountElement) {
+        taskCountElement.textContent = incompleteTasksCount;
+    }
+
+    // Mise à jour de la section "À venir"
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Pour ne comparer que la date
+
+    const upcomingTasks = tasks.filter(task => {
+        if (!task.completed && task.dueDate) {
+            const taskDate = new Date(task.dueDate);
+            return taskDate >= today;
+        }
+        return false;
+    }).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+    upcomingTasksList.innerHTML = ''; // Vider l'ancienne liste
+
+    if (upcomingTasks.length > 0) {
+        upcomingTasks.forEach(task => {
+            const listItem = document.createElement('li');
+            const taskDate = new Date(task.dueDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            listItem.textContent = `${task.description} – Date limite : ${taskDate}`;
+            upcomingTasksList.appendChild(listItem);
+        });
+    } else {
+        const listItem = document.createElement('li');
+        listItem.textContent = 'Aucune tâche à venir.';
+        upcomingTasksList.appendChild(listItem);
+    }
+}
+
 
 
         function updatePerformanceChart() {
-            // Ces données nécessiteraient d'être récupérées depuis localStorage ou une API
-            const eleves = JSON.parse(localStorage.getItem('eleves') || '[]');
-            const professeurs = JSON.parse(localStorage.getItem('professeurs') || '[]');
-            const examResults = getExamResults(); // Récupérer les données réelles des examens
+            const eleves = getEleves();
+            const professeurs = getProfesseurs();
+            const examResults = getExamResults();
 
             document.getElementById('card-eleves').textContent = eleves.length;
             document.getElementById('card-profs').textContent = professeurs.length;
-            document.getElementById('card-inscriptions').textContent = Math.floor(Math.random() * 50) + 10; // Donnée fictive
-            document.getElementById('card-notifs').textContent = 3; // Hardcoded comme dans votre header
-            document.getElementById('card-avenir').textContent = 2; // Hardcoded
-            document.getElementById('card-a-faire').textContent = 5; // Hardcoded
+    
+            // Mise à jour du nombre de notifications via la fonction dédiée
+            updateNotificationCounts();
+            // Mise à jour des comptes de tâches
+            updateTaskCounts();
+
 
             // --- Données pour le Diagramme à barres groupées ---
-            // Utilisation des données réelles si disponibles, sinon des valeurs par défaut
             const examLabels = ['Examen', 'Brevet', 'Baccalauréat'];
             const dataSuccess = [];
             const dataFailure = [];
@@ -487,22 +588,20 @@
                     dataSuccess.push(result.success);
                     dataFailure.push(result.failure);
                 } else {
-                    // Si aucune donnée n'est trouvée pour cet examen, utiliser une valeur par défaut ou 0
-                    dataSuccess.push(0); // Ou une valeur par défaut si vous voulez qu'elle apparaisse
-                    dataFailure.push(0); // Ou une valeur par défaut
+                    dataSuccess.push(0);
+                    dataFailure.push(0);
                 }
             });
 
-            // Si le graphique existe déjà, le détruire pour éviter les superpositions
             if (window.performanceChartInstance) {
                 window.performanceChartInstance.destroy();
             }
 
             const ctx = document.getElementById('performanceChart').getContext('2d');
             window.performanceChartInstance = new Chart(ctx, {
-                type: 'bar', // Type de graphique à barres
+                type: 'bar',
                 data: {
-                    labels: examLabels, // Les types d'examen sur l'axe X
+                    labels: examLabels,
                     datasets: [
                         {
                             label: 'Taux de Réussite (%)',
@@ -525,7 +624,7 @@
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'top', // Position de la légende en haut
+                            position: 'top',
                             labels: {
                                 font: {
                                     size: 14
@@ -534,12 +633,12 @@
                         },
                         title: {
                             display: true,
-                            text: 'Taux de Réussite et d\'Échec par Examen', // Titre pour le diagramme à barres
+                            text: 'Taux de Réussite et d\'Échec par Examen',
                             font: {
                                 size: 16
                             }
                         },
-                        tooltip: { // Améliorer l'affichage des pourcentages dans les tooltips
+                        tooltip: {
                             callbacks: {
                                 label: function (context) {
                                     let label = context.dataset.label || '';
@@ -561,12 +660,12 @@
                                 text: 'Examen'
                             },
                             grid: {
-                                display: false // Masquer les lignes de grille verticales pour un aspect plus propre
+                                display: false
                             }
                         },
                         y: {
                             beginAtZero: true,
-                            max: 100, // Les pourcentages vont jusqu'à 100
+                            max: 100,
                             title: {
                                 display: true,
                                 text: 'Pourcentage (%)'
@@ -576,9 +675,64 @@
                 }
             });
         }
+
+        // Initialisation des données pour les tests (à supprimer en production)
+        function initializeDummyData() {
+            // Notifications (exemple, si vous n'en avez pas encore)
+            if (getNotifications().length === 0) {
+                addNotification("Nouveau devoir de maths pour la classe de 4ème.");
+                addNotification("Rappel: Réunion parents-professeurs demain à 16h.");
+                addNotification("Fermeture exceptionnelle de l'école le 10 juillet.");
+            }
+
+            // Eleves (pour s'assurer que card-eleves n'est pas 0 si vous n'avez pas d'élèves enregistrés)
+            if (getEleves().length === 0) {
+                localStorage.setItem('eleves', JSON.stringify([
+                    { id: 1, nom: "John Doe", matricule: "E001" },
+                    { id: 2, nom: "Jane Smith", matricule: "E002" }
+                ]));
+            }
+
+            // Professeurs
+            if (getProfesseurs().length === 0) {
+                localStorage.setItem('professeurs', JSON.stringify([
+                    { id: 1, nom: "M. Dupont" },
+                    { id: 2, nom: "Mme Martin" }
+                ]));
+            }
+
+            // Exam Results
+            if (getExamResults().length === 0) {
+                localStorage.setItem('examResults', JSON.stringify([
+                    { type: "Examen", success: 85, failure: 15 },
+                    { type: "Brevet", success: 70, failure: 30 },
+                    { type: "Baccalauréat", success: 92, failure: 8 }
+                ]));
+            }
+
+            // Tâches (nouvel ajout)
+            if (getTasks().length === 0) {
+                addTask("Préparer la réunion pédagogique", "2025-07-08"); // Demain
+                addTask("Corriger les devoirs de français", "2025-07-09");
+                addTask("Planifier les activités sportives", "2025-07-05"); // Ancien, devrait apparaître comme non "à venir" si non complété
+                addTask("Mettre à jour le registre des absences", "2025-07-15");
+                addTask("Envoyer les bulletins du premier trimestre", "2025-08-01");
+                // Tâche déjà complétée
+                const tasks = getTasks();
+                if (tasks.length > 0) {
+                    tasks[2].completed = true; // Simuler la complétion de la 3ème tâche
+                    setTasks(tasks);
+                }
+            }
+        }
+
+        initializeDummyData(); // Appelez ceci au début pour initialiser les données de test
+
+        // Appeler la mise à jour des statistiques et du graphique au chargement de la page
         updatePerformanceChart();
-        // Écouter l'événement 'storage' pour mettre à jour le graphique si les données changent dans une autre fenêtre
-        window.addEventListener('storage', updatePerformanceChart);
+        // Écouter l'événement 'storage' pour mettre à jour le graphique et les compteurs si les données changent dans une autre fenêtre
+        window.addEventListener('storage', updatePerformanceChart); // Utilise la même fonction car elle gère tout
+
     </script>
 
 </body>

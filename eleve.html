@@ -512,14 +512,22 @@
 
   <div id="fiche-eleve" class="bg-white shadow-lg rounded p-4 mt-6 hidden border border-gray-200 max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-bold text-primary-blue">👤 Fiche de l’élève</h3>
-      <button id="btn-fermer-fiche" class="text-accent-red hover:text-accent-red-dark font-semibold text-lg">
-        ✖ Fermer
-      </button>
+        <h3 class="text-xl font-bold text-primary-blue">👤 Fiche de l’élève</h3>
+        <div>
+            <button id="btn-modifier-fiche-direct" class="bg-accent-yellow hover:bg-accent-yellow-dark text-white font-semibold px-3 py-1 rounded shadow-sm mr-2 text-sm">
+                ✏️ Modifier la Fiche
+            </button>
+            <button id="btn-fermer-fiche" class="text-accent-red hover:text-accent-red-dark font-semibold text-lg">
+                ✖ Fermer
+            </button>
+        </div>
     </div>
     <div id="fiche-contenu" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-800">
+        </div>
+    <div class="mt-6 text-center">
+        <button id="btn-fermer-fiche-bottom" class="bg-accent-red hover:bg-accent-red-dark text-white px-6 py-2 rounded shadow-md">Fermer la Fiche</button>
     </div>
-  </div>
+</div>
 
   <div id="sidebar-overlay"
     class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>

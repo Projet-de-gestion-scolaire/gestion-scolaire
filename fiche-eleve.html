@@ -192,106 +192,167 @@
             setTimeout(() => messageBox.classList.add("hidden"), 3000);
         };
 
-        function displayEleveFiche() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const matricule = urlParams.get('matricule');
+function displayEleveFiche() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const matricule = urlParams.get('matricule');
 
-            if (!matricule) {
-                eleveDetailsCard.innerHTML = `
-                    <p class="text-red-500 text-center py-4">Matricule de l'élève non fourni dans l'URL.</p>
-                    <a href="parametres.html" class="block text-center mt-4 text-accent-blue hover:underline">Retour aux Paramètres</a>
-                `;
-                return;
-            }
+    if (!matricule) {
+        eleveDetailsCard.innerHTML = `<p class="text-red-500 text-center py-4">Matricule de l'élève non fourni dans l'URL.</p>`;
+        return;
+    }
 
-            const eleves = getEleves();
-            const eleve = eleves.find(el => el.matricule === matricule);
+    const eleves = getEleves();
+    const eleve = eleves.find(el => el.matricule === matricule);
 
-            if (eleve) {
-                eleveDetailsCard.innerHTML = `
-                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations Générales</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <p><strong>Nom:</strong> ${eleve.nom}</p>
-                        <p><strong>Prénom:</strong> ${eleve.prenom}</p>
-                        <p><strong>Matricule:</strong> ${eleve.matricule}</p>
-                        <p><strong>Date de Naissance:</strong> ${eleve.dateNaissance}</p>
-                        <p><strong>Genre:</strong> ${eleve.genre}</p>
-                        <p><strong>Adresse:</strong> ${eleve.adresse}</p>
-                        <p><strong>Téléphone:</strong> ${eleve.telephone}</p>
-                        <p><strong>Email:</strong> ${eleve.email}</p>
-                        <p><strong>Classe Actuelle:</strong> ${eleve.classe}</p>
-                    </div>
+    if (eleve) {
+        eleveDetailsCard.innerHTML = `
+            <div class="flex items-center justify-center mb-6">
+                ${eleve.photo ? `<img src="${eleve.photo}" alt="Photo de ${eleve.nom}" class="w-32 h-32 object-cover rounded-full border-4 border-accent-blue shadow-lg">` : `<i class="fas fa-user-circle text-8xl text-gray-400"></i>`}
+            </div>
 
-                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations du Tuteur</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <p><strong>Nom du Tuteur:</strong> ${eleve.nomTuteur}</p>
-                        <p><strong>Téléphone Tuteur:</strong> ${eleve.telephoneTuteur}</p>
-                    </div>
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations Générales</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <p><strong>Nom Complet:</strong> ${eleve.nom}</p>
+                <p><strong>Sexe:</strong> ${eleve.sexe === 'M' ? 'Masculin' : 'Féminin'}</p>
+                <p><strong>Date de Naissance:</strong> ${eleve.dateNaissance}</p>
+                <p><strong>Filiation:</strong> ${eleve.filiation}</p>
+                <p><strong>Matricule:</strong> ${eleve.matricule}</p>
+                <p><strong>Classe Actuelle:</strong> ${eleve.classe}</p>
+                <p><strong>Statut:</strong> ${eleve.statut}</p>
+                <p><strong>Date d'Inscription:</strong> ${eleve.dateInscription || 'N/A'}</p>
+                <p><strong>Adresse:</strong> ${eleve.adresse || 'N/A'}</p>
+                <p><strong>Téléphone:</strong> ${eleve.telephone || 'N/A'}</p>
+                <p><strong>Email:</strong> ${eleve.email || 'N/A'}</p>
+            </div>
 
-                    <h4 class="text-xl font-semibold mb-4 text-primary-blue">Notes et Moyennes (Exemple)</h4>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                            <thead class="bg-gray-100">
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations du Tuteur</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <p><strong>Nom du Tuteur:</strong> ${eleve.nomTuteur || eleve.filiation || 'N/A'}</p>
+                <p><strong>Téléphone Tuteur:</strong> ${eleve.telephoneTuteur || 'N/A'}</p>
+            </div>
+
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Notes et Moyennes</h4>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-3 text-left border-b">Période</th>
+                            <th class="py-2 px-3 text-left border-b">Date</th>
+                            <th class="py-2 px-3 text-left border-b">Matière</th>
+                            <th class="py-2 px-3 text-left border-b">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${eleve.historiqueNotes && eleve.historiqueNotes.length > 0 ?
+                            eleve.historiqueNotes.map(noteRecord => `
+                                ${noteRecord.notes.map(note => `
+                                    <tr>
+                                        <td class="py-2 px-3 border-b">${noteRecord.periodeEvaluation}</td>
+                                        <td class="py-2 px-3 border-b">${noteRecord.dateEvaluation}</td>
+                                        <td class="py-2 px-3 border-b">${note.matiere}</td>
+                                        <td class="py-2 px-3 border-b">${note.valeur}</td>
+                                    </tr>
+                                `).join('')}
+                            `).join('')
+                        : `<tr><td colspan="4" class="py-4 text-center text-gray-500">Aucune note enregistrée.</td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Historique des Absences</h4>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-3 text-left border-b">Date</th>
+                            <th class="py-2 px-3 text-left border-b">Heure Début</th>
+                            <th class="py-2 px-3 text-left border-b">Heure Fin</th>
+                            <th class="py-2 px-3 text-left border-b">Justifiée</th>
+                            <th class="py-2 px-3 text-left border-b">Motif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${eleve.attendanceRecords && eleve.attendanceRecords.length > 0 ?
+                            eleve.attendanceRecords.map(record => `
                                 <tr>
-                                    <th class="py-2 px-3 text-left border-b">Matière</th>
-                                    <th class="py-2 px-3 text-left border-b">Note</th>
-                                    <th class="py-2 px-3 text-left border-b">Moyenne Classe</th>
+                                    <td class="py-2 px-3 border-b">${record.date}</td>
+                                    <td class="py-2 px-3 border-b">${record.heureDebut || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${record.heureFin || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${record.justifiee ? 'Oui' : 'Non'}</td>
+                                    <td class="py-2 px-3 border-b">${record.motif || 'N/A'}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                ${eleve.notes && eleve.notes.length > 0 ?
-                                    eleve.notes.map(note => `
-                                        <tr>
-                                            <td class="py-2 px-3 border-b">${note.matiere}</td>
-                                            <td class="py-2 px-3 border-b">${note.valeur}</td>
-                                            <td class="py-2 px-3 border-b">${note.moyenneClasse || 'N/A'}</td>
-                                        </tr>
-                                    `).join('')
-                                : `<tr><td colspan="3" class="py-4 text-center text-gray-500">Aucune note enregistrée.</td></tr>`}
-                                <tr>
-                                    <td class="py-2 px-3 font-semibold">Moyenne Générale:</td>
-                                    <td class="py-2 px-3 font-semibold" colspan="2">${eleve.moyenne || 'N/A'}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                     <h4 class="text-xl font-semibold my-4 text-primary-blue">Historique des Absences (Exemple)</h4>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="py-2 px-3 text-left border-b">Date</th>
-                                    <th class="py-2 px-3 text-left border-b">Matière</th>
-                                    <th class="py-2 px-3 text-left border-b">Justifiée</th>
-                                    <th class="py-2 px-3 text-left border-b">Motif</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${eleve.absences && eleve.absences.length > 0 ?
-                                    eleve.absences.map(absence => `
-                                        <tr>
-                                            <td class="py-2 px-3 border-b">${absence.date}</td>
-                                            <td class="py-2 px-3 border-b">${absence.matiere || 'N/A'}</td>
-                                            <td class="py-2 px-3 border-b">${absence.justifiee ? 'Oui' : 'Non'}</td>
-                                            <td class="py-2 px-3 border-b">${absence.motif || 'N/A'}</td>
-                                        </tr>
-                                    `).join('')
-                                : `<tr><td colspan="4" class="py-4 text-center text-gray-500">Aucune absence enregistrée.</td></tr>`}
-                            </tbody>
-                        </table>
-                    </div>
+                            `).join('')
+                        : `<tr><td colspan="5" class="py-4 text-center text-gray-500">Aucune absence enregistrée.</td></tr>`}
+                    </tbody>
+                </table>
+            </div>
 
-                    <div class="mt-6 text-center">
-                        <a href="parametres.html" class="inline-block bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-md">Retour aux Paramètres</a>
-                    </div>
-                `;
-            } else {
-                eleveDetailsCard.innerHTML = `
-                    <p class="text-red-500 text-center py-4">Aucun élève trouvé avec le matricule "${matricule}".</p>
-                    <a href="parametres.html" class="block text-center mt-4 text-accent-blue hover:underline">Retour aux Paramètres</a>
-                `;
-            }
-        }
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Suivi des Devoirs</h4>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-3 text-left border-b">Matière</th>
+                            <th class="py-2 px-3 text-left border-b">Description</th>
+                            <th class="py-2 px-3 text-left border-b">Assigné le</th>
+                            <th class="py-2 px-3 text-left border-b">Remis le</th>
+                            <th class="py-2 px-3 text-left border-b">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${eleve.homeworks && eleve.homeworks.length > 0 ?
+                            eleve.homeworks.map(hw => `
+                                <tr>
+                                    <td class="py-2 px-3 border-b">${hw.matiere || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${hw.description || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${hw.dateAssignation || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${hw.dateRemise || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${hw.statut || 'N/A'}</td>
+                                </tr>
+                            `).join('')
+                        : `<tr><td colspan="5" class="py-4 text-center text-gray-500">Aucun devoir enregistré.</td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-xl font-semibold mb-4 text-primary-blue">Informations de Scolarité</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <p><strong>Frais Totaux Dus:</strong> ${eleve.totalFeesDue ? eleve.totalFeesDue.toLocaleString('fr-GN', { style: 'currency', currency: 'GNF' }) : 'N/A'}</p>
+                <p><strong>Solde Restant Dû:</strong> <span class="${eleve.balanceDue > 0 ? 'text-red-600 font-semibold' : 'text-green-600'}">${eleve.balanceDue ? eleve.balanceDue.toLocaleString('fr-GN', { style: 'currency', currency: 'GNF' }) : 'N/A'}</span></p>
+            </div>
+            <h5 class="text-lg font-semibold mb-2 text-primary-blue">Historique des Paiements</h5>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-3 text-left border-b">Date</th>
+                            <th class="py-2 px-3 text-left border-b">Montant Payé</th>
+                            <th class="py-2 px-3 text-left border-b">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${eleve.payments && eleve.payments.length > 0 ?
+                            eleve.payments.map(payment => `
+                                <tr>
+                                    <td class="py-2 px-3 border-b">${payment.date || 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${payment.montant ? payment.montant.toLocaleString('fr-GN', { style: 'currency', currency: 'GNF' }) : 'N/A'}</td>
+                                    <td class="py-2 px-3 border-b">${payment.description || 'N/A'}</td>
+                                </tr>
+                            `).join('')
+                        : `<tr><td colspan="3" class="py-4 text-center text-gray-500">Aucun paiement enregistré.</td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="parametres.html" class="inline-block bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow-md mr-4">Retour aux Paramètres</a>
+                <a href="eleve.html" class="inline-block bg-accent-blue hover:bg-accent-blue-dark text-white px-6 py-2 rounded shadow-md">Retour à la Gestion des Élèves</a>
+            </div>
+        `;
+    } else {
+        eleveDetailsCard.innerHTML = `<p class="text-red-500 text-center py-4">Aucun élève trouvé avec le matricule "${matricule}".</p>`;
+    }
+}
 
         // --- Mise à jour du compteur de notifications non lues dans le header ---
         function updateUnreadCount() {

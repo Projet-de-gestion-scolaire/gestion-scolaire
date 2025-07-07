@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Paramètres de l'Application</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2j+PXnSP00oBgDQEg1QpSLogkNCk/rsfmcdGq"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         /* Définitions des couleurs personnalisées en CSS pur */
@@ -145,7 +147,8 @@
 
         /* Styles pour les notifications dans le header */
         #unread-notification-count {
-            display: flex; /* Assure le centrage du texte */
+            display: flex;
+            /* Assure le centrage du texte */
             align-items: center;
             justify-content: center;
         }
@@ -357,7 +360,7 @@
                 <div id="recent-activities-list" class="space-y-3">
                     <p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>
                 </div>
-                <button id="clear-activities-btn" class="mt-4 bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full">
+                <button id="clear-activities-btn" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded shadow-md w-full">
                     Effacer les activités
                 </button>
             </div>
@@ -547,8 +550,12 @@
             const newActivity = {
                 id: Date.now(),
                 timestamp: new Date().toLocaleString('fr-FR', {
-                    year: 'numeric', month: 'short', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
                 }),
                 description: description
             };
@@ -624,140 +631,200 @@
             const settings = getAppSettings();
             const body = document.body;
 
-            body.classList.remove('text-sm', 'text-base', 'text-lg');
-            if (settings.display && settings.display.fontSize === 'small') {
-                body.classList.add('text-sm');
-            } else if (settings.display && settings.display.fontSize === 'large') {
-                body.classList.add('text-lg');
+            // Appliquer le thème (pour l'instant, seulement "light" a un impact visuel direct via classes Tailwind ou styles définis)
+            // Si vous aviez un thème "dark", vous ajouteriez ou retirerz des classes ici.
+            // Pour l'exemple, nous nous concentrons sur la taille de police.
+            if (settings.display && settings.display.theme === 'dark') {
+                // Vous devrez définir des classes CSS pour le mode sombre ou ajuster des variables CSS.
+                // Ex: body.classList.add('dark-mode');
             } else {
-                body.classList.add('text-base');
+                // Ex: body.classList.remove('dark-mode');
             }
-            // Pour le thème, vous devrez ajouter une logique CSS/JS plus complexe
-            // Par exemple, body.classList.toggle('dark-theme', settings.display.theme === 'dark');
+
+            // Appliquer la taille de police
+            body.classList.remove('text-sm', 'text-base', 'text-lg'); // Retirer toutes les classes existantes
+            if (settings.display) {
+                if (settings.display.fontSize === 'small') {
+                    body.classList.add('text-sm');
+                } else if (settings.display.fontSize === 'large') {
+                    body.classList.add('text-lg');
+                } else {
+                    body.classList.add('text-base'); // Normal (par défaut de Tailwind)
+                }
+            } else {
+                body.classList.add('text-base'); // Par défaut si aucun paramètre n'est enregistré
+            }
+
+            // Mettre à jour le logo si un chemin de logo est enregistré
+            // (Assurez-vous d'avoir un champ pour le chemin du logo dans les settings si vous voulez cela)
+            // const logo = document.querySelector('header img[alt="Logo école"]');
+            // if (settings.school && settings.school.logoUrl) {
+            //     logo.src = settings.school.logoUrl;
+            // }
         }
 
-       // --- MAJ: Gestion du Portail Élève / Parent ---
-        goToEleveFicheBtn.addEventListener('click', () => {
-            const matricule = inputEleveMatriculeSearch.value.trim();
-            if (!matricule) {
-                return showMessage("Veuillez entrer un matricule d'élève pour voir la fiche.", "red");
+        // --- Gestion des Données (Export / Reset) ---
+        exportDataBtn.addEventListener("click", () => {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                try {
+                    allData[key] = JSON.parse(localStorage.getItem(key));
+                } catch (e) {
+                    allData[key] = localStorage.getItem(key); // Si ce n'est pas du JSON
+                }
             }
-            const eleves = getEleves();
-            const eleve = eleves.find(el => el.matricule === matricule);
 
-            if (eleve) {
-                // REDIRECTION VERS LA PAGE FICHE-ELEVE.HTML
-                window.location.href = `fiche-eleve.html?matricule=${matricule}`;
-                logActivity(`Consultation fiche élève: ${eleve.nom} (${eleve.matricule})`);
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], {
+                type: "application/json"
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `data_ecole_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessage("Données exportées avec succès !", "green");
+            logActivity("Exportation de toutes les données de l'application.");
+        });
+
+        resetDataBtn.addEventListener("click", () => {
+            if (confirm("Êtes-vous sûr de vouloir réinitialiser TOUTES les données ? Cette action est irréversible.")) {
+                localStorage.clear();
+                showMessage("Toutes les données ont été réinitialisées.", "red");
+                logActivity("Réinitialisation de toutes les données de l'application.");
+                // Recharger la page après réinitialisation pour un état propre
+                setTimeout(() => window.location.reload(), 1000);
+            }
+        });
+
+        // --- NOUVEAU: Gestion du Portail Élève / Parent ---
+        goToEleveFicheBtn.addEventListener("click", () => {
+            const matricule = inputEleveMatriculeSearch.value.trim();
+            if (matricule) {
+                // Redirige vers eleve.html en passant le matricule comme paramètre d'URL
+                window.location.href = `eleve.html?matricule=${matricule}`;
+                logActivity(`Accès au portail élève pour le matricule : ${matricule}`);
             } else {
-                showMessage(`Aucun élève trouvé avec le matricule: ${matricule}. Veuillez vérifier le matricule.`, "red");
+                showMessage("Veuillez saisir un matricule d'élève.", "red");
             }
         });
 
         // --- NOUVEAU: Gestion des Utilisateurs ---
         formUser.addEventListener("submit", e => {
             e.preventDefault();
+            let users = getUsers();
             const userName = inputUserName.value.trim();
             const userRole = selectUserRole.value;
             const userPassword = inputUserPassword.value;
 
             if (!userName || !userRole) {
-                return showMessage("Le nom d'utilisateur et le rôle sont requis.", "red");
+                return showMessage("Veuillez remplir le nom d'utilisateur et le rôle.", "red");
             }
 
-            let users = getUsers();
-
             if (editUserId !== null) {
-                const index = users.findIndex(u => u.id === editUserId);
-                if (index > -1) {
-                    users[index].name = userName;
-                    users[index].role = userRole;
+                // Mode modification
+                const userIndex = users.findIndex(u => u.id === editUserId);
+                if (userIndex > -1) {
+                    users[userIndex].name = userName;
+                    users[userIndex].role = userRole;
                     if (userPassword) {
-                        users[index].password = userPassword;
+                        users[userIndex].password = userPassword; // En production, utilisez un hachage de mot de passe
                     }
-                    showMessage("Utilisateur modifié avec succès.", "green");
-                    logActivity(`Modification utilisateur: ${userName} (ID: ${editUserId})`);
+                    showMessage("Utilisateur modifié avec succès !", "green");
+                    logActivity(`Utilisateur modifié : ${userName} (${userRole})`);
                 }
             } else {
-                if (users.some(u => u.name.toLowerCase() === userName.toLowerCase())) {
+                // Mode ajout
+                if (users.some(u => u.name === userName)) {
                     return showMessage("Un utilisateur avec ce nom existe déjà.", "red");
+                }
+                if (!userPassword) {
+                    return showMessage("Veuillez définir un mot de passe pour le nouvel utilisateur.", "red");
                 }
                 const newUser = {
                     id: Date.now(),
                     name: userName,
                     role: userRole,
-                    password: userPassword || 'password123'
+                    password: userPassword // En production, utilisez un hachage de mot de passe
                 };
                 users.push(newUser);
-                showMessage("Utilisateur ajouté avec succès.", "green");
-                logActivity(`Ajout nouvel utilisateur: ${userName}`);
+                showMessage("Utilisateur ajouté avec succès !", "green");
+                logActivity(`Nouvel utilisateur ajouté : ${userName} (${userRole})`);
             }
-
             setUsers(users);
-            formUser.reset();
-            editUserId = null;
-            btnSubmitUser.textContent = "Ajouter Utilisateur";
-            btnCancelUser.classList.add("hidden");
+            resetUserForm();
             renderUsers();
         });
 
-        btnCancelUser.addEventListener("click", () => {
+        btnCancelUser.addEventListener("click", resetUserForm);
+
+        function resetUserForm() {
             formUser.reset();
             editUserId = null;
             btnSubmitUser.textContent = "Ajouter Utilisateur";
+            btnSubmitUser.classList.remove("bg-accent-yellow", "hover:bg-accent-yellow-dark");
+            btnSubmitUser.classList.add("bg-accent-green", "hover:bg-accent-green-dark");
             btnCancelUser.classList.add("hidden");
-            inputUserPassword.setAttribute('placeholder', 'Laisser vide pour ne pas changer');
-        });
+            inputUserPassword.placeholder = "Laisser vide pour ne pas changer";
+            inputUserPassword.required = false; // Rendre le mot de passe non requis en modification
+        }
 
         function renderUsers() {
             const users = getUsers();
-            tableUsers.innerHTML = users.length === 0 ? `<tr><td colspan="3" class="text-center py-4 text-gray-500">Aucun utilisateur enregistré.</td></tr>` :
-                users.map(user => `
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="py-2 px-3">${user.name}</td>
-                        <td class="py-2 px-3">${user.role}</td>
-                        <td class="py-2 px-3 flex space-x-2">
-                            <button onclick="editUser(${user.id})" class="text-xs bg-accent-green hover:bg-accent-green-dark text-white px-2 py-1 rounded shadow-sm">Modif</button>
-                            <button onclick="deleteUser(${user.id})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">Supp</button>
-                        </td>
-                    </tr>
-                `).join("");
+            tableUsers.innerHTML = ''; // Vide le tableau
+            if (users.length === 0) {
+                tableUsers.innerHTML = '<tr><td colspan="3" class="py-4 text-center text-gray-500">Aucun utilisateur enregistré.</td></tr>';
+                return;
+            }
+
+            users.forEach(user => {
+                const row = document.createElement("tr");
+                row.className = "border-b border-gray-200 last:border-b-0";
+                row.innerHTML = `
+                    <td class="py-2 px-3">${user.name}</td>
+                    <td class="py-2 px-3 capitalize">${user.role}</td>
+                    <td class="py-2 px-3 flex gap-2">
+                        <button onclick="editUser(${user.id})" class="bg-accent-yellow hover:bg-accent-yellow-dark text-white text-xs px-3 py-1 rounded shadow-sm">Modifier</button>
+                        <button onclick="deleteUser(${user.id})" class="bg-accent-red hover:bg-accent-red-dark text-white text-xs px-3 py-1 rounded shadow-sm">Supprimer</button>
+                    </td>
+                `;
+                tableUsers.appendChild(row);
+            });
         }
 
-        window.editUser = id => {
+        window.editUser = (id) => {
             const users = getUsers();
-            const userToEdit = users.find(u => u.id === id);
-            if (userToEdit) {
-                inputUserName.value = userToEdit.name;
-                selectUserRole.value = userToEdit.role;
-                inputUserPassword.value = '';
-                inputUserPassword.setAttribute('placeholder', 'Entrer un nouveau mot de passe');
+            const user = users.find(u => u.id === id);
+            if (user) {
                 editUserId = id;
+                inputUserName.value = user.name;
+                selectUserRole.value = user.role;
+                inputUserPassword.value = ''; // Ne pas pré-remplir le mot de passe pour des raisons de sécurité
+                inputUserPassword.placeholder = "Laisser vide pour ne pas changer";
+                inputUserPassword.required = false;
+
                 btnSubmitUser.textContent = "Modifier Utilisateur";
+                btnSubmitUser.classList.remove("bg-accent-green", "hover:bg-accent-green-dark");
+                btnSubmitUser.classList.add("bg-accent-yellow", "hover:bg-accent-yellow-dark");
                 btnCancelUser.classList.remove("hidden");
-                inputUserName.focus();
-                showMessage(`Modification de l'utilisateur: ${userToEdit.name}`, "blue");
+                logActivity(`Modification de l'utilisateur : ${user.name}`);
             }
         };
 
-        window.deleteUser = id => {
-            let users = getUsers();
-            const index = users.findIndex(u => u.id === id);
-            if (index > -1) {
-                const userName = users[index].name;
-                if (confirm(`Supprimer l'utilisateur "${userName}" ?`)) {
-                    users.splice(index, 1);
+        window.deleteUser = (id) => {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+                let users = getUsers();
+                const userToDelete = users.find(u => u.id === id);
+                if (userToDelete) {
+                    users = users.filter(u => u.id !== id);
                     setUsers(users);
-                    showMessage("Utilisateur supprimé avec succès.", "green");
-                    logActivity(`Suppression utilisateur: ${userName}`);
                     renderUsers();
-                    if (editUserId === id) {
-                        formUser.reset();
-                        editUserId = null;
-                        btnSubmitUser.textContent = "Ajouter Utilisateur";
-                        btnCancelUser.classList.add("hidden");
-                        inputUserPassword.setAttribute('placeholder', 'Laisser vide pour ne pas changer');
-                    }
+                    showMessage(`Utilisateur "${userToDelete.name}" supprimé.`, "red");
+                    logActivity(`Suppression de l'utilisateur : ${userToDelete.name}`);
                 }
             }
         };
@@ -765,49 +832,49 @@
         // --- NOUVEAU: Gestion des Tâches ---
         formTask.addEventListener("submit", e => {
             e.preventDefault();
-            const description = inputTaskDescription.value.trim();
-            const frequency = selectTaskFrequency.value;
-
-            if (!description) {
-                return showMessage("La description de la tâche ne peut pas être vide.", "red");
-            }
-
             let tasks = getTasks();
+            const taskDescription = inputTaskDescription.value.trim();
+            const taskFrequency = selectTaskFrequency.value;
+
+            if (!taskDescription) {
+                return showMessage("Veuillez saisir une description pour la tâche.", "red");
+            }
 
             if (editTaskId !== null) {
-                const index = tasks.findIndex(t => t.id === editTaskId);
-                if (index > -1) {
-                    tasks[index].description = description;
-                    tasks[index].frequency = frequency;
-                    showMessage("Tâche modifiée avec succès.", "green");
-                    logActivity(`Modification tâche: "${description}" (ID: ${editTaskId})`);
+                // Mode modification
+                const taskIndex = tasks.findIndex(t => t.id === editTaskId);
+                if (taskIndex > -1) {
+                    tasks[taskIndex].description = taskDescription;
+                    tasks[taskIndex].frequency = taskFrequency;
+                    showMessage("Tâche modifiée avec succès !", "green");
+                    logActivity(`Tâche modifiée : ${taskDescription}`);
                 }
             } else {
+                // Mode ajout
                 const newTask = {
                     id: Date.now(),
-                    description,
-                    frequency,
-                    completed: false
+                    description: taskDescription,
+                    frequency: taskFrequency
                 };
                 tasks.push(newTask);
-                showMessage("Tâche ajoutée avec succès.", "green");
-                logActivity(`Ajout nouvelle tâche: "${description}"`);
+                showMessage("Tâche ajoutée avec succès !", "green");
+                logActivity(`Nouvelle tâche ajoutée : ${taskDescription}`);
             }
-
             setTasks(tasks);
-            formTask.reset();
-            editTaskId = null;
-            btnSubmitTask.textContent = "Ajouter Tâche";
-            btnCancelTask.classList.add("hidden");
+            resetTaskForm();
             renderTasks();
         });
 
-        btnCancelTask.addEventListener("click", () => {
+        btnCancelTask.addEventListener("click", resetTaskForm);
+
+        function resetTaskForm() {
             formTask.reset();
             editTaskId = null;
             btnSubmitTask.textContent = "Ajouter Tâche";
+            btnSubmitTask.classList.remove("bg-accent-yellow", "hover:bg-accent-yellow-dark");
+            btnSubmitTask.classList.add("bg-accent-purple", "hover:bg-accent-purple-dark");
             btnCancelTask.classList.add("hidden");
-        });
+        }
 
         function renderTasks() {
             const tasks = getTasks();
@@ -816,159 +883,108 @@
             taskMonthlyList.innerHTML = '';
             taskQuarterlyList.innerHTML = '';
 
-            const noTaskMessage = '<li>Aucune tâche pour cette catégorie.</li>';
-
-            const dailyTasks = tasks.filter(t => t.frequency === 'daily');
-            const weeklyTasks = tasks.filter(t => t.frequency === 'weekly');
-            const monthlyTasks = tasks.filter(t => t.frequency === 'monthly');
-            const quarterlyTasks = tasks.filter(t => t.frequency === 'quarterly');
-
-            taskDailyList.innerHTML = dailyTasks.length === 0 ? noTaskMessage : dailyTasks.map(createTaskListItem).join('');
-            taskWeeklyList.innerHTML = weeklyTasks.length === 0 ? noTaskMessage : weeklyTasks.map(createTaskListItem).join('');
-            taskMonthlyList.innerHTML = monthlyTasks.length === 0 ? noTaskMessage : monthlyTasks.map(createTaskListItem).join('');
-            taskQuarterlyList.innerHTML = quarterlyTasks.length === 0 ? noTaskMessage : quarterlyTasks.map(createTaskListItem).join('');
-
-            function createTaskListItem(task) {
-                const completedClass = task.completed ? 'line-through text-gray-500' : '';
-                return `
-                    <li class="flex items-center justify-between p-2 rounded-md ${task.completed ? 'bg-gray-100' : 'bg-white'} border border-gray-200">
-                        <span class="${completedClass} flex-grow">${task.description}</span>
-                        <div class="flex space-x-2 flex-shrink-0 ml-2">
-                            <button onclick="toggleTaskCompletion(${task.id})" class="text-xs ${task.completed ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'} text-white px-2 py-1 rounded shadow-sm">
-                                ${task.completed ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-check"></i>'}
-                            </button>
-                            <button onclick="editTask(${task.id})" class="text-xs bg-accent-blue hover:bg-accent-blue-dark text-white px-2 py-1 rounded shadow-sm">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteTask(${task.id})" class="text-xs bg-accent-red hover:bg-accent-red-dark text-white px-2 py-1 rounded shadow-sm">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </li>
-                `;
+            if (tasks.length === 0) {
+                // Aucune tâche, on n'affiche rien dans les listes, les titres restent.
+                return;
             }
-        }
 
-        window.editTask = id => {
-            const tasks = getTasks();
-            const taskToEdit = tasks.find(t => t.id === id);
-            if (taskToEdit) {
-                inputTaskDescription.value = taskToEdit.description;
-                selectTaskFrequency.value = taskToEdit.frequency;
-                editTaskId = id;
-                btnSubmitTask.textContent = "Modifier Tâche";
-                btnCancelTask.classList.remove("hidden");
-                inputTaskDescription.focus();
-                showMessage(`Modification de la tâche: "${taskToEdit.description}"`, "blue");
-            }
-        };
-
-        window.deleteTask = id => {
-            let tasks = getTasks();
-            const index = tasks.findIndex(t => t.id === id);
-            if (index > -1) {
-                const taskDescription = tasks[index].description;
-                if (confirm(`Supprimer la tâche "${taskDescription}" ?`)) {
-                    tasks.splice(index, 1);
-                    setTasks(tasks);
-                    showMessage("Tâche supprimée avec succès.", "green");
-                    logActivity(`Suppression tâche: "${taskDescription}"`);
-                    renderTasks();
-                    if (editTaskId === id) {
-                        formTask.reset();
-                        editTaskId = null;
-                        btnSubmitTask.textContent = "Ajouter Tâche";
-                        btnCancelTask.classList.add("hidden");
-                    }
-                }
-            }
-        };
-
-        window.toggleTaskCompletion = id => {
-            let tasks = getTasks();
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.completed = !task.completed;
-                setTasks(tasks);
-                renderTasks();
-                showMessage(`Tâche "${task.description}" marquée comme ${task.completed ? 'terminée' : 'non terminée'}.`, "green");
-                logActivity(`Tâche "${task.description}" marquée comme ${task.completed ? 'terminée' : 'non terminée'}.`);
-            }
-        };
-
-
-        // --- NOUVEAU: Activités Récentes ---
-        function renderRecentActivities() {
-            const activities = getRecentActivities();
-            if (activities.length === 0) {
-                recentActivitiesList.innerHTML = '<p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>';
-                clearActivitiesBtn.classList.add('hidden');
-            } else {
-                clearActivitiesBtn.classList.remove('hidden');
-                recentActivitiesList.innerHTML = activities.map(activity => `
-                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm flex justify-between items-center">
-                        <span class="text-gray-800">${activity.description}</span>
-                        <span class="text-gray-500 text-xs">${activity.timestamp}</span>
+            tasks.forEach(task => {
+                const li = document.createElement("li");
+                li.className = "flex items-center justify-between py-1 border-b border-gray-100 last:border-b-0";
+                li.innerHTML = `
+                    <span>${task.description}</span>
+                    <div class="flex gap-2">
+                        <button onclick="editTask(${task.id})" class="text-accent-yellow hover:text-accent-yellow-dark text-xs"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteTask(${task.id})" class="text-accent-red hover:text-accent-red-dark text-xs"><i class="fas fa-trash-alt"></i></button>
                     </div>
-                `).join('');
-            }
-        }
-
-        clearActivitiesBtn.addEventListener('click', () => {
-            if (confirm("Voulez-vous vraiment effacer toutes les activités récentes ?")) {
-                localStorage.removeItem("recentActivities");
-                showMessage("Activités récentes effacées.", "green");
-                renderRecentActivities();
-            }
-        });
-
-
-        // --- Gestion des Données (Fonctions existantes) ---
-        exportDataBtn.addEventListener('click', () => {
-            const allData = {};
-            const keysToExport = ["eleves", "classes", "matieres", "examResults", "notifications", "appSettings", "professeurs", "emplois", "users", "tasks", "recentActivities"]; // MISES À JOUR AVEC LES NOUVELLES CLÉS
-
-            keysToExport.forEach(key => {
-                const data = localStorage.getItem(key);
-                if (data) {
-                    try {
-                        allData[key] = JSON.parse(data);
-                    } catch (e) {
-                        allData[key] = data;
-                    }
+                `;
+                if (task.frequency === 'daily') {
+                    taskDailyList.appendChild(li);
+                } else if (task.frequency === 'weekly') {
+                    taskWeeklyList.appendChild(li);
+                } else if (task.frequency === 'monthly') {
+                    taskMonthlyList.appendChild(li);
+                } else if (task.frequency === 'quarterly') {
+                    taskQuarterlyList.appendChild(li);
                 }
             });
+        }
 
-            const dataStr = JSON.stringify(allData, null, 2);
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "gestion_ecole_data.json";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showMessage("Données exportées avec succès !", "green");
-            logActivity("Données de l'application exportées.");
-        });
+        window.editTask = (id) => {
+            const tasks = getTasks();
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                editTaskId = id;
+                inputTaskDescription.value = task.description;
+                selectTaskFrequency.value = task.frequency;
 
-        resetDataBtn.addEventListener('click', () => {
-            if (confirm("Êtes-vous SÛR de vouloir réinitialiser toutes les données ? Cette action est irréversible et supprimera tous les élèves, classes, matières, notifications, utilisateurs, tâches, etc.")) {
-                if (confirm("CONFIRMATION FINALE : Toutes les données seront effacées. Êtes-vous ABSOLUMENT CERTAIN ?")) {
-                    localStorage.clear();
-                    showMessage("Toutes les données ont été réinitialisées.", "green");
-                    logActivity("Toutes les données ont été réinitialisées."); // Cette activité ne sera pas sauvegardée si le localStorage est effacé
-                    setTimeout(() => window.location.reload(), 1000);
+                btnSubmitTask.textContent = "Modifier Tâche";
+                btnSubmitTask.classList.remove("bg-accent-purple", "hover:bg-accent-purple-dark");
+                btnSubmitTask.classList.add("bg-accent-yellow", "hover:bg-accent-yellow-dark");
+                btnCancelTask.classList.remove("hidden");
+                logActivity(`Modification de la tâche : ${task.description}`);
+            }
+        };
+
+        window.deleteTask = (id) => {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) {
+                let tasks = getTasks();
+                const taskToDelete = tasks.find(t => t.id === id);
+                if (taskToDelete) {
+                    tasks = tasks.filter(t => t.id !== id);
+                    setTasks(tasks);
+                    renderTasks();
+                    showMessage(`Tâche "${taskToDelete.description}" supprimée.`, "red");
+                    logActivity(`Suppression de la tâche : ${taskToDelete.description}`);
                 }
+            }
+        };
+
+
+        // --- NOUVEAU: Affichage des Activités Récentes ---
+        function renderRecentActivities() {
+            const activities = getRecentActivities();
+            recentActivitiesList.innerHTML = '';
+            if (activities.length === 0) {
+                recentActivitiesList.innerHTML = '<p class="text-gray-500 text-center py-4">Aucune activité récente enregistrée.</p>';
+                return;
+            }
+            activities.forEach(activity => {
+                const activityDiv = document.createElement("div");
+                activityDiv.className = "bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm flex justify-between items-center";
+                activityDiv.innerHTML = `
+                    <div>
+                        <p class="font-medium text-gray-800">${activity.description}</p>
+                        <span class="text-gray-500 text-xs">${activity.timestamp}</span>
+                    </div>
+                    <button onclick="deleteActivity(${activity.id})" class="text-accent-red hover:text-accent-red-dark text-lg ml-2"><i class="fas fa-times"></i></button>
+                `;
+                recentActivitiesList.appendChild(activityDiv);
+            });
+        }
+
+        window.deleteActivity = (id) => {
+            let activities = getRecentActivities();
+            activities = activities.filter(activity => activity.id !== id);
+            setRecentActivities(activities);
+            renderRecentActivities();
+            showMessage("Activité supprimée.", "blue");
+        };
+
+        clearActivitiesBtn.addEventListener("click", () => {
+            if (confirm("Voulez-vous vraiment effacer toutes les activités récentes ?")) {
+                setRecentActivities([]);
+                renderRecentActivities();
+                showMessage("Toutes les activités récentes ont été effacées.", "red");
             }
         });
 
-        // --- Mise à jour du compteur de notifications non lues dans le header ---
-        function updateUnreadCount() {
+
+        // --- Fonctions communes pour le Header et Sidebar (depuis les autres pages) ---
+        function updateUnreadNotificationCount() {
             const notifications = getNotifications();
             const unreadCount = notifications.filter(n => !n.read).length;
-            unreadNotificationCount.textContent = unreadCount;
+            unreadNotificationCount.textContent = unreadCount > 0 ? unreadCount : '0';
             if (unreadCount > 0) {
                 unreadNotificationCount.classList.remove('hidden');
             } else {
@@ -976,7 +992,7 @@
             }
         }
 
-        // --- Fonctions de Responsivité et d'Interaction UI (récupérées des autres pages) ---
+        // Sidebar et Overlay Toggle
         menuToggle.addEventListener("click", () => {
             mainSidebar.classList.toggle("active");
             sidebarOverlay.classList.toggle("active");
@@ -987,54 +1003,36 @@
             sidebarOverlay.classList.remove("active");
         });
 
-        userToggle.addEventListener("click", () => {
+        // User Dropdown Toggle
+        userToggle.addEventListener("click", (event) => {
             userDropdown.classList.toggle("hidden");
+            event.stopPropagation(); // Empêche le clic de se propager au document
         });
 
         // Fermer le dropdown si on clique en dehors
-        window.addEventListener("click", e => {
-            if (!userToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+        document.addEventListener("click", (event) => {
+            if (!userDropdown.contains(event.target) && !userToggle.contains(event.target)) {
                 userDropdown.classList.add("hidden");
             }
         });
 
-        // Sticky header on scroll
-        window.addEventListener("scroll", () => {
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
             if (window.scrollY > 0) {
-                mainHeader.classList.add("scrolled-header");
+                mainHeader.classList.add('scrolled-header');
             } else {
-                mainHeader.classList.remove("scrolled-header");
+                mainHeader.classList.remove('scrolled-header');
             }
         });
 
-        // Initialisation au chargement de la page
+        // Initialisation de la page
         document.addEventListener("DOMContentLoaded", () => {
             loadGeneralSettings();
             loadDisplaySettings();
-            renderUsers();
-            renderTasks();
-            renderRecentActivities();
-            updateUnreadCount();
-        });
-
-        // Écouter les changements dans le localStorage pour les compteurs et re-render
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'notifications') {
-                updateUnreadCount();
-            }
-            if (event.key === 'appSettings') {
-                loadGeneralSettings();
-                loadDisplaySettings();
-            }
-            if (event.key === 'users') {
-                renderUsers();
-            }
-            if (event.key === 'tasks') {
-                renderTasks();
-            }
-            if (event.key === 'recentActivities') {
-                renderRecentActivities();
-            }
+            renderUsers(); // Afficher les utilisateurs existants
+            renderTasks(); // Afficher les tâches existantes
+            renderRecentActivities(); // Afficher les activités récentes
+            updateUnreadNotificationCount(); // Mettre à jour le compteur de notifications au chargement
         });
     </script>
 </body>

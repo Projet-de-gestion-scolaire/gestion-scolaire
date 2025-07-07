@@ -1,48 +1,279 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Gestion des Professeurs</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des Professeurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .bg-primary-blue { background-color: #0F172A; }
+        .text-primary-blue { color: #0F172A; }
+        .bg-accent-blue { background-color: #2563EB; }
+        .hover\:bg-accent-blue:hover { background-color: #2563EB; }
+        .bg-accent-blue-dark { background-color: #1D4ED8; }
+        .hover\:bg-accent-blue-dark:hover { background-color: #1D4ED8; }
+        .bg-accent-green { background-color: #10B981; }
+        .hover\:bg-accent-green-dark:hover { background-color: #059669; }
+        .bg-accent-yellow { background-color: #FBBF24; }
+        .hover\:bg-accent-yellow-dark:hover { background-color: #F59E0B; }
+        .bg-accent-red { background-color: #EF4444; }
+        .hover\:bg-accent-red-dark:hover { background-color: #DC2626; }
+        .bg-accent-cyan { background-color: #06B6D4; }
+        .hover\:bg-accent-cyan-dark:hover { background-color: #0891B2; }
+        .bg-accent-purple { background-color: #8B5CF6; }
+        .hover\:bg-accent-purple-dark:hover { background-color: #7C3AED; }
+        .bg-accent-orange { background-color: #F97316; }
+        .hover\:bg-accent-orange-dark:hover { background-color: #EA580C; }
+        #main-sidebar nav a:not(.bg-accent-blue) { color: #4B5563; font-weight: 600; }
+        #main-sidebar nav a.group:hover span.group-hover\:text-white { color: white !important; }
+        #main-sidebar nav a.group:hover span.text-gray-600 { color: white !important; }
+    </style>
 </head>
-<body>
-  <header>
-    <h1>Gestion des Professeurs</h1>
-    <nav>
-        <a href="index.html">Accueil</a>
-      <a href="eleve.html">Élèves</a>
-      <a href="emploi.html">Emploi du temps</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notification.html">notifications</a>
-      <a href="parent.html">Portail parents</a>
-      <a href="parametres.html">Paramètres</a>
-    </nav>
-  </header>
-  <main>
-    <section>
-      <h2>Ajouter un professeur</h2>
-      <form id="form-prof">
-        <input type="text" id="nom-prof" placeholder="Nom" required>
-        <input type="text" id="matiere-prof" placeholder="Matière" required>
-        <button type="submit">Ajouter</button>
-      </form>
-    </section>
-    <section>
-      <h2>Liste des professeurs</h2>
-      <table id="table-prof">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Matière</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Professeurs ajoutés dynamiquement -->
-        </tbody>
-      </table>
-    </section>
-  </main>
-  <script src="script.js"></script>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <header id="main-header" class="bg-white shadow fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-2 px-4 transition-all duration-300 ease-in-out">
+        <div class="flex items-center space-x-4">
+            <img src="logo.png" alt="Logo école" class="w-12 h-12 object-contain" />
+            <h1 class="text-xl font-bold text-primary-blue">Gestion Administrative</h1>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-accent-blue focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="flex items-center space-x-4">
+            <a href="notification.html" class="relative text-gray-600 hover:text-accent-cyan"><i class="fas fa-bell text-xl"></i>
+                <span id="unread-notification-count" class="absolute -top-2 -right-2 text-xs bg-accent-red text-white rounded-full w-5 h-5">0</span>
+            </a>
+            <div class="relative">
+                <button id="user-toggle" class="flex items-center space-x-1 text-gray-700 hover:text-accent-green focus:outline-none">
+                    <i class="fas fa-user-circle text-2xl"></i><span>Nènè Diallo</span><i class="fas fa-caret-down text-sm"></i>
+                </button>
+                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100">Déconnexion</a>
+                </div>
+            </div>
+            <a href="parametres.html" class="text-gray-600 hover:text-primary-blue"><i class="fas fa-cog text-xl"></i></a>
+        </div>
+    </header>
+    <div class="flex max-w-7xl mx-auto pt-24 px-4 gap-6">
+        <aside id="main-sidebar" class="bg-white w-64 min-h-screen p-4 shadow-md fixed top-0 left-0 h-full transform -translate-x-full md:relative md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40">
+            <h2 class="text-xl font-semibold mb-4 text-primary-blue">Tableau de bord - Menu</h2>
+            <nav class="space-y-2">
+                <a href="index.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🏠</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Accueil</span>
+                </a>
+                <a href="eleve.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">👨‍🎓</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Élèves</span>
+                </a>
+                <a href="classes.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📚</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Classes & Matières</span>
+                </a>
+                <a href="emploi.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">📅</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Emploi du temps</span>
+                </a>
+                <a href="professeur.html" class="flex items-center py-2 px-4 rounded bg-accent-blue text-white font-semibold">
+                    <span class="text-xl mr-3 text-white">👨‍🏫</span>
+                    <span class="hidden md:inline text-white">Professeurs</span>
+                </a>
+                <a href="notification.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">🔔</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Notifications</span>
+                </a>
+                <a href="parametres.html" class="flex items-center py-2 px-4 rounded transition-colors duration-200 group hover:bg-accent-blue">
+                    <span class="text-xl mr-3 text-gray-600 group-hover:text-white">⚙</span>
+                    <span class="hidden md:inline font-semibold text-gray-700 group-hover:text-white">Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="flex-1 space-y-6">
+            <h2 class="text-2xl font-bold mb-6 text-primary-blue">Gestion des Professeurs</h2>
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Ajouter un professeur</h3>
+                <form id="form-prof" class="flex flex-col md:flex-row gap-4 items-center mb-4">
+                    <input type="text" id="nom-prof" placeholder="Nom" required class="border border-gray-300 rounded px-3 py-2 w-full md:w-1/5">
+                    <input type="text" id="prenom-prof" placeholder="Prénom" required class="border border-gray-300 rounded px-3 py-2 w-full md:w-1/5">
+                    <input type="text" id="matiere-prof" placeholder="Matière" required class="border border-gray-300 rounded px-3 py-2 w-full md:w-1/5">
+                    <input type="text" id="salle-prof" placeholder="Salle" required class="border border-gray-300 rounded px-3 py-2 w-full md:w-1/5">
+                    <button type="submit" class="bg-accent-green hover:bg-accent-green-dark text-white px-4 py-2 rounded shadow-md w-full md:w-auto"><i class="fas fa-plus"></i> Ajouter</button>
+                </form>
+                <div id="prof-message" class="hidden mt-4 px-4 py-2 rounded text-sm font-medium"></div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-primary-blue">Liste des professeurs</h3>
+                <div class="overflow-x-auto">
+                    <table id="table-prof" class="min-w-full bg-white rounded-lg">
+                        <thead class="bg-accent-blue text-white">
+                            <tr>
+                                <th class="py-2 px-3 text-left">Nom</th>
+                                <th class="py-2 px-3 text-left">Prénom</th>
+                                <th class="py-2 px-3 text-left">Matière</th>
+                                <th class="py-2 px-3 text-left">Salle</th>
+                                <th class="py-2 px-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Professeurs ajoutés dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-0 z-30 hidden transition-opacity duration-300 ease-in-out"></div>
+    <footer class="mt-10 bg-primary-blue text-white text-center py-4 text-sm">
+        <p>&copy; 2025 École X - Tous droits réservés</p>
+    </footer>
+    <script>
+        // Thème sombre si activé dans les paramètres
+        function applyProfTheme() {
+            try {
+                var settings = JSON.parse(localStorage.getItem("appSettings") || '{}');
+                if (settings.display && settings.display.theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            } catch(e) {}
+        }
+        applyProfTheme();
+        // Gestion des professeurs (localStorage)
+        const formProf = document.getElementById('form-prof');
+        const inputNom = document.getElementById('nom-prof');
+        const inputPrenom = document.getElementById('prenom-prof');
+        const inputMatiere = document.getElementById('matiere-prof');
+        const inputSalle = document.getElementById('salle-prof');
+        const tableProf = document.getElementById('table-prof').querySelector('tbody');
+        const profMessage = document.getElementById('prof-message');
+        function getProfesseurs() {
+            return JSON.parse(localStorage.getItem('professeurs') || '[]');
+        }
+        function setProfesseurs(data) {
+            localStorage.setItem('professeurs', JSON.stringify(data));
+        }
+        function showProfMessage(txt, color = 'green') {
+            profMessage.textContent = txt;
+            profMessage.className = 'mt-4 px-4 py-2 rounded text-sm font-medium ' +
+                (color === 'green' ? 'bg-green-100 text-green-700' :
+                color === 'red' ? 'bg-red-100 text-red-700' :
+                'bg-gray-100 text-gray-700');
+            profMessage.classList.remove('hidden');
+            setTimeout(() => profMessage.classList.add('hidden'), 2500);
+        }
+        function renderProfesseurs() {
+            const profs = getProfesseurs();
+            tableProf.innerHTML = '';
+            if (profs.length === 0) {
+                tableProf.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-gray-500">Aucun professeur enregistré.</td></tr>';
+                return;
+            }
+            profs.forEach((prof, idx) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 last:border-b-0';
+                row.innerHTML =
+                    '<td class="py-2 px-3">' + prof.nom + '</td>' +
+                    '<td class="py-2 px-3">' + prof.prenom + '</td>' +
+                    '<td class="py-2 px-3">' + prof.matiere + '</td>' +
+                    '<td class="py-2 px-3">' + prof.salle + '</td>' +
+                    '<td class="py-2 px-3 flex gap-2">' +
+                        '<button onclick="voirProfesseur(' + prof.id + ')" class="bg-accent-cyan hover:bg-accent-cyan-dark text-white text-xs px-3 py-1 rounded shadow-sm"><i class="fas fa-eye"></i> Voir</button>' +
+                        '<button onclick="modifierProfesseur(' + prof.id + ')" class="bg-accent-yellow hover:bg-accent-yellow-dark text-white text-xs px-3 py-1 rounded shadow-sm"><i class="fas fa-edit"></i> Modifier</button>' +
+                        '<button onclick="deleteProfesseur(' + prof.id + ')" class="bg-accent-red hover:bg-accent-red-dark text-white text-xs px-3 py-1 rounded shadow-sm"><i class="fas fa-trash-alt"></i> Supprimer</button>' +
+                    '</td>';
+                tableProf.appendChild(row);
+            });
+        }
+        // Fonctionnalité Voir
+        window.voirProfesseur = function(id) {
+            const profs = getProfesseurs();
+            const prof = profs.find(p => p.id === id);
+            if (!prof) return;
+            let modal = document.getElementById('modal-prof-detail');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'modal-prof-detail';
+                modal.className = 'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40';
+                modal.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-lg p-6 min-w-[300px] max-w-[90vw] relative">
+                        <h3 class="text-lg font-bold mb-4 text-primary-blue">Détail du professeur</h3>
+                        <ul class="mb-4 space-y-1">
+                            <li><strong>Nom :</strong> <span id="detail-nom"></span></li>
+                            <li><strong>Prénom :</strong> <span id="detail-prenom"></span></li>
+                            <li><strong>Matière :</strong> <span id="detail-matiere"></span></li>
+                            <li><strong>Salle :</strong> <span id="detail-salle"></span></li>
+                        </ul>
+                        <button id="close-modal-prof" class="bg-accent-red hover:bg-accent-red-dark text-white px-4 py-2 rounded">Fermer</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            document.getElementById('detail-nom').textContent = prof.nom;
+            document.getElementById('detail-prenom').textContent = prof.prenom;
+            document.getElementById('detail-matiere').textContent = prof.matiere;
+            document.getElementById('detail-salle').textContent = prof.salle;
+            modal.style.display = 'flex';
+            document.getElementById('close-modal-prof').onclick = function() {
+                modal.style.display = 'none';
+            };
+        }
+        // Fonctionnalité Modifier
+        let profIdAModifier = null;
+        window.modifierProfesseur = function(id) {
+            const profs = getProfesseurs();
+            const prof = profs.find(p => p.id === id);
+            if (!prof) return;
+            inputNom.value = prof.nom;
+            inputPrenom.value = prof.prenom;
+            inputMatiere.value = prof.matiere;
+            inputSalle.value = prof.salle;
+            profIdAModifier = id;
+            formProf.scrollIntoView({behavior:'smooth'});
+        }
+        formProf.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nom = inputNom.value.trim();
+            const prenom = inputPrenom.value.trim();
+            const matiere = inputMatiere.value.trim();
+            const salle = inputSalle.value.trim();
+            if (!nom || !prenom || !matiere || !salle) {
+                showProfMessage('Veuillez remplir tous les champs.', 'red');
+                return;
+            }
+            let profs = getProfesseurs();
+            if (profIdAModifier) {
+                // Modifier
+                profs = profs.map(p => p.id === profIdAModifier ? { ...p, nom, prenom, matiere, salle } : p);
+                setProfesseurs(profs);
+                showProfMessage('Professeur modifié avec succès !', 'green');
+                profIdAModifier = null;
+            } else {
+                // Ajouter
+                profs.push({
+                    id: Date.now(),
+                    nom: nom,
+                    prenom: prenom,
+                    matiere: matiere,
+                    salle: salle
+                });
+                setProfesseurs(profs);
+                showProfMessage('Professeur ajouté avec succès !', 'green');
+            }
+            formProf.reset();
+            renderProfesseurs();
+        });
+        window.deleteProfesseur = function(id) {
+            if (confirm('Voulez-vous vraiment supprimer ce professeur ?')) {
+                let profs = getProfesseurs();
+                profs = profs.filter(p => p.id !== id);
+                setProfesseurs(profs);
+                showProfMessage('Professeur supprimé.', 'red');
+                renderProfesseurs();
+            }
+        };
+        document.addEventListener('DOMContentLoaded', renderProfesseurs);
+    </script>
 </body>
 </html>
