@@ -150,7 +150,14 @@ document.getElementById('form-prof').addEventListener('submit', function(e) {
   setProfs(profs);
   renderProfs();
   this.reset();
+  const toast = document.getElementById(`message-toast`);
+toast.textContent = `professeur ajouter !`;
+toast.style.display = `block`;
+setTimeout(() => {
+  toast.style.display = `none`;
+}, 2000);
 });
+
 window.deleteProf = function(i) {
   const profs = getProfs();
   profs.splice(i, 1);
@@ -201,7 +208,7 @@ function renderNotifs() {
 
   window.voirPlusNotif = function(i) {
   const notif = getNotifs()[i];
-  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`);
+  alert(`📝 Notification\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`);
 };
 }
 document.getElementById('form-notif').addEventListener('submit', function(e) {
@@ -227,7 +234,7 @@ document.getElementById('form-notif').addEventListener('submit', function(e) {
 
 
   const notif = getNotifs()[i];
-  alert(`📝 Notification\n\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`)
+  alert(`📝 Notification\nTitre : ${notif.titre}\nContenu : ${notif.contenu}\nDate : ${notif.date}`)
 
 window.deleteNotif = function(i) {
   const notifs = getNotifs();

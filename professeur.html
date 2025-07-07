@@ -3,36 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Gestion des Professeurs</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
     <h1>Gestion des Professeurs</h1>
     <nav>
-        <a href="index.html">Accueil</a>
+      <a href="index.html">Accueil</a>
       <a href="eleve.html">Élèves</a>
       <a href="emploi.html">Emploi du temps</a>
-      <a href="professeur.html">Professeurs</a>
-      <a href="notification.html">notifications</a>
+      <a href="professeur.html" class="active">Professeurs</a>
+      <a href="notification.html">Notifications</a>
       <a href="parent.html">Portail parents</a>
       <a href="parametres.html">Paramètres</a>
     </nav>
   </header>
+
   <main>
+    <!-- Formulaire d'ajout -->
     <section>
       <h2>Ajouter un professeur</h2>
       <form id="form-prof">
-        <label for="nom-prof">Nom</label>
-        <input type="text" id="nom-prof" placeholder="Nom" required>
-        <label for="prenom-prof">Prénom</label>
-        <input type="text" id="prenom-prof" placeholder="Prénom" required>
-        <label for="matiere-prof">Matière</label>
-        <input type="text" id="matiere-prof" placeholder="Matière" required>
-        <label for="salle-prof">Salle</label>
-        <input type="text" id="salle-prof" placeholder="Salle" required>
+        <label for="nom-prof">Nom :</label>
+        <input type="text" id="nom-prof" required>
+
+        <label for="prenom-prof">Prénom :</label>
+        <input type="text" id="prenom-prof" required>
+
+        <label for="matiere-prof">Matière :</label>
+        <input type="text" id="matiere-prof" required>
+
+        <label for="salle-prof">Salle :</label>
+        <input type="text" id="salle-prof" required>
+
         <button type="submit">Ajouter</button>
       </form>
+
+      <!-- Message de confirmation -->
+      <div id="message-toast" class="toast-message">Professeur ajouté !</div>
     </section>
+
+    <!-- Tableau d'affichage -->
     <section>
       <h2>Liste des professeurs</h2>
       <table id="table-prof">
@@ -46,11 +57,13 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Professeurs ajoutés dynamiquement -->
+          <!-- Les professeurs seront ajoutés ici par JavaScript -->
         </tbody>
       </table>
     </section>
   </main>
-  <script src="script.js"></script>
+
+  <!-- Script JS -->
+  <script src="js/professeur.js"></script>
 </body>
 </html>
